@@ -19,3 +19,33 @@ export function fitWords(el, split, { safety = 0.995 } = {}) {
   el.style.setProperty('--titel-fit', next);
   return true;
 }
+
+/**
+ * Line fit (stage 3, hero claim): every explicit line of a split title stays on one row, as the two title
+ * lines of the reference do on wide screens. The width of a line is the sum of its word boxes plus the
+ * spaces between them, measured at the current size; the size scales linearly. The level 4 size stays the
+ * upper bound (min() in the CSS), so short lines keep the reference size.
+ */
+export function fitLines(el, split, { safety = 0.985 } = {}) {
+  if (!split || !split.lines.length) return false;
+  const cs = getComputedStyle(el);
+  const avail = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const fontSize = parseFloat(cs.fontSize);
+  if (!(avail > 0) || !(fontSize > 0)) return false;
+  const ctx = document.createElement('canvas').getContext('2d');
+  ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  const space = ctx.measureText(' ').width + (parseFloat(cs.letterSpacing) || 0);
+  let widest = 0;
+  for (const line of split.lines) {
+    const words = line.words.filter((w) => w.el.offsetWidth > 0);
+    if (!words.length) continue;
+    const width = words.reduce((sum, w) => sum + w.el.offsetWidth, 0) + space * (words.length - 1);
+    widest = Math.max(widest, width);
+  }
+  if (!widest) return false;
+  const target = Math.floor(fontSize * (avail / widest) * safety * 100) / 100;
+  const next = `${target}px`;
+  if (el.style.getPropertyValue('--titel-fit') === next) return false;
+  el.style.setProperty('--titel-fit', next);
+  return true;
+}

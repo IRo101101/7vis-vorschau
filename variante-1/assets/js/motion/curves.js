@@ -74,17 +74,37 @@ export const TIMING = Object.freeze({
     inactiveScale: 0.93,
     inactiveTransition: 0.35,
   }),
-  // IM 8 (stage 3, intro)
+  // IM 8 (stage 3, intro "Auftakt"). Reference values plus our own for the real progress (PLAN 5 no. 13):
+  // the reference simulates 2.2 s of progress; here the displayed value follows the real one, never faster
+  // than one full sweep in sweepMin, and the whole intro ends at the time limit whatever is still loading.
   intro: Object.freeze({
     textDuration: 1.1,
     charStagger: 0.02,
     lineStagger: 0.1,
     ease: 'titel',
+    markAt: 0.07,
     markDuration: 1.8,
     markStagger: 0.08,
+    markScaleFrom: 1.4,
+    markYFrom: 30,
+    countAt: 0.17,
+    countStepDuration: 0.6,
+    countStepEase: 'streifen',
     curtainDuration: 0.9,
     curtainEase: 'vorhang',
+    curtainFrames: 2,
     heroTitleAt: 0.15,
+    sweepMin: 1.2,
+    hold: 0.15,
+    limit: 5,
+    weights: Object.freeze({ fonts: 0.25, load: 0.25, webgl: 0.5 }),
+  }),
+  // IM 11.11, IS 2 (stage 3, navigation): colour follows the section under a line 4 px below the bar, 0.35 s.
+  nav: Object.freeze({
+    lineOffset: 4,
+    colourDuration: 0.35,
+    open: Object.freeze({ duration: 0.5, ease: 'paneel', itemFrom: 35, itemStagger: 0.06 }),
+    close: Object.freeze({ itemDuration: 0.25, itemStagger: 0.03, heightDuration: 0.5, fadeDuration: 0.3, fadeEase: 'power1.in', fadeLead: 0.325 }),
   }),
   // IM 9 (stage 2, spike S3)
   pageReveal: Object.freeze({ duration: 0.9, ease: 'vorhang', offsetPercent: 8, safetyExtra: 0.3, outDuration: 0.4, outEase: 'power3.in' }),
@@ -139,5 +159,49 @@ export const TIMING = Object.freeze({
     // IM 13.3 "Produktwechsel": full turn around y in 2 s, expo.inOut, not when the change came from a drag.
     switchDuration: 2,
     switchEase: 'expo.inOut',
+    // Composition of the home page (stage 3), measured in the WebGL recordings of the reference (refmedia v1
+    // gl/, W2, W4): in the hero the figure stands centred in the lower half and is cut by the bottom edge;
+    // while the slider covers the hero it turns, moves up and to the right and shrinks to 0.9. Phones: no
+    // sideways shift, 0.6 in the slider, centred between text and markers. The page layout places two
+    // anchor boxes, the hero still and the slider stage ([data-figur-anker]); the figure is centred on them
+    // and its bean is the box width divided by stillRatio long, so still image and live figure coincide.
+    // Without anchors: fractions of the viewport (x, y = centre, size = length of the bean).
+    start: Object.freeze({
+      stillRatio: 1.2,
+      desktop: Object.freeze({
+        hero: Object.freeze({ x: 0.5, y: 0.8, size: 0.6 }),
+        slider: Object.freeze({ x: 0.7, y: 0.56, size: 0.54 }),
+        sizeOf: 'h',
+      }),
+      mobile: Object.freeze({
+        hero: Object.freeze({ x: 0.5, y: 0.8, size: 0.86 }),
+        slider: Object.freeze({ x: 0.5, y: 0.64, size: 0.52 }),
+        sizeOf: 'w',
+      }),
+      // Beans fly in around the figure while the hero is covered (IM 13.3: particles grow between 33 % and
+      // 66 % of half 1), desktop only (IM 16, W7). Springs and push of IM 13.3; swap on a force change:
+      // out in 1 s expo.in, in again in 1 s expo.out (IM 13.3 "gebackene Animation").
+      beans: Object.freeze({
+        count: 16,
+        growFrom: 0.33,
+        growTo: 0.66,
+        size: 0.13,
+        stiffness: 40,
+        damping: 12,
+        pushRadius: 90,
+        pushStrength: 3,
+        spin: 40,
+        spinDamping: 4,
+        swapOut: Object.freeze({ duration: 1, ease: 'expo.in' }),
+        swapIn: Object.freeze({ duration: 1, ease: 'expo.out' }),
+      }),
+      // Label change of the reference translated (IM 13.3): the new state of the figure (form and colour of
+      // the force) opens inside a circle in screen space from (50 %, 66 %) to the farthest corner between
+      // 0.5 s and 2.0 s of the change; soft edge 0.125, edge distorted by noise 0.075.
+      iris: Object.freeze({ start: 0.5, end: 2, ease: 'expo.inOut', originX: 0.5, originY: 0.66, soft: 0.125, noise: 0.075 }),
+      // Per-force colour: the force scale of the CI, drawn a third of the way towards the bean colour
+      // (--kr-4) so the lightest and darkest steps stay visible on both surfaces.
+      tint: 0.35,
+    }),
   }),
 });

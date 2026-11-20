@@ -1,0 +1,320 @@
+@layer tokens, base, modules, page;
+
+/*
+ * Home page, stage 3 (storyboard sections 1, 1 to 2, 2). Page layer: layout only, scoped by [data-view].
+ * Composition after the reference recordings (refmedia v1): the hero stands still (sticky), the forces
+ * slider slides over it, the hero card seems fixed and is covered by the slider's top edge; the figure sits
+ * centred in the lower half of the hero and moves up and to the right into the slider. The two anchor boxes
+ * ([data-figur-anker]: hero still, slider stage) tell the WebGL figure where to stand; the still images use
+ * the same boxes, so the page looks the same without WebGL.
+ */
+@layer page {
+  [data-view="start"] .strecke {
+    position: relative;
+  }
+
+  /* ---------- Section 1 · Hero ---------- */
+  [data-view="start"] .held {
+    position: relative;
+    z-index: 1;
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    display: grid;
+    grid-template-rows: auto auto;
+    align-content: center;
+    gap: calc(4 * var(--raum));
+    padding-block: calc(var(--kopf-hoehe) + 6 * var(--raum)) calc(6 * var(--raum));
+    overflow: clip;
+  }
+  @media (min-height: 560px) {
+    [data-view="start"] .held {
+      position: sticky;
+      top: 0;
+      block-size: 100vh;
+      block-size: 100svh;
+    }
+  }
+  [data-view="start"] .held__kicker,
+  [data-view="start"] .held__titel {
+    position: relative;
+    z-index: 1;
+  }
+  /* The claim keeps its two lines on wide screens (as the reference's two title lines); without script the
+     size is estimated from the longer line (18 characters), the script measures it (headline fit-lines). */
+  @media (min-width: 768px) {
+    [data-view="start"] .held__titel {
+      --titel-zeichen: 18;
+    }
+  }
+  [data-view="start"] .held__figur {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+  /* Hero anchor: centred, its centre at 80 % of the viewport height, cut by the bottom edge. The bean is
+     the box width / 1.2 long: 60 % of the viewport height on wide screens, 86 % of the width on phones. */
+  [data-view="start"] .held__figur img {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: 80vh;
+    inset-block-start: 80svh;
+    inline-size: min(72vh, 66vw);
+    inline-size: min(72svh, 66vw);
+    block-size: auto;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+  }
+  @media (max-width: 767px) {
+    [data-view="start"] .held {
+      align-content: start;
+    }
+    [data-view="start"] .held__titel {
+      margin-block-start: calc(2 * var(--raum));
+    }
+    [data-view="start"] .held__figur img {
+      inline-size: 103vw;
+    }
+  }
+
+  /* ---------- Hero card layer (IM 11.5): one viewport high at the top of the stretch ---------- */
+  [data-view="start"] .held-karten {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 7500;
+    block-size: 100vh;
+    block-size: 100svh;
+    display: grid;
+    align-content: end;
+    justify-items: end;
+    padding: calc(6 * var(--raum)) var(--rand-seite);
+    pointer-events: none;
+  }
+  [data-view="start"] .held-karte-platz {
+    inline-size: min(26rem, 40vw);
+    pointer-events: auto;
+  }
+  [data-view="start"] .karte__traeger {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 6.5rem;
+    gap: calc(4 * var(--raum));
+    padding: var(--karte-innen);
+  }
+  [data-view="start"] .karte__text {
+    display: grid;
+    align-content: start;
+    gap: calc(1.5 * var(--raum));
+    min-inline-size: 0;
+  }
+  [data-view="start"] .karte__titel {
+    margin-block-start: var(--raum);
+  }
+  [data-view="start"] .karte__status {
+    color: var(--tx-normal);
+  }
+  [data-view="start"] .karte__link {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--knopf-hoehe);
+    color: var(--ak-marke-text);
+    font-weight: var(--gewicht-stark);
+  }
+  [data-view="start"] .karte__bild {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 5;
+    align-self: start;
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    border-radius: calc(var(--radius-karte) / 2);
+    background-color: var(--fl-abgesenkt);
+    color: var(--tx-leise);
+  }
+  [data-view="start"] .karte__platzhalter {
+    font-family: var(--schrift-label);
+    font-size: var(--groesse-label);
+    letter-spacing: var(--laufweite-label);
+    text-transform: var(--versal-label);
+    text-align: center;
+  }
+  @media (max-width: 991px) {
+    [data-view="start"] .held-karte-platz {
+      inline-size: min(26rem, 100%);
+    }
+  }
+  @media (max-width: 767px) {
+    [data-view="start"] .held-karten {
+      justify-items: stretch;
+      padding-block-end: calc(4 * var(--raum));
+    }
+    [data-view="start"] .held-karte-platz {
+      inline-size: 100%;
+    }
+    [data-view="start"] .karte__traeger {
+      grid-template-columns: minmax(0, 1fr) 4.5rem;
+    }
+  }
+
+  /* ---------- Section 2 · Forces slider (S2), composition of the home page ---------- */
+  [data-view="start"] .kraefte-slider {
+    z-index: 3;
+  }
+  /* No script and list mode: the HTML as seven blocks, each with its still image. */
+  [data-view="start"] .kraefte-slider__figur {
+    margin: 0;
+    inline-size: min(100%, 16rem);
+  }
+  [data-view="start"] .kraefte-slider__figur img {
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 1;
+  }
+  [data-view="start"] .kraefte-tab__wort {
+    white-space: nowrap;
+  }
+  /* The name next to the number only where seven of them fit in one row; the accessible name of every
+     tab carries it anyway ("Kraft 03, Verdichten, zeigen"). */
+  @media (max-width: 1279px) {
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-tab__wort {
+      display: none;
+    }
+  }
+
+  /* Slider mode, wide screens: name and effect line at the top left, card at the top right (the reference's
+     title and mini card), the section text low on the left, markers at the bottom centre, the figure stage
+     right of the centre. */
+  [data-view="start"] .kraefte-slider[data-force-slider-mode="slider"] {
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    grid-template-areas: "liste" "kopf" "nav";
+    row-gap: calc(5 * var(--raum));
+    padding-block: calc(var(--kopf-hoehe) + 2 * var(--raum)) calc(5 * var(--raum));
+  }
+  [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__kopf {
+    max-inline-size: 38ch;
+    gap: calc(2 * var(--raum));
+  }
+  [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__liste {
+    position: static;
+    align-items: start;
+  }
+  [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__kraft {
+    grid-template-columns: minmax(0, 1fr) min(22rem, 30cqi);
+    align-items: start;
+    column-gap: calc(8 * var(--raum));
+  }
+  [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__text {
+    align-content: start;
+    gap: calc(2 * var(--raum));
+  }
+  [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__wirkung {
+    max-inline-size: 34ch;
+  }
+  [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__karte {
+    align-self: start;
+  }
+  /* Stage and still images share one box: centre at 70 % of the width and 58 % of the height, the bean 54 %
+     of the viewport height long (box = bean x 1.2). */
+  [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__buehne,
+  [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__figur {
+    display: block;
+    position: absolute;
+    inset: auto;
+    inset-inline-start: 70%;
+    inset-block-start: 58vh;
+    inset-block-start: 58svh;
+    z-index: 0;
+    inline-size: min(65vh, 46vw);
+    inline-size: min(65svh, 46vw);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    pointer-events: none;
+  }
+
+  /* Tablets: card and text in one column, the stage to the right of the markers' column. */
+  @media (max-width: 991px) {
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__kraft {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "text" "karte";
+      row-gap: calc(4 * var(--raum));
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__karte {
+      justify-self: start;
+      inline-size: min(22rem, 52cqi);
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__buehne,
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__figur {
+      inset-inline-start: 72%;
+      inline-size: min(56svh, 50vw);
+    }
+  }
+
+  /* Phones: one column, the figure between the content and the markers, centred (reference: no sideways
+     shift on phones); the section text follows below the markers. */
+  @media (max-width: 767px) {
+    [data-view="start"] .kraefte-slider[data-force-slider-mode="slider"] {
+      grid-template-rows: auto auto auto;
+      grid-template-areas: "liste" "nav" "kopf";
+      row-gap: calc(5 * var(--raum));
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__liste {
+      min-block-size: calc(100svh - var(--kopf-hoehe) - var(--knopf-hoehe) - 12 * var(--raum));
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__karte {
+      inline-size: 100%;
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__pucker {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: var(--raum) calc(3 * var(--raum));
+      padding: calc(3 * var(--raum));
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__pucker > .kraft-marker {
+      display: none;
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__pucker > .knopf {
+      grid-column: 2;
+      grid-row: 1 / span 3;
+      margin: 0;
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__buehne,
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__figur {
+      inset-inline-start: 50%;
+      inset-block-start: auto;
+      inset-block-end: auto;
+      inset-block-start: calc(100svh - var(--knopf-hoehe) - 10 * var(--raum) - 33vw);
+      inline-size: 66vw;
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__schritt {
+      display: none;
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__marker {
+      flex-wrap: nowrap;
+      gap: 2px;
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__marker a {
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      inline-size: var(--knopf-hoehe);
+      padding: 0;
+    }
+    [data-view="start"] [data-force-slider-mode="slider"] .kraefte-slider__marker .kraft-marker__q {
+      inline-size: 14px;
+      block-size: 14px;
+    }
+  }
+
+  /* ---------- After the slider: stage 4 follows ---------- */
+  [data-view="start"] .start-weiter {
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    display: grid;
+    align-content: start;
+    gap: calc(5 * var(--raum));
+  }
+  [data-view="start"] .start-weiter .t-lg {
+    max-inline-size: 24ch;
+  }
+}

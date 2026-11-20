@@ -287,12 +287,32 @@ export class World {
       } else {
         r.setRenderTarget(null);
       }
-      const job = r.compileAsync(rec.inst.scene, rec.inst.camera);
+      // Own wait instead of renderer.compileAsync: three's poll reads the program of every material without
+      // a guard and throws in a timer when the scene or the world is disposed meanwhile (level "statisch"
+      // right after binding, page change). This poll stops as soon as the scene or the world is gone.
+      const materials = r.compile(rec.inst.scene, rec.inst.camera);
       r.setRenderTarget(null);
       if (rec.kind === 'target') {
         r.compile(this.quadScene, this.quadCamera);
       }
-      await job;
+      await new Promise((resolve) => {
+        const poll = () => {
+          if (this.disposed || this.lost || !this.records.has(rec.el)) return resolve();
+          for (const m of materials) {
+            const program = r.properties.get(m).currentProgram;
+            let ready = true;
+            try {
+              ready = !program || program.isReady();
+            } catch {
+              ready = true;
+            }
+            if (ready) materials.delete(m);
+          }
+          if (!materials.size) resolve();
+          else setTimeout(poll, 10);
+        };
+        poll();
+      });
       this.counters.compiles += 1;
     } catch (err) {
       if (!this.lost) console.warn('[v1:gl] precompile failed, scene compiles on first draw', err);

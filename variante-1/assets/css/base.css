@@ -32,7 +32,6 @@
     font-size: var(--groesse-text);
     line-height: var(--zeilenhoehe-text);
     font-weight: var(--gewicht-text);
-    font-feature-settings: "tnum" 1;
   }
 
   /* Every element with a theme attribute paints its own surface: hell or invers (W 05, IM 11.11). */
@@ -147,6 +146,12 @@
     font-family: var(--schrift-mono);
     font-size: var(--groesse-mono);
     line-height: var(--zeilenhoehe-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  /* Tabular figures only where numbers form a column or count (W 04: "Zahlen mit Tabellenziffern").
+     Not on running text: the tnum feature of some faces (Inter, the rohbau system face on Linux) also
+     widens the hyphen, which opened gaps in words like "Kräfte-Slider" (stage 3). */
+  .t-ziffern {
     font-variant-numeric: tabular-nums;
   }
 

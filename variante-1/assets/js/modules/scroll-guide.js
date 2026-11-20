@@ -7,7 +7,8 @@
  *   - only when the scroll was started by a wheel or trackpad (never keyboard, touch or the scrollbar);
  *   - never under reduced motion (Lenis is off then, so there is no smooth scroll to guide);
  *   - switchable: store 'scroll:guide' false turns it off (review tool), default on.
- * Put it on the hero; the target is the hero's next element sibling.
+ * Put it on the hero; the target is the hero's next element sibling, or the element that the selector in
+ * data-scroll-guide-target names (stage 3: the card overlay sits between hero and slider in the markup).
  */
 import { TIMING } from '../motion/curves.js';
 
@@ -15,11 +16,11 @@ const T = TIMING.guidedScroll;
 
 export default {
   name: 'scroll-guide',
-  options: {},
+  options: { target: '' },
 
   setup(ctx) {
-    const { el, store, scroll } = ctx;
-    const next = el.nextElementSibling;
+    const { el, opts, store, scroll } = ctx;
+    const next = (opts.target && (el.closest('[data-view]') || document).querySelector(opts.target)) || el.nextElementSibling;
     if (!next) {
       ctx.warn('the hero needs a next sibling to guide to');
       return null;
@@ -37,12 +38,14 @@ export default {
     ctx.listen(window, 'touchstart', mark('touch'), { passive: true });
     ctx.listen(window, 'pointerdown', mark('pointer'), { passive: true });
 
-    // Document positions: the hero may be sticky, its parent is not.
+    // Document positions: the hero may be sticky, its parent is not. Rectangles follow the native scroll
+    // position, so they are added to scrollY; the smoothed value of Lenis would make the band jitter by a
+    // fraction of a pixel and let a step back slip past the 90 % line (stage 3).
     const band = () => {
       const host = el.parentElement || el;
-      const top = host.getBoundingClientRect().top + scroll.y();
+      const top = host.getBoundingClientRect().top + scrollY;
       const h = el.offsetHeight;
-      return { top, h, start: top + h * T.startFraction, end: top + h * T.endFraction, target: next.getBoundingClientRect().top + scroll.y() };
+      return { top, h, start: top + h * T.startFraction, end: top + h * T.endFraction, target: next.getBoundingClientRect().top + scrollY };
     };
 
     const go = (y) => {

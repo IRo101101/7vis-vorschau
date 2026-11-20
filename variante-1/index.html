@@ -1,40 +1,314 @@
 <!doctype html>
-<html lang="de">
+<html lang="de-CH" data-ci="rohbau">
 <head>
-<meta charset="utf-8">
-<meta name="robots" content="noindex, nofollow">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Variante 1 · Proben</title>
-<style>
-  :root { --papier:#F7F6F3; --graphit:#101315; --messing:#8C6414; --linie:#d9d6cf; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--papier); color:var(--graphit); font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
-  main { max-width:44rem; margin:0 auto; padding:3rem 1rem 4rem; }
-  .kicker { font:12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--messing); }
-  h1 { font-size:2rem; line-height:1.15; margin:.75rem 0 1rem; }
-  p { margin:0 0 1rem; }
-  ul { list-style:none; padding:0; margin:2rem 0 0; border-top:1px solid var(--linie); }
-  li { border-bottom:1px solid var(--linie); padding:1.1rem 0; }
-  a { color:inherit; font-weight:600; text-decoration:none; }
-  a:hover, a:focus-visible { color:var(--messing); }
-  .nr { font:12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; color:var(--messing); margin-right:.75rem; }
-  .meta { display:block; font-size:14px; color:#5a5f63; margin-top:.25rem; }
-  .zurueck { display:inline-block; margin-top:2.5rem; font-weight:400; font-size:14px; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>7Vis · Für uns ist Kaffee angewandte Physik.</title>
+  <meta name="description" content="7Vis entwickelt Werkzeuge, die die sieben Kräfte der Kaffeeherstellung präzise und wiederholbar machen. Das erste ist die mechanische Tamperstation Pucker.">
+  <link rel="stylesheet" href="assets/vendor/lenis-1.3.26/lenis.css">
+  <link rel="stylesheet" href="assets/css/tokens/ebene4-mechanik.css">
+  <link rel="stylesheet" href="assets/css/themes/rohbau.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/modules.css">
+  <link rel="stylesheet" href="assets/css/pages/start.css">
+  <link rel="modulepreload" href="assets/js/core/core.js">
+  <link rel="modulepreload" href="assets/js/motion/engine.js">
+  <link rel="modulepreload" href="assets/js/motion/scroll.js">
+  <link rel="modulepreload" href="assets/vendor/lenis-1.3.26/lenis.js">
+  <link rel="modulepreload" href="assets/js/modules/intro.js">
+  <link rel="modulepreload" href="assets/js/modules/nav.js">
+  <link rel="modulepreload" href="assets/js/text/split.js">
+  <link rel="modulepreload" href="assets/js/modules/headline.js">
+  <link rel="modulepreload" href="assets/js/modules/fold-card.js">
+  <link rel="modulepreload" href="assets/js/modules/force-slider.js">
+  <link rel="modulepreload" href="assets/js/modules/webgl.js">
+  <link rel="modulepreload" href="assets/js/gl/level.js">
+  <script type="module" src="assets/js/boot.js"></script>
 </head>
-<body>
-<main>
-  <div class="kicker">Variante 1 · Etappe 2 · Haltepunkt</div>
-  <h1>Die Proben zeigen die Mechanik vor dem Bau der Startseite.</h1>
-  <p>Jede Probe prüft einen riskanten Baustein für sich. Gezeigt wird das graue Thema «Rohbau», die Texte stammen aus dem Drehbuch und sind noch nicht freigegeben. Unten links öffnet «Prüfwerkzeug» Schalter für Thema, reduzierte Bewegung und weitere Proben.</p>
-  <p>Bitte vor allem am Telefon ansehen: Läuft das Scrollen flüssig, ruckelt die Bohne, fühlt sich das geführte Scrollen gut an?</p>
-  <ul>
-    <li><span class="nr">S1</span><a href="spike-s1.html">3D-Figur: Die Bohne im Hero</a><span class="meta">Die Bohne steigt auf, folgt der Maus und dreht sich, während die dunkle Sektion über den Hero fährt. Ohne WebGL oder bei reduzierter Bewegung erscheint ein Standbild.</span></li>
-    <li><span class="nr">S2</span><a href="spike-s2.html">Kräfte-Slider: 01 Wärmen bis 07 Entnehmen</a><span class="meta">Wechsel per Klick, Pfeiltasten oder Ziehen, Titel fahren Zeichen für Zeichen ein, die Fläche wischt um. Die Figur ist hier noch ein Platzhalter. Unter 768 px stehen die Kräfte untereinander.</span></li>
-    <li><span class="nr">S3</span><a href="spike-s3-a.html">Seitenwechsel ohne Neuladen</a><span class="meta">Zwischen den Seiten A, B und C wechseln: Die neue Seite wird in 0,9 s von unten aufgedeckt, Zurück und Vorwärts funktionieren.</span></li>
-    <li><span class="nr">1a</span><a href="probe.html">Probeseite Kern und Typo</a><span class="meta">Riesentitel, Textblock und Mini-Karte mit den Bewegungswerten der Referenz, dazu der Wechsel zwischen den drei Themen.</span></li>
-  </ul>
-  <a class="zurueck" href="../">Zurück zur Übersicht</a>
-</main>
+<body data-mod="page-router" data-page-router-shell="v1">
+  <a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+
+  <!-- Shell: everything outside [data-view] stays during page changes. -->
+  <svg class="marken-vorrat" aria-hidden="true" focusable="false">
+    <!-- Placeholder word mark of the rohbau (own construction): the real one comes with the logo direction
+         (PLAN 10, stage 6) as 7vis-wortmarke.svg. -->
+    <symbol id="v1-wortmarke" viewBox="0 0 300 100">
+      <path d="M0 0H76V18L36 100H14L52 20H0Z"/>
+      <path d="M90 0H112L132.5 76L153 0H175L144 100H121Z"/>
+      <path d="M190 0H210V100H190Z"/>
+      <path d="M291 22C285 4 238 5 238 28C238 50 289 46 289 72C289 97 238 96 232 76" fill="none" stroke="currentColor" stroke-width="20"/>
+    </symbol>
+  </svg>
+
+  <!-- Section 0 · Auftakt: only on the first load of the home page (refmedia v1 F1). -->
+  <div class="auftakt" data-mod="intro" data-intro-owner data-theme="invers">
+    <p class="nur-vorlesen" role="status">Die Seite lädt.</p>
+    <div class="auftakt__zaehlung t-ziffern" aria-hidden="true">
+      <span class="auftakt__fenster"><span class="auftakt__streifen" data-intro-strip><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span></span></span>
+    </div>
+    <div class="auftakt__marke" data-intro-mark aria-hidden="true">
+      <span class="auftakt__band" data-intro-band><svg class="wortmarke" viewBox="0 0 300 100" focusable="false"><use href="#v1-wortmarke"/></svg></span>
+      <span class="auftakt__band" data-intro-band><svg class="wortmarke" viewBox="0 0 300 100" focusable="false"><use href="#v1-wortmarke"/></svg></span>
+      <span class="auftakt__band" data-intro-band><svg class="wortmarke" viewBox="0 0 300 100" focusable="false"><use href="#v1-wortmarke"/></svg></span>
+      <span class="auftakt__band" data-intro-band><svg class="wortmarke" viewBox="0 0 300 100" focusable="false"><use href="#v1-wortmarke"/></svg></span>
+      <span class="auftakt__band" data-intro-band><svg class="wortmarke" viewBox="0 0 300 100" focusable="false"><use href="#v1-wortmarke"/></svg></span>
+      <span class="auftakt__band" data-intro-band><svg class="wortmarke" viewBox="0 0 300 100" focusable="false"><use href="#v1-wortmarke"/></svg></span>
+    </div>
+    <div class="auftakt__linie" data-intro-line aria-hidden="true"></div>
+  </div>
+
+  <header class="kopf" data-mod="nav" data-theme="hell">
+    <nav class="kopf__nav" aria-label="Hauptnavigation">
+      <ul class="kopf__gruppe kopf__gruppe--links">
+        <li class="kopf__vorschau" data-nav-shop>
+          <a class="kopf__link" href="folgt.html#werkzeuge" data-nav-shop-trigger aria-controls="vorschau-werkzeuge">Werkzeuge</a>
+          <div id="vorschau-werkzeuge" class="vorschau" data-nav-shop-panel data-theme="hell" data-needs-core>
+            <ul class="vorschau__liste">
+              <li class="vorschau__kachel" data-nav-shop-item>
+                <a class="vorschau__verweis" href="folgt.html#pucker">
+                  <span class="vorschau__bild"><span class="karte__platzhalter">Bild folgt</span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Pucker</span><span class="vorschau__preis t-label">In Vorbereitung</span></span>
+                  <span class="vorschau__kurz t-klein">Mechanische Espresso-Tamperstation</span>
+                  <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-3" aria-hidden="true"></span>03 · Verdichten</span>
+                </a>
+              </li>
+              <li class="vorschau__kachel" data-nav-shop-item>
+                <a class="vorschau__verweis" href="folgt.html#werkzeuge">
+                  <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterwerkzeug 01</span><span class="vorschau__preis t-ziffern">CHF 10.00</span></span>
+                  <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
+                  <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02 · Mahlen</span>
+                </a>
+              </li>
+              <li class="vorschau__kachel" data-nav-shop-item>
+                <a class="vorschau__verweis" href="folgt.html#werkzeuge">
+                  <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterwerkzeug 02</span><span class="vorschau__preis t-ziffern">CHF 20.00</span></span>
+                  <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
+                  <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-4" aria-hidden="true"></span>04 · Pumpen</span>
+                </a>
+              </li>
+              <li class="vorschau__kachel" data-nav-shop-item>
+                <a class="vorschau__verweis" href="folgt.html#werkzeuge">
+                  <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterwerkzeug 03</span><span class="vorschau__preis t-label">Ausverkauft</span></span>
+                  <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
+                  <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-6" aria-hidden="true"></span>06 · Fliessen</span>
+                </a>
+              </li>
+            </ul>
+            <a class="knopf vorschau__knopf" href="folgt.html#werkzeuge" data-nav-shop-item>Werkzeuge ansehen</a>
+          </div>
+        </li>
+        <li><a class="kopf__link" href="folgt.html#die-sieben-kraefte">Die sieben Kräfte</a></li>
+      </ul>
+      <a class="kopf__marke" href="index.html" aria-label="7Vis, zur Startseite"><svg class="wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg></a>
+      <ul class="kopf__gruppe kopf__gruppe--rechts">
+        <li><a class="kopf__link" href="folgt.html#haendler">Händler</a></li>
+        <li><a class="kopf__link kopf__warenkorb" href="folgt.html#warenkorb" data-nav-cart aria-label="Warenkorb, 0 Artikel">Warenkorb (<span class="t-ziffern" data-nav-cart-count>0</span>)</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- WebGL layers (S1): back layer behind the sections, front layer above; the router of S3 cuts the front
+       layer with the edge of the reveal (data-transition-clip). -->
+  <div class="gl-ebenen" data-mod="webgl" aria-hidden="true" data-needs-core>
+    <canvas class="gl-ebene gl-ebene--hinten" data-gl-layer="hinten"></canvas>
+    <canvas class="gl-ebene gl-ebene--vorn" data-gl-layer="vorn" data-transition-clip></canvas>
+  </div>
+  <!-- Drag handle of the figure: follows the figure on screen, takes the pointer only while the slider allows it. -->
+  <div class="figur-griff" data-mod="figure-grip" aria-hidden="true" data-needs-core></div>
+
+  <main id="inhalt" data-view="start" tabindex="-1">
+
+    <!-- Hero stretch (IM 12): hero sticky, the forces slider slides over it, the cards seem to stand still. -->
+    <div class="strecke" data-scene="figur" data-scene-layer="vorn" data-figur-lage="start">
+
+      <!-- Section 1 · Hero -->
+      <section id="held" class="sx held" data-theme="hell" data-mod="scroll-guide" data-scroll-guide-target="#kraefte" aria-labelledby="held-titel">
+        <p class="kicker held__kicker">01 · Kaffee-Werkzeuge</p>
+        <h1 id="held-titel" class="t-riesig held__titel" data-mod="headline" data-headline-trigger="page" data-headline-fit-lines="true" data-guard>
+          <span data-headline-line>Für uns ist Kaffee</span>
+          <span data-headline-line>angewandte Physik.</span>
+        </h1>
+        <figure class="held__figur">
+          <img data-scene-still="figur" data-still-ci="rohbau" data-figur-anker="held" src="assets/img/start/figur-01-rohbau.webp" alt="Grüne Kaffeebohne." width="900" height="900" decoding="async">
+        </figure>
+      </section>
+
+      <div class="held-karten" data-mod="card-overlay">
+        <!-- The slot gives the card its width: the unfold animates the card's width in % of its container. -->
+        <div class="held-karte-platz">
+        <article class="karte held-karte" data-mod="fold-card" data-guard aria-labelledby="held-karte-titel">
+          <div class="karte__traeger" data-fold-card-carrier>
+            <div class="karte__text">
+              <p class="kraft-marker kicker"><span class="kraft-marker__q kr-3" aria-hidden="true"></span><span data-fold-card-line>03 · Verdichten</span></p>
+              <h2 id="held-karte-titel" class="t-sm karte__titel"><span data-fold-card-line>Pucker</span></h2>
+              <p class="t-klein"><span data-fold-card-line>Mechanische Espresso-Tamperstation</span></p>
+              <p class="t-label karte__status"><span data-fold-card-line>In Vorbereitung</span></p>
+              <a class="karte__link" href="folgt.html#pucker" data-fold-card-line>Pucker ansehen</a>
+            </div>
+            <div class="karte__bild" data-fold-card-image>
+              <span class="karte__platzhalter">Bild folgt</span>
+            </div>
+          </div>
+        </article>
+        </div>
+      </div>
+
+      <!-- Section 2 · Forces slider (S2). Without script: seven blocks with jump marks (PLAN 9 no. 11). -->
+      <section id="kraefte" class="sx kraefte-slider" data-theme="invers" aria-labelledby="kraefte-titel" data-mod="force-slider" data-force-slider-list-at="none" data-guard>
+        <div class="kraefte-slider__flaeche" data-force-slider-surface data-needs-core aria-hidden="true"><div class="kraefte-slider__wisch" data-force-slider-wipe></div></div>
+        <div class="kraefte-slider__kopf">
+          <p class="kicker">02 · Die sieben Kräfte</p>
+          <h2 id="kraefte-titel" class="t-md">Sieben Kräfte machen aus einer grünen Bohne einen Bezug.</h2>
+          <p class="t-text">Die sieben Kräfte sind ein Ablauf, keine Kategorien.</p>
+        </div>
+        <div class="kraefte-slider__buehne" data-figur-anker="slider" data-needs-core aria-hidden="true"></div>
+        <nav class="kraefte-slider__nav" aria-label="Die sieben Kräfte">
+          <button type="button" class="kraefte-slider__schritt" data-force-slider-prev data-needs-core aria-label="Vorherige Kraft zeigen"></button>
+          <ol class="kraefte-slider__marker">
+          <li><a id="tab-kraft-01" href="#kraft-01" data-force-slider-nav aria-label="Kraft 01, Wärmen, zeigen"><span class="kraft-marker__q kr-1" aria-hidden="true"></span><span class="t-mono">01</span><span class="kraefte-tab__wort"> · Wärmen</span></a></li>
+          <li><a id="tab-kraft-02" href="#kraft-02" data-force-slider-nav aria-label="Kraft 02, Mahlen, zeigen"><span class="kraft-marker__q kr-2" aria-hidden="true"></span><span class="t-mono">02</span><span class="kraefte-tab__wort"> · Mahlen</span></a></li>
+          <li><a id="tab-kraft-03" href="#kraft-03" data-force-slider-nav aria-label="Kraft 03, Verdichten, zeigen"><span class="kraft-marker__q kr-3" aria-hidden="true"></span><span class="t-mono">03</span><span class="kraefte-tab__wort"> · Verdichten</span></a></li>
+          <li><a id="tab-kraft-04" href="#kraft-04" data-force-slider-nav aria-label="Kraft 04, Pumpen, zeigen"><span class="kraft-marker__q kr-4" aria-hidden="true"></span><span class="t-mono">04</span><span class="kraefte-tab__wort"> · Pumpen</span></a></li>
+          <li><a id="tab-kraft-05" href="#kraft-05" data-force-slider-nav aria-label="Kraft 05, Auflösen, zeigen"><span class="kraft-marker__q kr-5" aria-hidden="true"></span><span class="t-mono">05</span><span class="kraefte-tab__wort"> · Auflösen</span></a></li>
+          <li><a id="tab-kraft-06" href="#kraft-06" data-force-slider-nav aria-label="Kraft 06, Fliessen, zeigen"><span class="kraft-marker__q kr-6" aria-hidden="true"></span><span class="t-mono">06</span><span class="kraefte-tab__wort"> · Fliessen</span></a></li>
+          <li><a id="tab-kraft-07" href="#kraft-07" data-force-slider-nav aria-label="Kraft 07, Entnehmen, zeigen"><span class="kraft-marker__q kr-7" aria-hidden="true"></span><span class="t-mono">07</span><span class="kraefte-tab__wort"> · Entnehmen</span></a></li>
+          </ol>
+          <button type="button" class="kraefte-slider__schritt kraefte-slider__schritt--vor" data-force-slider-next data-needs-core aria-label="Nächste Kraft zeigen"></button>
+        </nav>
+        <ol class="kraefte-slider__liste" data-force-slider-list>
+        <li id="kraft-01" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-1" aria-hidden="true"></span>01 · Wärmen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Wärmen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>röstet die grüne Bohne</p>
+            <p class="t-mono kraefte-slider__stand">01 / 07</p>
+          </div>
+          <figure class="kraefte-slider__figur">
+            <img data-scene-still="figur" data-still-ci="rohbau" src="assets/img/start/figur-01-rohbau.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="folgt.html#die-sieben-kraefte">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        <li id="kraft-02" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02 · Mahlen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Mahlen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>gehärteter Stahl mahlt die geröstete Bohne</p>
+            <p class="t-mono kraefte-slider__stand">02 / 07</p>
+          </div>
+          <figure class="kraefte-slider__figur">
+            <img data-scene-still="figur" data-still-ci="rohbau" src="assets/img/start/figur-02-rohbau.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="folgt.html#die-sieben-kraefte">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        <li id="kraft-03" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-3" aria-hidden="true"></span>03 · Verdichten</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Verdichten</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>das Pulver wird zum Puck getampt</p>
+            <p class="t-mono kraefte-slider__stand">03 / 07</p>
+          </div>
+          <figure class="kraefte-slider__figur">
+            <img data-scene-still="figur" data-still-ci="rohbau" src="assets/img/start/figur-03-rohbau.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <article class="karte kraefte-slider__pucker" aria-labelledby="kraft-03-pucker">
+                <p class="kraft-marker kicker"><span class="kraft-marker__q kr-3" aria-hidden="true"></span>03 · Verdichten</p>
+                <h4 id="kraft-03-pucker" class="t-sm">Pucker</h4>
+                <p class="t-klein">Mechanische Espresso-Tamperstation</p>
+                <p class="t-label">In Vorbereitung</p>
+                <a class="knopf" href="folgt.html#pucker">Pucker ansehen</a>
+              </article>
+            </div>
+          </div>
+        </li>
+        <li id="kraft-04" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-4" aria-hidden="true"></span>04 · Pumpen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Pumpen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>die Pumpe saugt das Wasser an</p>
+            <p class="t-mono kraefte-slider__stand">04 / 07</p>
+          </div>
+          <figure class="kraefte-slider__figur">
+            <img data-scene-still="figur" data-still-ci="rohbau" src="assets/img/start/figur-04-rohbau.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="folgt.html#die-sieben-kraefte">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        <li id="kraft-05" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-5" aria-hidden="true"></span>05 · Auflösen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Auflösen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>heisses Wasser löst die Aromen</p>
+            <p class="t-mono kraefte-slider__stand">05 / 07</p>
+          </div>
+          <figure class="kraefte-slider__figur">
+            <img data-scene-still="figur" data-still-ci="rohbau" src="assets/img/start/figur-05-rohbau.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="folgt.html#die-sieben-kraefte">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        <li id="kraft-06" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-6" aria-hidden="true"></span>06 · Fliessen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Fliessen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>das Wasser durchströmt den Puck, das Getränk entsteht</p>
+            <p class="t-mono kraefte-slider__stand">06 / 07</p>
+          </div>
+          <figure class="kraefte-slider__figur">
+            <img data-scene-still="figur" data-still-ci="rohbau" src="assets/img/start/figur-06-rohbau.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="folgt.html#die-sieben-kraefte">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        <li id="kraft-07" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-7" aria-hidden="true"></span>07 · Entnehmen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Entnehmen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>der Puck verlässt das Sieb</p>
+            <p class="t-mono kraefte-slider__stand">07 / 07</p>
+          </div>
+          <figure class="kraefte-slider__figur">
+            <img data-scene-still="figur" data-still-ci="rohbau" src="assets/img/start/figur-07-rohbau.webp" alt="" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="folgt.html#die-sieben-kraefte">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        </ol>
+      </section>
+    </div>
+
+    <!-- Stage 4 follows here: tools, narrative, lettering, principles, questions, footer. -->
+    <section id="weiter" class="sx start-weiter" data-theme="hell" aria-labelledby="weiter-titel">
+      <p class="kicker">Etappe 4</p>
+      <h2 id="weiter-titel" class="t-lg">Hier geht die Startseite mit Etappe 4 weiter.</h2>
+      <p class="t-text lesespalte">Es folgen die Werkzeuge, das Narrativ, der Schriftzug, die sieben Prinzipien, die Fragen und die Fusszeile. Diese Studie zeigt Musterdaten und verkauft nichts.</p>
+    </section>
+  </main>
 </body>
 </html>

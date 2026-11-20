@@ -592,3 +592,328 @@
     border-style: dashed;
   }
 }
+
+/*
+ * Stage 3 (home page top): shell of the home page. Word mark, Auftakt (intro), header with the preview of
+ * the tools, drag handle of the figure. Page layout of hero and slider lives in pages/start.css.
+ */
+@layer modules {
+  /* Height of the fixed header; pages leave this much room at the top of their first section. */
+  :root {
+    --kopf-hoehe: calc(var(--knopf-hoehe) + 2 * var(--raum));
+  }
+  @media (max-width: 767px) {
+    :root {
+      --kopf-hoehe: calc(2 * var(--knopf-hoehe) + 2 * var(--raum));
+    }
+  }
+
+  /* Word mark: one symbol, used by the header and the Auftakt; takes the text colour. */
+  .marken-vorrat {
+    position: absolute;
+    inline-size: 0;
+    block-size: 0;
+    overflow: hidden;
+  }
+  .wortmarke {
+    display: block;
+    fill: currentColor;
+    block-size: auto;
+    aspect-ratio: 3;
+  }
+
+  /* intro (Auftakt, IM 8). Shown by CSS from the first paint while script runs and motion is welcome, so the
+     page never flashes before it (refmedia v1 F4). If the script never takes over, a CSS time limit hides it;
+     a failed boot hides it at once. The module removes it with the curtain (hidden attribute). */
+  .auftakt {
+    display: none;
+  }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    html:not([data-core="failed"]):not([data-motion="reduced"]) .auftakt:not([hidden]) {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 9500;
+      overflow: hidden;
+      background-color: var(--fl-grund);
+      color: var(--tx-stark);
+    }
+    html:not([data-core="failed"]):not([data-motion="reduced"]) .auftakt:not([hidden]):not([data-intro-state]) {
+      animation: v1-auftakt-limit 0s linear 8s 1 normal forwards;
+    }
+  }
+  .auftakt__zaehlung {
+    position: absolute;
+    inset-block-start: calc(var(--kopf-hoehe) - 2 * var(--raum));
+    inset-inline-start: var(--rand-seite);
+    font-family: var(--schrift-titel);
+    font-weight: var(--gewicht-titel);
+    font-size: var(--groesse-titel-xxl);
+    letter-spacing: var(--laufweite-titel);
+    line-height: 1;
+  }
+  .auftakt__fenster {
+    display: block;
+    block-size: 1em;
+    overflow: hidden;
+  }
+  .auftakt__streifen {
+    display: block;
+  }
+  .auftakt__streifen > span {
+    display: block;
+    block-size: 1em;
+  }
+  .auftakt__marke {
+    position: absolute;
+    inset-inline-end: var(--rand-seite);
+    inset-block-start: 50%;
+    display: flex;
+    inline-size: clamp(7.5rem, 16vw, 15rem);
+    aspect-ratio: 3;
+    margin-block-start: calc(clamp(7.5rem, 16vw, 15rem) / -6);
+    transform-origin: 100% 50%;
+  }
+  .auftakt__band {
+    position: relative;
+    flex: 1 1 0;
+    block-size: 100%;
+    overflow: hidden;
+  }
+  .auftakt__band .wortmarke {
+    position: absolute;
+    inset-block-start: 0;
+    inline-size: 600%;
+    block-size: 100%;
+    max-width: none;
+  }
+  .auftakt__band:nth-child(2) .wortmarke { inset-inline-start: -100%; }
+  .auftakt__band:nth-child(3) .wortmarke { inset-inline-start: -200%; }
+  .auftakt__band:nth-child(4) .wortmarke { inset-inline-start: -300%; }
+  .auftakt__band:nth-child(5) .wortmarke { inset-inline-start: -400%; }
+  .auftakt__band:nth-child(6) .wortmarke { inset-inline-start: -500%; }
+  .auftakt__linie {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 2px;
+    background-color: var(--tx-stark);
+    transform-origin: 0% 50%;
+  }
+
+  /* nav: fixed header (Drehbuch 2.1). Its theme follows the section under it; the colour changes in 0.35 s
+     (IM 11.11). The bar never takes the pointer, only its links do (IM 3). */
+  .kopf {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 7900;
+    padding: var(--raum) var(--rand-seite);
+    background-color: transparent;
+    color: var(--tx-stark);
+    pointer-events: none;
+    transition: color var(--dauer-nav-farbe) var(--ui-kurve);
+  }
+  .kopf__nav {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-areas: "links marke rechts";
+    align-items: center;
+    column-gap: calc(4 * var(--raum));
+  }
+  .kopf__gruppe {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 calc(5 * var(--raum));
+    margin: 0;
+    padding: 0;
+  }
+  .kopf__gruppe--links {
+    grid-area: links;
+  }
+  .kopf__gruppe--rechts {
+    grid-area: rechts;
+    justify-content: flex-end;
+  }
+  .kopf__link,
+  .kopf__marke {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--knopf-hoehe);
+    color: inherit;
+    text-decoration: none;
+    pointer-events: auto;
+    transition: color var(--dauer-nav-farbe) var(--ui-kurve);
+  }
+  .kopf__link {
+    font-family: var(--schrift-label);
+    font-size: var(--groesse-label);
+    font-weight: var(--gewicht-text);
+    line-height: var(--zeilenhoehe-label);
+    white-space: nowrap;
+  }
+  .kopf__link:hover {
+    text-decoration: underline;
+    color: inherit;
+  }
+  .kopf__marke {
+    grid-area: marke;
+    justify-self: center;
+  }
+  .kopf__marke .wortmarke {
+    inline-size: 4.5rem;
+  }
+  .kopf__link[aria-current="page"] {
+    text-decoration: underline;
+  }
+  /* Below 768 px: a fixed light bar in two rows, no burger (IM 7, PLAN 3). */
+  @media (max-width: 767px) {
+    .kopf {
+      background-color: var(--fl-erhoben);
+      border-block-end: var(--linie-staerke) solid var(--li-linie);
+      pointer-events: auto;
+    }
+    .kopf__nav {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas: "marke rechts" "links links";
+    }
+    .kopf__marke {
+      justify-self: start;
+    }
+    .kopf__gruppe {
+      column-gap: calc(4 * var(--raum));
+    }
+  }
+
+  /* Preview of the tools (IS 2): below the link, never over the next one. Shown while open; the module
+     animates clip and opacity. */
+  .kopf__vorschau {
+    position: relative;
+  }
+  .vorschau {
+    display: none;
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: calc(-3 * var(--raum));
+    inline-size: min(24rem, calc(100vw - 2 * var(--rand-seite)));
+    padding: calc(3 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-karte);
+    background-color: var(--fl-erhoben);
+    color: var(--tx-stark);
+    box-shadow: var(--schatten-schwebend);
+    pointer-events: auto;
+  }
+  [data-nav-shop-state="oeffnet"] > .vorschau,
+  [data-nav-shop-state="offen"] > .vorschau,
+  [data-nav-shop-state="schliesst"] > .vorschau {
+    display: grid;
+    gap: calc(3 * var(--raum));
+  }
+  .vorschau__liste {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: calc(4 * var(--raum)) calc(3 * var(--raum));
+    margin: 0;
+    padding: 0;
+  }
+  .vorschau__verweis {
+    display: grid;
+    gap: var(--raum);
+    color: inherit;
+    text-decoration: none;
+  }
+  .vorschau__verweis:hover .vorschau__name {
+    text-decoration: underline;
+  }
+  .vorschau__bild {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    border-radius: calc(var(--radius-karte) / 2);
+    background-color: var(--fl-abgesenkt);
+    color: var(--tx-leise);
+  }
+  .vorschau .karte__platzhalter {
+    font-family: var(--schrift-label);
+    font-size: var(--groesse-label);
+    letter-spacing: var(--laufweite-label);
+    text-transform: var(--versal-label);
+    text-align: center;
+  }
+  .vorschau__muster {
+    position: absolute;
+    inset-block-start: var(--raum);
+    inset-inline-start: var(--raum);
+    padding: 0 var(--raum);
+    border-radius: var(--radius-feld);
+    background-color: var(--fl-erhoben);
+    color: var(--tx-stark);
+  }
+  .vorschau__zeile {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: calc(2 * var(--raum));
+  }
+  .vorschau__name {
+    font-weight: var(--gewicht-stark);
+  }
+  .vorschau__preis {
+    white-space: nowrap;
+  }
+  .vorschau__kraft {
+    gap: var(--raum);
+  }
+  .vorschau__kraft .kraft-marker__q {
+    inline-size: 12px;
+    block-size: 12px;
+  }
+  .vorschau__knopf {
+    inline-size: 100%;
+  }
+
+  /* figure-grip: transparent round handle over the WebGL figure (IM 13.3 hit cylinder, IM 14 grab hand). */
+  .figur-griff {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 7000;
+    inline-size: 0;
+    block-size: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    touch-action: pan-y pinch-zoom;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .figur-griff[data-figure-grip="bereit"] {
+    pointer-events: auto;
+    cursor: grab;
+  }
+  html[data-figur-zieht],
+  html[data-figur-zieht] * {
+    cursor: grabbing !important;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Phones: the cards of the hero lie above the figure, as in the reference (canvas below the cards, IM 3). */
+  @media (max-width: 767px) {
+    .gl-ebene--vorn {
+      z-index: 7400;
+    }
+  }
+}
+
+@keyframes v1-auftakt-limit {
+  to {
+    visibility: hidden;
+  }
+}

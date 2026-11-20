@@ -12,8 +12,10 @@
  * - The gesture counts from DRAG.startPx horizontal travel; vertical travel first cancels it, so the page
  *   keeps scrolling (the element carries touch-action: pan-y).
  * - Release commits when the travel exceeds DRAG.commitPx, or on a flick (speed above DRAG.flickSpeed px/ms
- *   with at least DRAG.flickPx travel). onCommit gets { direction: +1 | -1, dx, speed }; dragging to the
- *   left (dx < 0) means "next" (+1).
+ *   with at least DRAG.flickPx travel). onCommit gets { direction: +1 | -1, dx, speed }. Direction as in the
+ *   reference recording (refmedia v1 W6: a drag to the left went to the previous product, on desktop and
+ *   on the phone): dragging to the right (dx > 0) means "next" (+1), to the left "previous" (-1). Stage 3;
+ *   spike S2 had it the other way round.
  * - After more than DRAG.swallowClickPx travel the following click on the element is swallowed.
  * Returns a function that removes every listener.
  */
@@ -117,7 +119,7 @@ export function dragGesture(el, { armed = () => true, hit = () => true, onStart,
     if (!started) return;
     const passed = Math.abs(dx) > DRAG.commitPx || (speed > DRAG.flickSpeed && Math.abs(dx) > DRAG.flickPx);
     if (passed && armed()) {
-      if (onCommit) onCommit({ direction: dx < 0 ? 1 : -1, dx, speed });
+      if (onCommit) onCommit({ direction: dx > 0 ? 1 : -1, dx, speed });
     } else if (onCancel) {
       onCancel({ dx, speed });
     }

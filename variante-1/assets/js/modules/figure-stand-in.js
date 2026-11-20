@@ -84,8 +84,8 @@ export default {
       }
       const from = ((motion.get(body, '--figur-dreh') % 360) + 360) % 360;
       motion.set(body, { '--figur-dreh': from });
-      // "next" turns the same way as a drag to the left.
-      spin.tween(body, { '--figur-dreh': from - 360 * direction }, {
+      // "next" turns the same way as a drag to the right (the body follows the pointer).
+      spin.tween(body, { '--figur-dreh': from + 360 * direction }, {
         duration: DRAG.spin.duration,
         ease: DRAG.spin.ease,
         onComplete: () => motion.set(body, { '--figur-dreh': 0 }),
@@ -124,7 +124,7 @@ export default {
           motion.set(body, { '--figur-zieh': 0 });
           return;
         }
-        spin.tween(body, { '--figur-zieh': -360 * direction }, {
+        spin.tween(body, { '--figur-zieh': 360 * direction }, {
           duration: DRAG.commitTurn.duration,
           ease: DRAG.commitTurn.ease,
           onComplete: () => motion.set(body, { '--figur-zieh': 0 }),

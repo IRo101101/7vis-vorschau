@@ -16,6 +16,10 @@ const LOADERS = {
   'figure-stand-in': () => import('./figure-stand-in.js'),
   'page-router': () => import('./page-router.js'),
   'scene-stand-in': () => import('./scene-stand-in.js'),
+  intro: () => import('./intro.js'),
+  nav: () => import('./nav.js'),
+  'card-overlay': () => import('./card-overlay.js'),
+  'figure-grip': () => import('./figure-grip.js'),
 };
 
 export const MODULE_NAMES = Object.freeze(Object.keys(LOADERS));

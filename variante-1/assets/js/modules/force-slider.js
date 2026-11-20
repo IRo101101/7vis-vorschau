@@ -26,8 +26,10 @@
  * A change (IM 10, IM 11.7): the old title falls back into its masks (0.6 s, 0.01 s per character from the
  * end, 0.06 s per line, power3.in), the new one rises after half the exit time plus 0.06 s (1.2 s, 0.02 s,
  * 0.12 s, curve "titel"); the effect line follows like a text block (1.0 s, 0.02 s, "karte-text"); the
- * card content moves as a vertical strip (0.6 s, "streifen"); the surface wipes from the side of the
- * movement (2.0 s, expo.inOut) and then takes the new tone. Lock 2 s (IM 11.7).
+ * card content moves as a vertical strip (0.6 s, "streifen"); the surface wipes in (2.0 s, expo.inOut) and
+ * then takes the new tone. Lock 2 s (IM 11.7). Wipe side (data-force-slider-wipe-from): 'right' (default,
+ * the reference: from the right edge in every change, also backwards, refmedia v1 F10) or 'movement'
+ * (from the side the change comes from, spike S2).
  * Inputs during the lock are not dropped: the latest one is queued and runs when the lock ends.
  *
  * Coupling only through the store (CONTRACT section 7):
@@ -94,6 +96,7 @@ export default {
   name: 'force-slider',
   options: {
     listAt: 'ml m',
+    wipeFrom: 'right',
     lock: T.lock,
     wrap: true,
     duration: T.in.duration,
@@ -390,8 +393,9 @@ export default {
         const t0 = motion.now();
         if (wipe) {
           rec.set(wipe, 'data-force-slider-tone', tone(to));
-          const side = dir > 0 ? 'clipLeft' : 'clipRight';
-          motion.set(wipe, { clipLeft: dir > 0 ? 100 : 0, clipRight: dir > 0 ? 0 : 100 });
+          const fromRight = opts.wipeFrom !== 'movement' || dir > 0;
+          const side = fromRight ? 'clipLeft' : 'clipRight';
+          motion.set(wipe, { clipLeft: fromRight ? 100 : 0, clipRight: fromRight ? 0 : 100 });
           g.tween(wipe, { [side]: 0 }, { at: t0, duration: opts.bgDuration, ease: opts.bgEase });
         }
         const exit = titleOut(p0, t0, g);

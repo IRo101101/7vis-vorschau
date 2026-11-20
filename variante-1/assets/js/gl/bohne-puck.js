@@ -36,8 +36,9 @@ export function bean(u, v) {
   // Centre cut: a narrow S-shaped crease along x on the front face, fading out just before the tips.
   const along = x / a;
   const centre = 0.09 * Math.sin(Math.PI * along * 0.95);
-  const width = 0.1 * (1 - 0.4 * along * along);
-  const depth = 0.17 * Math.pow(Math.max(0, 1 - along * along), 0.6) * smooth(0.1, 0.5, dz);
+  // Wide and shallow enough that the walls never fold over (a deeper, narrower cut showed dark slits).
+  const width = 0.13 * (1 - 0.4 * along * along);
+  const depth = 0.11 * Math.pow(Math.max(0, 1 - along * along), 0.6) * smooth(0.1, 0.5, dz);
   z -= depth * Math.exp(-(((y - centre) / width) ** 2));
   return [x, y, z];
 }
