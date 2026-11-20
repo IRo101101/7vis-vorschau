@@ -2442,6 +2442,15 @@ html {
     font-size: calc(16px + (100vw - 1440px) * 0.0074066667);
   }
 }
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  :root {
+    --size-footer-nav-x: calc(383 / 1440 * 100vw);
+    --size-footer-divider-a: calc(575 / 1440 * 100vw);
+    --size-footer-address-b: calc(607 / 1440 * 100vw);
+    --size-footer-divider-b: calc(817 / 1440 * 100vw);
+    --size-footer-address-c: calc(849 / 1440 * 100vw);
+  }
+}
 html.lenis, html.lenis body {
   height: auto;
 }
@@ -2464,6 +2473,33 @@ html.lenis, html.lenis body {
 @media (prefers-reduced-motion: reduce) and (scripting: enabled) {
   html:not([data-engine]) body {
     visibility: hidden;
+    animation: page-failsafe-show 0s linear 3s forwards;
+  }
+}
+@keyframes page-failsafe-show {
+  to {
+    visibility: visible;
+  }
+}
+@keyframes preloader-failsafe-hide {
+  to {
+    visibility: hidden;
+  }
+}
+html:not([data-module]) [data-preloader] {
+  animation: preloader-failsafe-hide 0s linear 6s forwards;
+}
+@keyframes receipt-failsafe-out {
+  to {
+    --p: 1;
+  }
+}
+html:not([data-module]) [data-order-paper] {
+  animation: receipt-failsafe-out 0s linear 6s forwards;
+}
+@media (scripting: none) {
+  [data-order-paper] {
+    --p: 1 !important;
   }
 }
 @media (width >= 64rem) and (width < 80rem) {
@@ -2965,7 +3001,13 @@ html.lenis, html.lenis body {
       </div>
       <div class="flex w-full flex-col gap-6 max-sm:w-[17rem] max-sm:gap-9 sm:w-80 sm:gap-8 sm:max-lg:gap-[2.375rem] lg:w-66 lg:gap-10">
         <p class="w-full justify-start text-left font-display font-bold text-base leading-copy tracking-tight sm:max-lg:text-lede-tablet" data-text='{"split":"words","from":{"y":16,"opacity":0},"duration":650,"easing":"easeOutQuart","stagger":18,"delayIn":260,"enabled":"ready"}'>CAREFULLY SOURCED BEANS AND THOUGHTFULLY BREWED TO BRING OUT THE BEST IN EVERY CUP.</p>
-        <span class="block" data-inview='{"from":{"opacity":0,"y":12},"to":{"opacity":1,"y":0},"config":[90,26],"delayIn":520,"enabled":"ready"}'><a href="#menu" class="flex h-(--size-cta-block) flex-col justify-between max-sm:w-max w-(--size-hero-cta)" data-cta='{"label":"explore menu","tone":"dark"}'></a></span>
+        <span class="block" data-inview='{"from":{"opacity":0,"y":12},"to":{"opacity":1,"y":0},"config":[90,26],"delayIn":520,"enabled":"ready"}'><a href="#menu" class="flex h-(--size-cta-block) flex-col justify-between max-sm:w-max w-(--size-hero-cta)" data-cta='{"label":"explore menu","tone":"dark"}'><span class="flex h-(--size-cap-16) items-center gap-4"><span class="whitespace-nowrap font-display font-bold text-label leading-flush uppercase sm:text-base sm:max-lg:text-lede-tablet">explore menu</span><span class="relative flex size-2 flex-none items-center justify-center"><span class="block" style="opacity: 1; transform: translateX(0%);"><span class="flex size-2 items-center justify-center"><span class="flex -rotate-45 items-center justify-center">
+<svg viewBox="0 0 12.2137 13.2551" fill="none" aria-hidden="true" focusable="false" class="block w-(--size-arrow-width) h-(--size-arrow-height)">
+<path d="M11.9501 7.26396C12.3016 6.91249 12.3016 6.34264 11.9501 5.99117L6.22254 0.263604C5.87107 -0.0878682 5.30122 -0.0878682 4.94975 0.263604C4.59828 0.615076 4.59828 1.18492 4.94975 1.5364L10.0409 6.62756L4.94975 11.7187C4.59828 12.0702 4.59828 12.6401 4.94975 12.9915C5.30122 13.343 5.87107 13.343 6.22254 12.9915L11.9501 7.26396ZM0 6.62756V7.52756H11.3137V6.62756V5.72756H0V6.62756Z" fill="currentColor"/>
+</svg></span></span></span><span class="absolute inset-0 block" style="opacity: 0; transform: translateX(-190%);"><span class="flex size-2 items-center justify-center"><span class="flex -rotate-45 items-center justify-center">
+<svg viewBox="0 0 12.2137 13.2551" fill="none" aria-hidden="true" focusable="false" class="block w-(--size-arrow-width) h-(--size-arrow-height)">
+<path d="M11.9501 7.26396C12.3016 6.91249 12.3016 6.34264 11.9501 5.99117L6.22254 0.263604C5.87107 -0.0878682 5.30122 -0.0878682 4.94975 0.263604C4.59828 0.615076 4.59828 1.18492 4.94975 1.5364L10.0409 6.62756L4.94975 11.7187C4.59828 12.0702 4.59828 12.6401 4.94975 12.9915C5.30122 13.343 5.87107 13.343 6.22254 12.9915L11.9501 7.26396ZM0 6.62756V7.52756H11.3137V6.62756V5.72756H0V6.62756Z" fill="currentColor"/>
+</svg></span></span></span></span></span><span aria-hidden="true" class="relative block h-(--size-underline) w-full"><span class="absolute inset-0 block bg-foreground" style="transform-origin: right center; transform: scaleX(1);"></span><span class="absolute inset-0 block bg-foreground" style="transform-origin: left center; transform: scaleX(0);"></span></span></a></span>
       </div>
     </div>
 
@@ -3003,7 +3045,13 @@ html.lenis, html.lenis body {
     <span data-menu-receipt aria-hidden="true" class="pointer-events-none absolute left-(--size-menu-receipt-x) top-(--size-menu-receipt-y) hidden h-(--size-menu-receipt-height) w-(--size-menu-receipt-width) lg:block" style="opacity:0; transform: translate(150px,150px)">
       <span class="block size-full" style="rotate: var(--angle-menu-receipt)"><img src="https://storage.getlayers.ai/assets/brewns-b9f02b6657/menu/menu-receipt.webp" alt="" width="832" height="1890" class="size-full object-cover"></span>
     </span>
-    <span class="block sm:max-lg:justify-self-end lg:absolute lg:right-10 lg:top-(--size-menu-cta-y)" data-inview='{"from":{"opacity":0,"y":12},"to":{"opacity":1,"y":0},"config":[90,26],"delayIn":420}'><a href="#menu" data-menu-cta class="flex h-(--size-cta-block) flex-col justify-between max-sm:w-max w-(--size-menu-cta) text-foreground-inverse" data-cta='{"label":"view full menu","tone":"light"}'></a></span>
+    <span class="block sm:max-lg:justify-self-end lg:absolute lg:right-10 lg:top-(--size-menu-cta-y)" data-inview='{"from":{"opacity":0,"y":12},"to":{"opacity":1,"y":0},"config":[90,26],"delayIn":420}'><a href="#menu" data-menu-cta class="flex h-(--size-cta-block) flex-col justify-between max-sm:w-max w-(--size-menu-cta) text-foreground-inverse" data-cta='{"label":"view full menu","tone":"light"}'><span class="flex h-(--size-cap-16) items-center gap-4"><span class="whitespace-nowrap font-display font-bold text-label leading-flush uppercase sm:text-base sm:max-lg:text-lede-tablet">view full menu</span><span class="relative flex size-2 flex-none items-center justify-center"><span class="block" style="opacity: 1; transform: translateX(0%);"><span class="flex size-2 items-center justify-center"><span class="flex -rotate-45 items-center justify-center">
+<svg viewBox="0 0 12.2137 13.2551" fill="none" aria-hidden="true" focusable="false" class="block w-(--size-arrow-width) h-(--size-arrow-height)">
+<path d="M11.9501 7.26396C12.3016 6.91249 12.3016 6.34264 11.9501 5.99117L6.22254 0.263604C5.87107 -0.0878682 5.30122 -0.0878682 4.94975 0.263604C4.59828 0.615076 4.59828 1.18492 4.94975 1.5364L10.0409 6.62756L4.94975 11.7187C4.59828 12.0702 4.59828 12.6401 4.94975 12.9915C5.30122 13.343 5.87107 13.343 6.22254 12.9915L11.9501 7.26396ZM0 6.62756V7.52756H11.3137V6.62756V5.72756H0V6.62756Z" fill="currentColor"/>
+</svg></span></span></span><span class="absolute inset-0 block" style="opacity: 0; transform: translateX(-190%);"><span class="flex size-2 items-center justify-center"><span class="flex -rotate-45 items-center justify-center">
+<svg viewBox="0 0 12.2137 13.2551" fill="none" aria-hidden="true" focusable="false" class="block w-(--size-arrow-width) h-(--size-arrow-height)">
+<path d="M11.9501 7.26396C12.3016 6.91249 12.3016 6.34264 11.9501 5.99117L6.22254 0.263604C5.87107 -0.0878682 5.30122 -0.0878682 4.94975 0.263604C4.59828 0.615076 4.59828 1.18492 4.94975 1.5364L10.0409 6.62756L4.94975 11.7187C4.59828 12.0702 4.59828 12.6401 4.94975 12.9915C5.30122 13.343 5.87107 13.343 6.22254 12.9915L11.9501 7.26396ZM0 6.62756V7.52756H11.3137V6.62756V5.72756H0V6.62756Z" fill="currentColor"/>
+</svg></span></span></span></span></span><span aria-hidden="true" class="relative block h-(--size-underline) w-full"><span class="absolute inset-0 block bg-foreground-inverse" style="transform-origin: right center; transform: scaleX(1);"></span><span class="absolute inset-0 block bg-foreground-inverse" style="transform-origin: left center; transform: scaleX(0);"></span></span></a></span>
 
     <ul class="grid grid-cols-2 gap-3 max-sm:grid-cols-1 sm:gap-4 sm:max-lg:col-span-2 sm:max-lg:mt-11 lg:absolute lg:inset-x-10 lg:bottom-10 lg:top-auto lg:flex lg:gap-3 board:bottom-auto board:top-(--size-menu-cards-y)">
       <li class="flex flex-1">
@@ -3198,7 +3246,13 @@ html.lenis, html.lenis body {
         </div>
         <span class="relative flex w-full flex-col items-start gap-4 max-sm:gap-9 sm:w-(--size-order-aside) sm:gap-6 sm:max-lg:w-120 sm:max-lg:gap-10 max-lg:items-center lg:absolute lg:bottom-10 lg:right-10 lg:gap-(--size-order-aside-gap)" data-inview='{"from":{"opacity":0,"y":16},"to":{"opacity":1,"y":0},"config":[80,26],"delayIn":280}'>
           <span class="w-full justify-start text-left font-display font-bold text-base leading-copy tracking-tight uppercase sm:max-lg:text-lede-tablet max-lg:justify-center max-lg:text-center" data-text='{"split":"words","from":{"y":14,"opacity":0},"duration":620,"easing":"easeOutQuart","stagger":14,"delayIn":320}'>WE WORK TO ONE SCHEDULE: YOURS. ORDER AHEAD AND YOUR CUP IS POURED TO MEET YOU, NOT TO SIT WAITING. FAST BECAUSE IT’S TIMED TO YOU, NOT BECAUSE IT’S RUSHED.</span>
-          <a href="#order" class="flex h-(--size-cta-block) flex-col justify-between max-sm:w-max w-(--size-order-cta)" data-cta='{"label":"order right now","tone":"dark"}'></a>
+          <a href="#order" class="flex h-(--size-cta-block) flex-col justify-between max-sm:w-max w-(--size-order-cta)" data-cta='{"label":"order right now","tone":"dark"}'><span class="flex h-(--size-cap-16) items-center gap-4"><span class="whitespace-nowrap font-display font-bold text-label leading-flush uppercase sm:text-base sm:max-lg:text-lede-tablet">order right now</span><span class="relative flex size-2 flex-none items-center justify-center"><span class="block" style="opacity: 1; transform: translateX(0%);"><span class="flex size-2 items-center justify-center"><span class="flex -rotate-45 items-center justify-center">
+<svg viewBox="0 0 12.2137 13.2551" fill="none" aria-hidden="true" focusable="false" class="block w-(--size-arrow-width) h-(--size-arrow-height)">
+<path d="M11.9501 7.26396C12.3016 6.91249 12.3016 6.34264 11.9501 5.99117L6.22254 0.263604C5.87107 -0.0878682 5.30122 -0.0878682 4.94975 0.263604C4.59828 0.615076 4.59828 1.18492 4.94975 1.5364L10.0409 6.62756L4.94975 11.7187C4.59828 12.0702 4.59828 12.6401 4.94975 12.9915C5.30122 13.343 5.87107 13.343 6.22254 12.9915L11.9501 7.26396ZM0 6.62756V7.52756H11.3137V6.62756V5.72756H0V6.62756Z" fill="currentColor"/>
+</svg></span></span></span><span class="absolute inset-0 block" style="opacity: 0; transform: translateX(-190%);"><span class="flex size-2 items-center justify-center"><span class="flex -rotate-45 items-center justify-center">
+<svg viewBox="0 0 12.2137 13.2551" fill="none" aria-hidden="true" focusable="false" class="block w-(--size-arrow-width) h-(--size-arrow-height)">
+<path d="M11.9501 7.26396C12.3016 6.91249 12.3016 6.34264 11.9501 5.99117L6.22254 0.263604C5.87107 -0.0878682 5.30122 -0.0878682 4.94975 0.263604C4.59828 0.615076 4.59828 1.18492 4.94975 1.5364L10.0409 6.62756L4.94975 11.7187C4.59828 12.0702 4.59828 12.6401 4.94975 12.9915C5.30122 13.343 5.87107 13.343 6.22254 12.9915L11.9501 7.26396ZM0 6.62756V7.52756H11.3137V6.62756V5.72756H0V6.62756Z" fill="currentColor"/>
+</svg></span></span></span></span></span><span aria-hidden="true" class="relative block h-(--size-underline) w-full"><span class="absolute inset-0 block bg-foreground" style="transform-origin: right center; transform: scaleX(1);"></span><span class="absolute inset-0 block bg-foreground" style="transform-origin: left center; transform: scaleX(0);"></span></span></a>
         </span>
       </div>
     </div>
@@ -3271,6 +3325,35 @@ html.lenis, html.lenis body {
    engine you write"). It owns the top-level names of CONTRACT.md section 4; everything else
    in this file lives inside one closure. The reference for the other parts is ENGINE.md.
    ========================================================================================== */
+
+/* ---- Fail-safes: the module's very first statement, before any await.
+   1. The marker. The sheet hides the preloader panel 6 s after it is first styled while <html> lacks
+      data-module (02-base.css): a page whose module never runs (a syntax error, a browser without
+      modules) is not left behind the panel. Had that already happened (the module started more than
+      6 s late), the panel is removed here, so setting the marker cannot bring it back.
+   2. The deadline. From here on the module owns the panel, and it may wait up to IMPORT_TIMEOUT
+      (12 s) for a hanging CDN before the preloader even starts. So that the page is usable no later
+      than the preloader's own belt-and-braces time (MAX_WAIT + 2000 = 6 s, specification "The
+      preloader"), the panel is removed 6 s after this point if the engine has not booted by then (no
+      scan() yet, so the chrome has not taken the panel or locked the scroll). The page then scrolls
+      natively; when the imports settle the engine boots as always and the chrome, finding no panel,
+      opens the page at once. Armed in the same statement as the marker, so nothing that throws after
+      the marker can leave the panel up. ---- */
+{
+  const html = document.documentElement;
+  document.querySelectorAll("[data-preloader]").forEach((panel) => {
+    const done = (animation) => animation.animationName === "preloader-failsafe-hide" && animation.playState === "finished";
+    if (panel.getAnimations && panel.getAnimations().some(done)) panel.remove();
+  });
+  html.setAttribute("data-module", "");
+  setTimeout(() => {
+    if (html.hasAttribute("data-engine")) return;
+    document.querySelectorAll("[data-preloader]").forEach((panel) => panel.remove());
+  }, 6000);
+}
+/* When the module started (performance.now(), ms): the preloader's belt-and-braces timer counts from
+   here, not from its own start, which waits for the imports below (15-chrome.js). */
+const MODULE_START = performance.now();
 
 const ASSET_BASE = "https://storage.getlayers.ai/assets/brewns-b9f02b6657/";
 
@@ -4673,8 +4756,9 @@ const {
   };
 
   /* ---------------------------------------------------------------- CtaLink - the text CTA
-     The specification's markup, built inside the <a> (which keeps its own classes); the arrow
-     glyph is verbatim. Arrow A: translateX(0%), opacity 1 -> translateX(190%), opacity 0 - 200/28.
+     The specification's markup, static inside the <a> (or built there when the link is empty;
+     the <a> keeps its own classes); the arrow glyph is verbatim.
+     Arrow A: translateX(0%), opacity 1 -> translateX(190%), opacity 0 - 200/28.
      Arrow B: translateX(-190%), opacity 0 -> translateX(0%), opacity 1 - 200/28 - delayIn 70.
      Rule base: immediateOut scaleX(1) -> scaleX(0) - 260/30 - origin right center.
      Rule overlay: immediateOut delayIn 140 scaleX(0) -> scaleX(1) - 170/26 - origin left center. */
@@ -4686,8 +4770,18 @@ const {
 
   const ctaLinks = new WeakMap();
 
-  const CtaLink = (a, props = {}) => {
-    if (ctaLinks.has(a)) return ctaLinks.get(a);
+  /* The page's CTAs carry the whole markup in their HTML (the specification's CtaLink block, with the
+     two arrows and the two rules at their resting styles), so a page without script shows complete
+     links; the engine only finds the four moving spans and adds the hover. A link that arrives empty
+     (DOM added by script) has the markup built from `label` / `tone`, as before. */
+  const ctaParts = (a) => {
+    const [row, rules] = a.children;
+    const arrows = row && row.children[1];
+    if (a.children.length !== 2 || !arrows || arrows.children.length !== 2 || rules.children.length !== 2) return null;
+    return { arrowA: arrows.children[0], arrowB: arrows.children[1], base: rules.children[0], overlay: rules.children[1] };
+  };
+
+  const buildCta = (a, props) => {
     const label = props.label !== undefined ? String(props.label) : collapse(a.textContent);
     const row = element("span", "flex h-(--size-cap-16) items-center gap-4");
     row.append(element("span", "whitespace-nowrap font-display font-bold text-label leading-flush uppercase sm:text-base sm:max-lg:text-lede-tablet", label));
@@ -4703,11 +4797,17 @@ const {
     const light = props.tone === "light";
     const base = element("span", light ? "absolute inset-0 block bg-foreground-inverse" : "absolute inset-0 block bg-foreground");
     const overlay = element("span", light ? "absolute inset-0 block bg-foreground-inverse" : "absolute inset-0 block bg-foreground");
-    base.style.transformOrigin = "right center";
-    overlay.style.transformOrigin = "left center";
     rules.append(base, overlay);
     a.textContent = "";
     a.append(row, rules);
+    return { arrowA, arrowB, base, overlay };
+  };
+
+  const CtaLink = (a, props = {}) => {
+    if (ctaLinks.has(a)) return ctaLinks.get(a);
+    const { arrowA, arrowB, base, overlay } = ctaParts(a) || buildCta(a, props);
+    base.style.transformOrigin = "right center";
+    overlay.style.transformOrigin = "left center";
     const parts = [
       Hover(arrowA, { trigger: a, from: { transform: "translateX(0%)", opacity: 1 }, to: { transform: "translateX(190%)", opacity: 0 }, config: [200, 28] }),
       Hover(arrowB, { trigger: a, from: { transform: "translateX(-190%)", opacity: 0 }, to: { transform: "translateX(0%)", opacity: 1 }, config: [200, 28], delayIn: 70 }),
@@ -5148,8 +5248,12 @@ function initChrome() {
       if (document.readyState === "complete") finish();
       else window.addEventListener("load", finish, { once: true });
       timers.push(setTimeout(finish, MAX_WAIT));
-      // the belt and braces
-      timers.push(setTimeout(close, MAX_WAIT + 2000));
+      // the belt and braces, counted from the module's start (MODULE_START, 10-engine.js): the panel has
+      // been up since the first paint, and the chrome only starts once the imports have settled, so a
+      // slow CDN cannot push the panel's last moment beyond MAX_WAIT + 2000 (about 0.3 s earlier than
+      // counting from here when the imports are quick)
+      const sinceModule = typeof MODULE_START === "number" ? performance.now() - MODULE_START : 0;
+      timers.push(setTimeout(close, Math.max(0, MAX_WAIT + 2000 - sinceModule)));
     } catch (error) {
       close();
       console.error("chrome: preloader", error);
@@ -5463,8 +5567,8 @@ function mountHeroModel({ mount, handle, section, onPiece } = {}) {
   const ENVIRONMENT = 0.045;
 
   /** The mesh ships Draco-compressed, so the decoder has to be on hand to read
-      it. The source served it from /public; the specification takes it from
-      the three.js CDN instead — not from the bucket the model comes from. */
+      it. Served from /public rather than a CDN — the page must not depend on a
+      third party to draw its own product. */
   const DRACO_PATH =
     "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/libs/draco/gltf/";
 
