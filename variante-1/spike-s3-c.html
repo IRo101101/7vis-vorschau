@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="de-CH" data-ci="rohbau">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Spike S3 · Seite C · Variante 1 · 7Vis</title>
+  <meta name="description" content="Probeseite C des Spikes S3: der Kräfte-Slider in einer wechselnden Ansicht. Musterdaten, intern.">
+  <link rel="stylesheet" href="assets/vendor/lenis-1.3.26/lenis.css">
+  <link rel="stylesheet" href="assets/css/tokens/ebene4-mechanik.css">
+  <link rel="stylesheet" href="assets/css/themes/rohbau.css">
+  <link rel="stylesheet" href="assets/css/themes/7vis-0.2.css">
+  <link rel="stylesheet" href="assets/css/themes/pruefthema.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/modules.css">
+  <link rel="stylesheet" href="assets/css/pages/spike-s3.css">
+  <link rel="stylesheet" href="assets/css/pages/spike-s3-c.css">
+  <link rel="modulepreload" href="assets/js/core/core.js">
+  <link rel="modulepreload" href="assets/js/motion/engine.js">
+  <link rel="modulepreload" href="assets/js/motion/scroll.js">
+  <link rel="modulepreload" href="assets/vendor/lenis-1.3.26/lenis.js">
+  <link rel="modulepreload" href="assets/js/modules/page-router.js">
+  <link rel="modulepreload" href="assets/js/modules/scene-stand-in.js">
+  <link rel="modulepreload" href="assets/js/text/split.js">
+  <link rel="modulepreload" href="assets/js/modules/textrise.js">
+  <link rel="modulepreload" href="assets/js/modules/force-slider.js">
+  <link rel="modulepreload" href="assets/js/modules/figure-stand-in.js">
+  <link rel="modulepreload" href="assets/js/motion/drag.js">
+  <script type="module" src="assets/js/boot.js"></script>
+</head>
+<body data-mod="page-router" data-page-router-shell="spike-s3">
+  <a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+
+  <header class="s3-kopf" data-theme="hell">
+    <nav aria-label="Probeseiten des Spikes S3">
+      <ol class="s3-kopf__liste">
+        <li><a href="spike-s3-a.html">Seite A</a></li>
+        <li><a href="spike-s3-b.html">Seite B</a></li>
+        <li><a href="spike-s3-c.html" aria-current="page">Seite C</a></li>
+      </ol>
+    </nav>
+  </header>
+
+  <div class="szene" data-mod="scene-stand-in" data-transition-clip aria-hidden="true" data-needs-core>
+    <div class="szene__form" data-scene-stand-in-shape>
+      <span class="szene__name t-label" data-scene-stand-in-label="spike-s3-a">Szene A</span>
+      <span class="szene__name t-label" data-scene-stand-in-label="spike-s3-b">Szene B</span>
+      <span class="szene__name t-label" data-scene-stand-in-label="spike-s3-c">Szene C</span>
+    </div>
+  </div>
+
+  <main id="inhalt" data-view="spike-s3-c" tabindex="-1">
+    <section class="sx c-einleitung" data-theme="hell" aria-labelledby="c-einleitung-titel">
+      <p class="kicker">01 · Seite C</p>
+      <h1 id="c-einleitung-titel" class="t-lg" data-mod="textrise" data-guard>Der Kräfte-Slider läuft nach jedem Seitenwechsel weiter.</h1>
+      <p class="t-lead lesespalte">Beim Verlassen baut er sich vollständig ab, beim Betreten startet er neu und meldet seine Position wieder im Zustandsspeicher.</p>
+    </section>
+
+    <section id="c-kraefte" class="sx kraefte-slider" data-theme="invers" aria-labelledby="c-titel" data-mod="force-slider" data-guard>
+      <div class="kraefte-slider__flaeche" data-force-slider-surface data-needs-core aria-hidden="true"><div class="kraefte-slider__wisch" data-force-slider-wipe></div></div>
+      <div class="kraefte-slider__kopf">
+        <p class="kicker">02 · Die sieben Kräfte</p>
+        <h2 id="c-titel" class="t-md">Sieben Kräfte machen aus einer grünen Bohne einen Bezug.</h2>
+        <p class="t-text">Die sieben Kräfte sind ein Ablauf, keine Kategorien.</p>
+      </div>
+      <div class="kraefte-slider__buehne" data-needs-core>
+        <div class="figur" data-mod="figure-stand-in" aria-hidden="true">
+          <div class="figur__koerper" data-figure-stand-in-body>
+            <ol class="figur__etiketten">
+              <li class="figur__etikett" data-figure-stand-in-label><span class="kraft-marker__q kr-1"></span><span class="t-mono">01</span></li>
+              <li class="figur__etikett" data-figure-stand-in-label><span class="kraft-marker__q kr-2"></span><span class="t-mono">02</span></li>
+              <li class="figur__etikett" data-figure-stand-in-label><span class="kraft-marker__q kr-3"></span><span class="t-mono">03</span></li>
+              <li class="figur__etikett" data-figure-stand-in-label><span class="kraft-marker__q kr-4"></span><span class="t-mono">04</span></li>
+              <li class="figur__etikett" data-figure-stand-in-label><span class="kraft-marker__q kr-5"></span><span class="t-mono">05</span></li>
+              <li class="figur__etikett" data-figure-stand-in-label><span class="kraft-marker__q kr-6"></span><span class="t-mono">06</span></li>
+              <li class="figur__etikett" data-figure-stand-in-label><span class="kraft-marker__q kr-7"></span><span class="t-mono">07</span></li>
+            </ol>
+          </div>
+          <p class="figur__hinweis t-label">Platzhalter Figur S1</p>
+        </div>
+      </div>
+      <nav class="kraefte-slider__nav" aria-label="Die sieben Kräfte">
+        <button type="button" class="kraefte-slider__schritt" data-force-slider-prev data-needs-core aria-label="Vorherige Kraft zeigen"></button>
+        <ol class="kraefte-slider__marker">
+          <li><a id="c-tab-01" href="#c-kraft-01" data-force-slider-nav aria-label="Kraft 01, Wärmen, zeigen"><span class="kraft-marker__q kr-1" aria-hidden="true"></span><span class="t-mono">01</span></a></li>
+          <li><a id="c-tab-02" href="#c-kraft-02" data-force-slider-nav aria-label="Kraft 02, Mahlen, zeigen"><span class="kraft-marker__q kr-2" aria-hidden="true"></span><span class="t-mono">02</span></a></li>
+          <li><a id="c-tab-03" href="#c-kraft-03" data-force-slider-nav aria-label="Kraft 03, Verdichten, zeigen"><span class="kraft-marker__q kr-3" aria-hidden="true"></span><span class="t-mono">03</span></a></li>
+          <li><a id="c-tab-04" href="#c-kraft-04" data-force-slider-nav aria-label="Kraft 04, Pumpen, zeigen"><span class="kraft-marker__q kr-4" aria-hidden="true"></span><span class="t-mono">04</span></a></li>
+          <li><a id="c-tab-05" href="#c-kraft-05" data-force-slider-nav aria-label="Kraft 05, Auflösen, zeigen"><span class="kraft-marker__q kr-5" aria-hidden="true"></span><span class="t-mono">05</span></a></li>
+          <li><a id="c-tab-06" href="#c-kraft-06" data-force-slider-nav aria-label="Kraft 06, Fliessen, zeigen"><span class="kraft-marker__q kr-6" aria-hidden="true"></span><span class="t-mono">06</span></a></li>
+          <li><a id="c-tab-07" href="#c-kraft-07" data-force-slider-nav aria-label="Kraft 07, Entnehmen, zeigen"><span class="kraft-marker__q kr-7" aria-hidden="true"></span><span class="t-mono">07</span></a></li>
+        </ol>
+        <button type="button" class="kraefte-slider__schritt kraefte-slider__schritt--vor" data-force-slider-next data-needs-core aria-label="Nächste Kraft zeigen"></button>
+      </nav>
+      <ol class="kraefte-slider__liste" data-force-slider-list>
+        <li id="c-kraft-01" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-1" aria-hidden="true"></span>01 · Wärmen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Wärmen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>röstet die grüne Bohne</p>
+            <p class="t-mono kraefte-slider__stand">01 / 07</p>
+          </div>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="#c-weiter">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        <li id="c-kraft-02" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02 · Mahlen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Mahlen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>gehärteter Stahl mahlt die geröstete Bohne</p>
+            <p class="t-mono kraefte-slider__stand">02 / 07</p>
+          </div>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="#c-weiter">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        <li id="c-kraft-03" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-3" aria-hidden="true"></span>03 · Verdichten</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Verdichten</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>das Pulver wird zum Puck getampt</p>
+            <p class="t-mono kraefte-slider__stand">03 / 07</p>
+          </div>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <article class="karte kraefte-slider__pucker" aria-labelledby="c-pucker">
+                <p class="kraft-marker kicker"><span class="kraft-marker__q kr-3" aria-hidden="true"></span>03 · Verdichten</p>
+                <h4 id="c-pucker" class="t-sm">Pucker</h4>
+                <p class="t-klein">Mechanische Espresso-Tamperstation</p>
+                <p class="t-label">In Vorbereitung</p>
+                <a class="knopf" href="#c-weiter">Pucker ansehen</a>
+              </article>
+            </div>
+          </div>
+        </li>
+        <li id="c-kraft-04" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-4" aria-hidden="true"></span>04 · Pumpen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Pumpen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>die Pumpe saugt das Wasser an</p>
+            <p class="t-mono kraefte-slider__stand">04 / 07</p>
+          </div>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="#c-weiter">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        <li id="c-kraft-05" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-5" aria-hidden="true"></span>05 · Auflösen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Auflösen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>heisses Wasser löst die Aromen</p>
+            <p class="t-mono kraefte-slider__stand">05 / 07</p>
+          </div>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="#c-weiter">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        <li id="c-kraft-06" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-6" aria-hidden="true"></span>06 · Fliessen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Fliessen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>das Wasser durchströmt den Puck, das Getränk entsteht</p>
+            <p class="t-mono kraefte-slider__stand">06 / 07</p>
+          </div>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="#c-weiter">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+        <li id="c-kraft-07" class="kraefte-slider__kraft" data-force-slider-panel>
+          <div class="kraefte-slider__text behaelter">
+            <p class="kraft-marker kicker"><span class="kraft-marker__q kr-7" aria-hidden="true"></span>07 · Entnehmen</p>
+            <h3 class="t-riesig kraefte-slider__name" data-force-slider-title>Entnehmen</h3>
+            <p class="t-lead kraefte-slider__wirkung" data-force-slider-line>der Puck verlässt das Sieb</p>
+            <p class="t-mono kraefte-slider__stand">07 / 07</p>
+          </div>
+          <div class="kraefte-slider__karte" data-force-slider-card>
+            <div class="kraefte-slider__streifen" data-force-slider-strip>
+              <a class="kraefte-slider__link" href="#c-weiter">Alle sieben Kräfte ansehen</a>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="c-weiter" class="sx s3-letzte" data-theme="hell" aria-labelledby="c-weiter-titel">
+      <p class="kicker">03 · Weiter</p>
+      <h2 id="c-weiter-titel" class="t-lg">Von hier geht es zurück an den Anfang.</h2>
+      <p class="s3-verweise"><a class="knopf" href="spike-s3-a.html">Weiter zu Seite A</a> <a href="spike-s3-b.html">Zu Seite B</a></p>
+    </section>
+  </main>
+
+  <details class="pruefwerkzeug" data-mod="theme-picker" data-needs-core>
+    <summary>Prüfwerkzeug</summary>
+    <form>
+      <fieldset>
+        <legend>Thema</legend>
+        <label><input type="radio" name="ci" value="rohbau" checked> Rohbau</label>
+        <label><input type="radio" name="ci" value="7vis-0.2"> 7Vis 0.2</label>
+        <label><input type="radio" name="ci" value="pruefthema"> Prüfthema</label>
+      </fieldset>
+      <fieldset>
+        <legend>Bewegung</legend>
+        <label><input type="radio" name="bewegung" value="system" checked> Wie System</label>
+        <label><input type="radio" name="bewegung" value="reduziert"> Reduziert</label>
+      </fieldset>
+      <button type="button" data-picker-action="replay">Auftritte wiederholen</button>
+    </form>
+  </details>
+</body>
+</html>

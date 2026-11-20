@@ -1,0 +1,52 @@
+@layer tokens, base, modules, page;
+
+/*
+ * Token level 4: mechanics.
+ * Values of the reference behaviour (INVENTAR-mechanik IM 6, IM 10, IM 11, IM 16), the same for every CI.
+ * The JavaScript engine reads its numbers from assets/js/motion/curves.js; the test suite checks that both
+ * files carry the same values. Level 4 never names a colour, a font or a radius (those are levels 1 to 3).
+ */
+@layer tokens {
+  :root {
+    /* Curves, IM 6. Own names, mapping to the reference rows in CONTRACT.md section 5. */
+    --kurve-titel: cubic-bezier(0.616, 0.007, 0.132, 1.002);
+    --kurve-karte: cubic-bezier(0.813, 0.007, 0.072, 0.993);
+    --kurve-karte-bild: cubic-bezier(0.317, 0.311, 0.111, 0.924);
+    --kurve-karte-text: cubic-bezier(0.681, 0.002, 0.219, 0.994);
+    --kurve-vorhang: cubic-bezier(0.569, 0.006, 0.072, 0.993);
+    --kurve-paneel: cubic-bezier(0.569, 0.006, 0.072, 0.993);
+    --kurve-streifen: cubic-bezier(0.84, 0.075, 0.161, 1.002);
+    --kurve-schnapp: cubic-bezier(0.65, 0.39, 0.19, 1);
+    /* CSS stand-in for expo.out (the engine uses the exact exponential function). */
+    --kurve-standard: cubic-bezier(0.19, 1, 0.22, 1);
+
+    /* Durations, IM 6, IM 10, IM 11. */
+    --dauer-standard: 1.2s;
+    --dauer-titel: 1.2s;
+    --dauer-titel-skala: 1.8s;
+    --dauer-textblock: 1s;
+    --dauer-karte: 1s;
+    --dauer-vorhang: 0.9s;
+    --dauer-paneel: 0.5s;
+    --dauer-flaechenwisch: 2s;
+    --dauer-schnapp: 1.5s;
+    --dauer-nav-farbe: 0.35s;
+    --dauer-hover-bild: 0.35s;
+
+    /* Type geometry of the narrative, IM 16: linear between 20rem and 90rem viewport width. */
+    --groesse-titel-xxl: clamp(4rem, 1.5714rem + 12.1429vw, 12.5rem);
+    --groesse-titel-xl: clamp(3rem, 2.5714rem + 2.1429vw, 4.5rem);
+    --groesse-titel-lg: clamp(2.5rem, 2.3571rem + 0.7143vw, 3rem);
+    --groesse-titel-md: clamp(1.75rem, 1.6071rem + 0.7143vw, 2.25rem);
+    --groesse-titel-sm: clamp(1.35rem, 1.3071rem + 0.2143vw, 1.5rem);
+    --zeilenhoehe-riesig: 0.8;
+    --zeilenhoehe-titel: 1.05;
+    /* Gap between explicit title lines, IM 11.1. */
+    --titel-zeilenluft: 0.12em;
+    /* Longest word (characters) a giant title must hold without script; the script measures the real one. */
+    --titel-zeichen: 10;
+
+    /* Anti-flash guard: hard CSS limit after which guarded text shows even if no script ever ran. */
+    --guard-limit: 2.5s;
+  }
+}

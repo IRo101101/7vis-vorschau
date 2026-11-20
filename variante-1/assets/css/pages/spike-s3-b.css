@@ -1,0 +1,35 @@
+@layer tokens, base, modules, page;
+
+/* View B of the S3 probe pages: a stretch with a sticky column (frozen copy must keep it in place). */
+@layer page {
+  [data-view="spike-s3-b"] .b-strecke {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: calc(8 * var(--raum));
+  }
+  [data-view="spike-s3-b"] .b-haftet {
+    position: sticky;
+    inset-block-start: calc(var(--knopf-hoehe) + 10 * var(--raum));
+    align-self: start;
+    display: grid;
+    gap: calc(3 * var(--raum));
+  }
+  [data-view="spike-s3-b"] .b-absaetze {
+    display: grid;
+    gap: calc(10 * var(--raum));
+  }
+  [data-view="spike-s3-b"] .b-absaetze > section {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    padding-block-end: calc(10 * var(--raum));
+    border-block-end: var(--linie-staerke) solid var(--li-linie);
+  }
+  @media (max-width: 767px) {
+    [data-view="spike-s3-b"] .b-strecke {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    [data-view="spike-s3-b"] .b-haftet {
+      position: static;
+    }
+  }
+}

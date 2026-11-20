@@ -1,0 +1,67 @@
+@layer tokens, base, modules, page;
+
+/*
+ * Shell of the S3 probe pages (spike S3, page transition). Shared by all three pages, so it stays loaded
+ * across page changes; view rules live in spike-s3-a/-b/-c.css, scoped by [data-view] so the frozen copy
+ * of the old view and the new view never pick up each other's rules.
+ */
+@layer page {
+  /* Anchors land below the fixed header, with or without the router. */
+  html {
+    scroll-padding-block-start: calc(var(--knopf-hoehe) + 4 * var(--raum));
+  }
+  .s3-kopf {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    min-block-size: calc(var(--knopf-hoehe) + 4 * var(--raum));
+    padding: 0 var(--rand-seite);
+    border-block-end: var(--linie-staerke) solid var(--li-linie);
+  }
+  .s3-kopf__liste {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(2 * var(--raum));
+    margin: 0;
+    padding: 0;
+  }
+  .s3-kopf__liste a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(3 * var(--raum));
+    border: var(--linie-staerke) solid transparent;
+    border-radius: var(--radius-knopf);
+    color: var(--tx-stark);
+    font-family: var(--schrift-label);
+    font-weight: var(--gewicht-label);
+    letter-spacing: var(--laufweite-label);
+    text-transform: var(--versal-label);
+    text-decoration: none;
+  }
+  .s3-kopf__liste a[aria-current="page"] {
+    border-color: var(--ak-marke);
+  }
+  /* The fixed header covers the top of every view. */
+  main[data-view^="spike-s3"] > .sx:first-child {
+    padding-block-start: calc(var(--sektion-luft) + var(--knopf-hoehe) + 4 * var(--raum));
+  }
+  main[data-view^="spike-s3"] .s3-verweise {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(3 * var(--raum));
+    margin-block-start: calc(8 * var(--raum));
+  }
+  main[data-view^="spike-s3"] .s3-verweise a:not(.knopf) {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--knopf-hoehe);
+  }
+  main[data-view^="spike-s3"] .s3-letzte {
+    padding-block-end: calc(var(--sektion-luft) + 64px);
+  }
+}

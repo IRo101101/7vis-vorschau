@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="de-CH" data-ci="rohbau">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Spike S1 · WebGL-Architektur · Variante 1 · 7Vis</title>
+  <meta name="description" content="Probeseite des Spikes S1: ein Renderer, eine Ebene vor und eine hinter dem HTML, Szenen an Sektionen gebunden. Musterdaten, intern.">
+  <link rel="stylesheet" href="assets/vendor/lenis-1.3.26/lenis.css">
+  <link rel="stylesheet" href="assets/css/tokens/ebene4-mechanik.css">
+  <link rel="stylesheet" href="assets/css/themes/rohbau.css">
+  <link rel="stylesheet" href="assets/css/themes/7vis-0.2.css">
+  <link rel="stylesheet" href="assets/css/themes/pruefthema.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/modules.css">
+  <link rel="stylesheet" href="assets/css/pages/spike-s1.css">
+  <link rel="modulepreload" href="assets/js/core/core.js">
+  <link rel="modulepreload" href="assets/js/motion/engine.js">
+  <link rel="modulepreload" href="assets/js/motion/scroll.js">
+  <link rel="modulepreload" href="assets/vendor/lenis-1.3.26/lenis.js">
+  <link rel="modulepreload" href="assets/js/text/split.js">
+  <link rel="modulepreload" href="assets/js/modules/headline.js">
+  <link rel="modulepreload" href="assets/js/modules/textrise.js">
+  <link rel="modulepreload" href="assets/js/modules/fold-card.js">
+  <link rel="modulepreload" href="assets/js/modules/webgl.js">
+  <link rel="modulepreload" href="assets/js/gl/level.js">
+  <script type="module" src="assets/js/boot.js"></script>
+</head>
+<body>
+  <a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+
+  <!-- Shell: the two WebGL layers survive page changes. Back layer behind the sections, front layer above;
+       the page router (S3) cuts the front layer with the edge of the reveal (data-transition-clip). -->
+  <div class="gl-ebenen" data-mod="webgl" aria-hidden="true" data-needs-core>
+    <canvas class="gl-ebene gl-ebene--hinten" data-gl-layer="hinten"></canvas>
+    <canvas class="gl-ebene gl-ebene--vorn" data-gl-layer="vorn" data-transition-clip></canvas>
+  </div>
+
+  <main id="inhalt" data-view="spike-s1" tabindex="-1">
+
+    <div class="strecke" data-scene="figur" data-scene-layer="vorn">
+      <section class="sx sx--hero" data-theme="hell" data-scene="raster" data-scene-layer="hinten" data-mod="scroll-guide" aria-labelledby="hero-titel">
+        <div class="hero__kopf">
+          <p class="kicker">00 · Spike S1 WebGL</p>
+          <p class="kicker hero__notiz">Musterdaten, intern</p>
+        </div>
+        <h1 id="hero-titel" class="t-riesig hero__titel" data-mod="headline" data-headline-trigger="page" data-guard>
+          <span data-headline-line>Für uns ist Kaffee</span>
+          <span data-headline-line>angewandte Physik.</span>
+        </h1>
+        <figure class="hero__figur">
+          <img data-scene-still="figur" data-still-ci="rohbau" src="assets/img/spike-s1/figur-rohbau.webp" alt="" width="810" height="810" loading="lazy" decoding="async">
+          <img data-scene-still="figur" data-still-ci="7vis-0.2" src="assets/img/spike-s1/figur-7vis-0.2.webp" alt="" width="810" height="810" loading="lazy" decoding="async">
+          <img data-scene-still="figur" data-still-ci="pruefthema" src="assets/img/spike-s1/figur-pruefthema.webp" alt="" width="810" height="810" loading="lazy" decoding="async">
+        </figure>
+        <div class="hero__karten">
+          <article class="karte" data-mod="fold-card" data-guard aria-labelledby="karte-pucker">
+            <div class="karte__traeger" data-fold-card-carrier>
+              <div class="karte__text">
+                <p class="kraft-marker kicker"><span class="kraft-marker__q kr-3" aria-hidden="true"></span><span data-fold-card-line>03 · Verdichten</span></p>
+                <h2 id="karte-pucker" class="t-sm karte__titel"><span data-fold-card-line>Pucker</span></h2>
+                <p class="t-klein karte__status"><span data-fold-card-line>Funktionsprototyp, noch nicht am Markt</span></p>
+                <a class="karte__link" href="#kraefte" data-fold-card-line>Pucker ansehen</a>
+              </div>
+              <div class="karte__bild" data-fold-card-image>
+                <span class="karte__platzhalter">Bild folgt</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="kraefte" class="sx sx--kraefte" data-theme="invers" aria-labelledby="kraefte-titel">
+        <div class="kraefte__inhalt">
+          <p class="kicker">01 · Kräfte</p>
+          <h2 id="kraefte-titel" class="t-xl" data-mod="textrise" data-guard>Aus der Bohne wird der Puck.</h2>
+          <p class="t-lead">Die Figur steigt auf, folgt der Maus, dreht sich beim Scrollen und rückt zur Seite, während diese Sektion den Hero zudeckt.</p>
+          <div class="formregler" data-needs-core>
+            <label class="kicker" for="form-figur">Form der Figur</label>
+            <div class="formregler__zeile">
+              <span class="t-klein" aria-hidden="true">Bohne</span>
+              <input id="form-figur" type="range" min="0" max="100" value="0" step="1" data-mod="form-regler">
+              <span class="t-klein" aria-hidden="true">Puck</span>
+            </div>
+            <p class="t-klein">Der Wert liegt im Zustandsspeicher. Ab Etappe 3 folgt die Form dem Kräfte-Slider: 01 Bohne, ab 03 Puck.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section id="ablauf" class="sx sx--abgesenkt sx--ruhe" data-theme="hell" aria-labelledby="ruhe-titel">
+      <p class="kicker">02 · Sichtfenster</p>
+      <h2 id="ruhe-titel" class="t-xl ruhe__titel" data-mod="textrise" data-guard>Ohne Szene im Bild ruht die Grafik.</h2>
+      <div class="lesespalte">
+        <p class="t-lead">Jede Szene arbeitet nur, solange ihre Sektion höchstens eine halbe Bildschirmhöhe vom Bild entfernt ist. Hier ist keine Szene nah, die Bildschleife der Grafik steht still.</p>
+      </div>
+      <ol class="kraefte-liste">
+        <li class="kraft">
+          <p class="kraft__nr t-mono"><span class="kraft-marker__q kr-1" aria-hidden="true"></span>01</p>
+          <div class="kraft__inhalt behaelter">
+            <h3 class="t-riesig kraft__name" data-mod="headline" data-guard>Wärmen</h3>
+            <p class="t-text" data-mod="textrise" data-guard>Röstet die grüne Bohne.</p>
+          </div>
+        </li>
+        <li class="kraft">
+          <p class="kraft__nr t-mono"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02</p>
+          <div class="kraft__inhalt behaelter">
+            <h3 class="t-riesig kraft__name" data-mod="headline" data-guard>Mahlen</h3>
+            <p class="t-text" data-mod="textrise" data-guard>Gehärteter Stahl mahlt die geröstete Bohne.</p>
+          </div>
+        </li>
+        <li class="kraft">
+          <p class="kraft__nr t-mono"><span class="kraft-marker__q kr-3" aria-hidden="true"></span>03</p>
+          <div class="kraft__inhalt behaelter">
+            <h3 class="t-riesig kraft__name" data-mod="headline" data-guard>Verdichten</h3>
+            <p class="t-text" data-mod="textrise" data-guard>Das Pulver wird zum Puck getampt.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="tafel" class="sx sx--tafel" data-theme="invers" data-scene="raster" data-scene-layer="hinten" aria-labelledby="tafel-titel">
+      <p class="kicker">03 · Schlussfläche</p>
+      <h2 id="tafel-titel" class="t-xl tafel__titel" data-mod="textrise" data-guard>Die Fläche folgt der Kante.</h2>
+      <div class="tafel__text lesespalte">
+        <p class="t-lead">Hinter dieser Sektion zeichnet die hintere Ebene eine deckende Masstafel. Ihre Fläche kommt mit der Oberkante von unten herein und geht mit der Unterkante nach oben hinaus.</p>
+        <p class="t-text">Ohne WebGL, bei reduzierter Bewegung und auf schmalen Geräten trägt die Sektion ihre eigene Fläche aus dem Thema.</p>
+      </div>
+    </section>
+
+    <footer class="sx fuss" data-theme="hell" aria-labelledby="fuss-titel">
+      <p class="kicker">04 · Schluss</p>
+      <h2 id="fuss-titel" class="t-xl fuss__titel" data-mod="textrise" data-guard>Jede Szene hat einen Ausweg.</h2>
+      <div class="fuss__zeilen t-klein">
+        <p>Probeseite des Spikes S1, Variante 1. Musterdaten, nicht zur Veröffentlichung.</p>
+        <p>Die Figur ist eine Bohne aus Code, die zum Puck wird. Ohne WebGL 2 und bei reduzierter Bewegung steht ein Standbild je Thema.</p>
+      </div>
+    </footer>
+  </main>
+
+  <details class="pruefwerkzeug" data-mod="theme-picker gl-pruefung" data-needs-core data-scroll-own>
+    <summary>Prüfwerkzeug</summary>
+    <form>
+      <fieldset>
+        <legend>Thema</legend>
+        <label><input type="radio" name="ci" value="rohbau" checked> Rohbau</label>
+        <label><input type="radio" name="ci" value="7vis-0.2"> 7Vis 0.2</label>
+        <label><input type="radio" name="ci" value="pruefthema"> Prüfthema</label>
+      </fieldset>
+      <fieldset>
+        <legend>Bewegung</legend>
+        <label><input type="radio" name="bewegung" value="system" checked> Wie System</label>
+        <label><input type="radio" name="bewegung" value="reduziert"> Reduziert</label>
+      </fieldset>
+      <fieldset>
+        <legend>WebGL-Stufe</legend>
+        <label><input type="radio" name="stufe" value="auto" checked> Automatisch mit Wache</label>
+        <label><input type="radio" name="stufe" value="voll"> Voll</label>
+        <label><input type="radio" name="stufe" value="einfach"> Einfach</label>
+        <label><input type="radio" name="stufe" value="statisch"> Statisch</label>
+      </fieldset>
+      <fieldset>
+        <legend>Schalter</legend>
+        <label><input type="checkbox" name="einfrieren"> Szenen einfrieren</label>
+        <label><input type="checkbox" name="fuehrung" checked> Geführtes Scrollen</label>
+      </fieldset>
+      <button type="button" data-gl-action="verlust">Kontextverlust proben</button>
+      <button type="button" data-gl-action="seitenwechsel">Seitenwechsel proben</button>
+      <output data-gl-anzeige>WebGL-Schicht lädt</output>
+    </form>
+  </details>
+</body>
+</html>

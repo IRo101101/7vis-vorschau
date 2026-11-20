@@ -1,0 +1,283 @@
+@layer tokens, base, modules, page;
+
+/*
+ * Document layer: everything a page needs to be complete without script.
+ * Reads roles (level 2), type and form (level 3) and mechanics (level 4). Never a palette name (level 1).
+ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  /* IM 16: no double-tap zoom delay anywhere. */
+  * {
+    touch-action: manipulation;
+  }
+
+  html {
+    color-scheme: var(--schema, light);
+    background-color: var(--fl-grund);
+    color: var(--tx-stark);
+    font-family: var(--schrift-text);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    interpolate-size: allow-keywords;
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-size: var(--groesse-text);
+    line-height: var(--zeilenhoehe-text);
+    font-weight: var(--gewicht-text);
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* Every element with a theme attribute paints its own surface: hell or invers (W 05, IM 11.11). */
+  [data-theme] {
+    color-scheme: var(--schema, light);
+    background-color: var(--fl-grund);
+    color: var(--tx-stark);
+  }
+
+  h1, h2, h3, h4, h5, h6, p, figure, blockquote, ol, ul, dl, dd {
+    margin: 0;
+  }
+  ol, ul {
+    padding: 0;
+  }
+  img, svg, video, canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  p, li, dd {
+    text-wrap: pretty;
+  }
+  a {
+    color: inherit;
+    text-decoration-thickness: var(--linie-staerke);
+    text-underline-offset: 0.22em;
+  }
+  a:hover {
+    color: var(--ak-marke-text);
+  }
+  :focus-visible {
+    outline: var(--fokus-breite) solid var(--ak-marke);
+    outline-offset: 2px;
+  }
+
+  /* Layout primitives. */
+  .sx {
+    position: relative;
+    padding: var(--sektion-luft) var(--rand-seite);
+    container-type: inline-size;
+  }
+  .sx--abgesenkt {
+    background-color: var(--fl-abgesenkt);
+  }
+  /* A size container: giant titles inside measure their width against it. */
+  .behaelter {
+    container-type: inline-size;
+    min-width: 0;
+  }
+  .lesespalte {
+    max-width: min(var(--spalte-max), 64ch);
+  }
+
+  /* Type. Giant title geometry is level 4 (reference), faces and weights are level 3 (CI). */
+  .t-riesig {
+    font-family: var(--schrift-titel);
+    font-weight: var(--gewicht-titel);
+    letter-spacing: var(--laufweite-titel);
+    text-transform: var(--versal-titel);
+    line-height: var(--zeilenhoehe-riesig);
+    /* Without script the size is capped so a word of --titel-zeichen letters fits; the script measures the real word. */
+    font-size: min(var(--groesse-titel-xxl), var(--titel-fit, calc(100cqi / (var(--titel-zeichen) * var(--versal-breite)))));
+    overflow-wrap: break-word;
+    hyphens: manual;
+    /* Line height 0.8 lets accents on capitals (Ä, Ö, Ü) rise above the box; reserve exactly that
+       overshoot (measured by the splitter, an estimate without script) so nothing above is touched. */
+    padding-block-start: var(--tx-luft-o, 0.2em);
+  }
+  .t-xl, .t-lg, .t-md, .t-sm {
+    font-family: var(--schrift-titel);
+    font-weight: var(--gewicht-titel);
+    letter-spacing: var(--laufweite-titel);
+    line-height: var(--zeilenhoehe-titel);
+    text-wrap: balance;
+  }
+  .t-xl { font-size: var(--groesse-titel-xl); }
+  .t-lg { font-size: var(--groesse-titel-lg); }
+  .t-md { font-size: var(--groesse-titel-md); }
+  .t-sm { font-size: var(--groesse-titel-sm); }
+  .t-zweit {
+    font-family: var(--schrift-zweit);
+    font-weight: var(--gewicht-text);
+    letter-spacing: 0;
+  }
+  .t-lead {
+    font-size: var(--groesse-lead);
+    line-height: var(--zeilenhoehe-lead);
+    color: var(--tx-normal);
+  }
+  .t-text {
+    font-size: var(--groesse-text);
+    line-height: var(--zeilenhoehe-text);
+    color: var(--tx-normal);
+  }
+  .t-klein {
+    font-size: var(--groesse-klein);
+    line-height: var(--zeilenhoehe-text);
+    color: var(--tx-leise);
+  }
+  .kicker,
+  .t-label {
+    font-family: var(--schrift-label);
+    font-size: var(--groesse-label);
+    font-weight: var(--gewicht-label);
+    line-height: var(--zeilenhoehe-label);
+    letter-spacing: var(--laufweite-label);
+    text-transform: var(--versal-label);
+    color: var(--tx-leise);
+  }
+  .t-mono {
+    font-family: var(--schrift-mono);
+    font-size: var(--groesse-mono);
+    line-height: var(--zeilenhoehe-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Components of the design system (W 05) that work without script. */
+  .kraft-marker {
+    display: flex;
+    align-items: center;
+    gap: calc(2 * var(--raum));
+  }
+  .kraft-marker__q {
+    flex: none;
+    inline-size: 22px;
+    block-size: 22px;
+    background-color: var(--kr-3);
+  }
+  .kraft-marker__q.kr-1 { background-color: var(--kr-1); }
+  .kraft-marker__q.kr-2 { background-color: var(--kr-2); }
+  .kraft-marker__q.kr-3 { background-color: var(--kr-3); }
+  .kraft-marker__q.kr-4 { background-color: var(--kr-4); }
+  .kraft-marker__q.kr-5 { background-color: var(--kr-5); }
+  .kraft-marker__q.kr-6 { background-color: var(--kr-6); }
+  .kraft-marker__q.kr-7 { background-color: var(--kr-7); }
+
+  .knopf {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(5 * var(--raum));
+    border: var(--linie-staerke) solid var(--ak-marke);
+    border-radius: var(--radius-knopf);
+    background-color: var(--ak-marke);
+    color: var(--tx-auf-marke);
+    font: inherit;
+    font-weight: var(--gewicht-stark);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--ui-dauer-zustand) var(--ui-kurve), color var(--ui-dauer-zustand) var(--ui-kurve);
+  }
+  .knopf:hover {
+    background-color: transparent;
+    color: var(--ak-marke-text);
+  }
+
+  .karte {
+    position: relative;
+    display: block;
+    inline-size: 100%;
+    overflow: hidden;
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-karte);
+    background-color: color-mix(in srgb, var(--fl-erhoben) var(--karte-deckkraft), transparent);
+    -webkit-backdrop-filter: blur(var(--karte-weichzeichner));
+    backdrop-filter: blur(var(--karte-weichzeichner));
+    color: var(--tx-stark);
+  }
+
+  /* Skip link (PLAN 7: keyboard). */
+  .sprunglink {
+    position: absolute;
+    inset-inline-start: var(--rand-seite);
+    inset-block-start: -200px;
+    z-index: 10000;
+    padding: calc(2 * var(--raum)) calc(4 * var(--raum));
+    background-color: var(--fl-invers);
+    color: var(--tx-invers);
+  }
+  .sprunglink:focus {
+    inset-block-start: var(--raum);
+  }
+
+  .nur-vorlesen {
+    position: absolute !important;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Visibility per breakpoint (IM 16): data-hide-at="d t ml m". */
+  @media (min-width: 992px) { [data-hide-at~="d"] { display: none !important; } }
+  @media (min-width: 768px) and (max-width: 991px) { [data-hide-at~="t"] { display: none !important; } }
+  @media (min-width: 480px) and (max-width: 767px) { [data-hide-at~="ml"] { display: none !important; } }
+  @media (max-width: 479px) { [data-hide-at~="m"] { display: none !important; } }
+
+  /* Things that only work with the runtime stay out of the no-script document. */
+  html:not([data-core="live"]) [data-needs-core] {
+    display: none !important;
+  }
+}
+
+/*
+ * Anti-flash guard (PLAN 7, IM 8, IM 17). Unlayered so no page style can weaken it.
+ * Hides guarded elements only when script is enabled and motion is welcome. The keyframe makes them
+ * visible after --guard-limit even if no script ever runs; the runtime releases them much earlier.
+ */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-guard]:not([data-guard="free"]) {
+    visibility: hidden;
+    animation: v1-guard-limit 0s linear var(--guard-limit, 2.5s) 1 normal forwards;
+  }
+}
+@keyframes v1-guard-limit {
+  to {
+    visibility: visible;
+  }
+}
+
+/*
+ * Reduced motion, the stricter rule of the design system (W 05): only colour changes remain.
+ * Applies to the system setting and to the runtime override html[data-motion="reduced"].
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke !important;
+    scroll-behavior: auto !important;
+  }
+}
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke !important;
+  scroll-behavior: auto !important;
+}

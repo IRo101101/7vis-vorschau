@@ -1,0 +1,222 @@
+@layer tokens, base, modules, page;
+
+/*
+ * Probe page of spike S1 (WebGL architecture). Page layer: layout only, reads roles and levels 3 and 4.
+ * Scroll situation of storyboard rows 1 and "1 zu 2": the hero holds still (sticky), the next section
+ * slides over it; the figure (front layer) stays above both and moves aside.
+ */
+@layer page {
+  /* Hero stretch (IM 12): hero sticky with z-index 1, the next section z-index 3 covers it, then both leave. */
+  .strecke {
+    position: relative;
+  }
+  .sx--hero {
+    position: relative;
+    z-index: 1;
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: calc(4 * var(--raum));
+    padding-block: calc(6 * var(--raum));
+    overflow: clip;
+  }
+  @media (min-height: 560px) {
+    .sx--hero {
+      position: sticky;
+      top: 0;
+      block-size: 100vh;
+      block-size: 100svh;
+    }
+  }
+  .hero__kopf {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--raum) calc(4 * var(--raum));
+  }
+  .hero__titel {
+    position: relative;
+    z-index: 1;
+    align-self: start;
+  }
+  .hero__karten {
+    position: relative;
+    z-index: 2;
+    grid-row: 4;
+    inline-size: 100%;
+  }
+  /* Room for the fixed review tool of this probe page below the card. */
+  @media (max-width: 991px) {
+    .sx--hero {
+      padding-block-end: calc(6 * var(--raum) + 52px);
+    }
+  }
+  @media (min-width: 992px) {
+    .hero__karten {
+      position: absolute;
+      inset-inline-end: var(--rand-seite);
+      inset-block-end: calc(6 * var(--raum));
+      inline-size: min(26rem, 40cqi);
+    }
+  }
+
+  /* Still image of the figure, centred like the scene's camera centres the figure. Its box follows the
+     scene's framing: 60 % of the viewport height, narrower screens keep the width (reference aspect 1.6,
+     phones 0.578 and size 0.6, TIMING.figure). */
+  .hero__figur {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    pointer-events: none;
+  }
+  .hero__figur img {
+    inline-size: min(60vh, 37.5vw);
+    inline-size: min(60svh, 37.5vw);
+    block-size: auto;
+    aspect-ratio: 1;
+  }
+  @media (max-width: 767px), (pointer: coarse) {
+    .hero__figur img {
+      inline-size: min(36vh, 62vw);
+      inline-size: min(36svh, 62vw);
+    }
+  }
+
+  /* Card layout (content of the fold-card), as on the stage 1a probe. */
+  .karte__traeger {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 7.5rem;
+    gap: calc(4 * var(--raum));
+    padding: var(--karte-innen);
+  }
+  .karte__text {
+    display: grid;
+    align-content: start;
+    gap: calc(2 * var(--raum));
+    min-inline-size: 0;
+  }
+  .karte__titel {
+    margin-block-start: var(--raum);
+  }
+  .karte__link {
+    justify-self: start;
+    margin-block-start: calc(2 * var(--raum));
+    color: var(--ak-marke-text);
+    font-weight: var(--gewicht-stark);
+  }
+  .karte__bild {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    align-self: start;
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    border-radius: calc(var(--radius-karte) / 2);
+    background-color: var(--fl-abgesenkt);
+    color: var(--tx-leise);
+  }
+  .karte__platzhalter {
+    font-family: var(--schrift-label);
+    font-size: var(--groesse-label);
+    letter-spacing: var(--laufweite-label);
+    text-transform: var(--versal-label);
+    text-align: center;
+  }
+  @media (max-width: 479px) {
+    .karte__traeger {
+      grid-template-columns: minmax(0, 1fr) 5.5rem;
+    }
+  }
+
+  /* Section that covers the hero (storyboard row 2). Content sits low and right: the figure moves up and
+     to the left over it. */
+  .sx--kraefte {
+    position: relative;
+    z-index: 3;
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    display: grid;
+    align-content: end;
+    justify-items: end;
+    gap: calc(6 * var(--raum));
+  }
+  .kraefte__inhalt {
+    display: grid;
+    gap: calc(5 * var(--raum));
+    inline-size: min(100%, 34rem);
+  }
+  .formregler {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    padding-block-start: calc(4 * var(--raum));
+    border-block-start: var(--linie-staerke) solid var(--li-linie);
+  }
+  @media (max-width: 767px) {
+    .sx--kraefte {
+      justify-items: stretch;
+    }
+  }
+
+  /* Quiet zone: at least two viewport heights without a scene, so every render window is closed. */
+  .sx--ruhe {
+    min-block-size: 210vh;
+  }
+  .ruhe__titel,
+  .tafel__titel,
+  .fuss__titel {
+    margin-block: calc(4 * var(--raum)) calc(10 * var(--raum));
+    max-inline-size: 22ch;
+  }
+  .kraefte-liste {
+    list-style: none;
+    display: grid;
+    margin-block-start: calc(10 * var(--raum));
+  }
+  .kraft {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: calc(4 * var(--raum));
+    padding-block: calc(6 * var(--raum));
+    border-block-start: var(--linie-staerke) solid var(--li-linie);
+  }
+  .kraft__nr {
+    display: flex;
+    align-items: center;
+    align-self: start;
+    gap: calc(2 * var(--raum));
+    color: var(--tx-leise);
+  }
+  .kraft__inhalt {
+    display: grid;
+    gap: calc(3 * var(--raum));
+  }
+  @media (max-width: 767px) {
+    .kraft {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Section with an opaque back-layer scene: its surface comes from the scene while it draws. */
+  .sx--tafel {
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    display: grid;
+    align-content: center;
+  }
+  .tafel__text {
+    display: grid;
+    gap: calc(4 * var(--raum));
+  }
+
+  .fuss {
+    padding-block-end: calc(var(--sektion-luft) + 64px);
+  }
+  .fuss__zeilen {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    max-inline-size: 60ch;
+  }
+}

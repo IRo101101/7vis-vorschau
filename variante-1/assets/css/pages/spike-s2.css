@@ -1,0 +1,20 @@
+@layer tokens, base, modules, page;
+
+/* Probe page of spike S2 (forces slider). Page layer: layout only. */
+@layer page {
+  [data-view="spike-s2"] .s2-einleitung,
+  [data-view="spike-s2"] .s2-schluss {
+    display: grid;
+    gap: calc(5 * var(--raum));
+  }
+  [data-view="spike-s2"] .s2-einleitung .t-xl {
+    max-inline-size: 22ch;
+  }
+  [data-view="spike-s2"] .s2-hinweise {
+    display: grid;
+    gap: calc(3 * var(--raum));
+  }
+  [data-view="spike-s2"] .s2-schluss {
+    padding-block-end: calc(var(--sektion-luft) + 64px);
+  }
+}

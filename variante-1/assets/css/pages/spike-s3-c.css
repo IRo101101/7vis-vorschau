@@ -1,0 +1,12 @@
+@layer tokens, base, modules, page;
+
+/* View C of the S3 probe pages: the forces slider of spike S2 inside a changing view. */
+@layer page {
+  [data-view="spike-s3-c"] .c-einleitung {
+    display: grid;
+    gap: calc(4 * var(--raum));
+  }
+  [data-view="spike-s3-c"] .c-einleitung .t-xl {
+    max-inline-size: 22ch;
+  }
+}

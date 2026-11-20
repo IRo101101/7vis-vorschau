@@ -1,0 +1,53 @@
+@layer tokens, base, modules, page;
+
+/* View A of the S3 probe pages: hero with a card, text blocks, a long list. */
+@layer page {
+  [data-view="spike-s3-a"] .a-hero {
+    display: grid;
+    gap: calc(6 * var(--raum));
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    align-content: start;
+  }
+  [data-view="spike-s3-a"] .a-hero__karte {
+    inline-size: min(100%, 26rem);
+  }
+  [data-view="spike-s3-a"] .a-bloecke {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--raster-luecke);
+    margin-block-start: calc(10 * var(--raum));
+  }
+  [data-view="spike-s3-a"] .a-bloecke > p {
+    padding-block-start: calc(3 * var(--raum));
+    border-block-start: var(--linie-staerke) solid var(--li-linie);
+  }
+  [data-view="spike-s3-a"] .a-liste {
+    list-style: none;
+    display: grid;
+    margin: calc(8 * var(--raum)) 0 0;
+    padding: 0;
+  }
+  [data-view="spike-s3-a"] .a-liste li {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: calc(4 * var(--raum));
+    padding-block: calc(8 * var(--raum));
+    border-block-start: var(--linie-staerke) solid var(--li-linie);
+  }
+  [data-view="spike-s3-a"] .karte__traeger {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    padding: var(--karte-innen);
+  }
+  @media (max-width: 991px) {
+    [data-view="spike-s3-a"] .a-bloecke {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 479px) {
+    [data-view="spike-s3-a"] .a-bloecke {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

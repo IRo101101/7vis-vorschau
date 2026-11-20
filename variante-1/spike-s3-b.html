@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="de-CH" data-ci="rohbau">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Spike S3 · Seite B · Variante 1 · 7Vis</title>
+  <meta name="description" content="Probeseite B des Spikes S3: haftende Spalte und Sprungziele. Musterdaten, intern.">
+  <link rel="stylesheet" href="assets/vendor/lenis-1.3.26/lenis.css">
+  <link rel="stylesheet" href="assets/css/tokens/ebene4-mechanik.css">
+  <link rel="stylesheet" href="assets/css/themes/rohbau.css">
+  <link rel="stylesheet" href="assets/css/themes/7vis-0.2.css">
+  <link rel="stylesheet" href="assets/css/themes/pruefthema.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/modules.css">
+  <link rel="stylesheet" href="assets/css/pages/spike-s3.css">
+  <link rel="stylesheet" href="assets/css/pages/spike-s3-b.css">
+  <link rel="modulepreload" href="assets/js/core/core.js">
+  <link rel="modulepreload" href="assets/js/motion/engine.js">
+  <link rel="modulepreload" href="assets/js/motion/scroll.js">
+  <link rel="modulepreload" href="assets/vendor/lenis-1.3.26/lenis.js">
+  <link rel="modulepreload" href="assets/js/modules/page-router.js">
+  <link rel="modulepreload" href="assets/js/modules/scene-stand-in.js">
+  <link rel="modulepreload" href="assets/js/text/split.js">
+  <link rel="modulepreload" href="assets/js/modules/headline.js">
+  <link rel="modulepreload" href="assets/js/modules/textrise.js">
+  <script type="module" src="assets/js/boot.js"></script>
+</head>
+<body data-mod="page-router" data-page-router-shell="spike-s3">
+  <a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+
+  <header class="s3-kopf" data-theme="hell">
+    <nav aria-label="Probeseiten des Spikes S3">
+      <ol class="s3-kopf__liste">
+        <li><a href="spike-s3-a.html">Seite A</a></li>
+        <li><a href="spike-s3-b.html" aria-current="page">Seite B</a></li>
+        <li><a href="spike-s3-c.html">Seite C</a></li>
+      </ol>
+    </nav>
+  </header>
+
+  <div class="szene" data-mod="scene-stand-in" data-transition-clip aria-hidden="true" data-needs-core>
+    <div class="szene__form" data-scene-stand-in-shape>
+      <span class="szene__name t-label" data-scene-stand-in-label="spike-s3-a">Szene A</span>
+      <span class="szene__name t-label" data-scene-stand-in-label="spike-s3-b">Szene B</span>
+      <span class="szene__name t-label" data-scene-stand-in-label="spike-s3-c">Szene C</span>
+    </div>
+  </div>
+
+  <main id="inhalt" data-view="spike-s3-b" tabindex="-1">
+    <section class="sx" data-theme="hell" aria-labelledby="b-titel">
+      <p class="kicker">01 · Seite B</p>
+      <h1 id="b-titel" class="t-riesig" data-mod="headline" data-guard>Seite B.</h1>
+      <p class="t-lead lesespalte" data-mod="textrise" data-guard>Diese Ansicht hat eine haftende Spalte und fünf Absätze mit Sprungzielen.</p>
+    </section>
+
+    <section class="sx sx--abgesenkt" data-theme="hell" aria-labelledby="b-strecke-titel">
+      <div class="b-strecke">
+        <div class="b-haftet">
+          <p class="kicker">02 · Haftet</p>
+          <h2 id="b-strecke-titel" class="t-lg">Diese Spalte bleibt stehen.</h2>
+          <p class="t-text">Sie haftet unter der Navigation, solange die Absätze rechts vorbeiziehen.</p>
+        </div>
+        <div class="b-absaetze">
+          <section id="b-absatz-1" aria-labelledby="b-absatz-1-titel">
+            <h3 id="b-absatz-1-titel" class="t-md">Die Spalte links haftet.</h3>
+            <p class="t-text">Beim Seitenwechsel muss das Standbild die haftende Spalte dort zeigen, wo sie gerade steht, nicht an ihrem Platz im Fluss.</p>
+          </section>
+          <section id="b-absatz-2" aria-labelledby="b-absatz-2-titel">
+            <h3 id="b-absatz-2-titel" class="t-md">Die Kante ist dieselbe.</h3>
+            <p class="t-text">Der Platzhalter der Szene liegt über der Ansicht und wird während der Enthüllung von unten mit derselben Kante beschnitten wie die neue Ansicht.</p>
+          </section>
+          <section id="b-absatz-3" aria-labelledby="b-absatz-3-titel">
+            <h3 id="b-absatz-3-titel" class="t-md">Der dritte Absatz ist ein Sprungziel.</h3>
+            <p class="t-text">Ein Verweis mit Anker auf eine andere Seite landet nach dem Wechsel hier, wie bei einem normalen Seitenaufruf.</p>
+          </section>
+          <section id="b-absatz-4" aria-labelledby="b-absatz-4-titel">
+            <h3 id="b-absatz-4-titel" class="t-md">Zurück stellt die Position wieder her.</h3>
+            <p class="t-text">Die Zurück-Taste holt die vorherige Seite an die Stelle, an der sie verlassen wurde. Vorwärts gilt dasselbe.</p>
+          </section>
+          <section id="b-absatz-5" aria-labelledby="b-absatz-5-titel">
+            <h3 id="b-absatz-5-titel" class="t-md">Jeder Fehler fällt in die normale Navigation.</h3>
+            <p class="t-text">Fehlt die Ansicht, passt die Shell nicht, scheitert das Laden oder dauert es zu lange, lädt der Browser die Seite ganz normal.</p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="sx s3-letzte" data-theme="invers" aria-labelledby="b-ende-titel">
+      <p class="kicker">03 · Weiter</p>
+      <h2 id="b-ende-titel" class="t-xl" data-mod="textrise" data-guard>Zwei Wege führen weiter.</h2>
+      <p class="s3-verweise"><a class="knopf" href="spike-s3-c.html">Weiter zu Seite C</a> <a href="spike-s3-a.html">Zurück zu Seite A</a></p>
+    </section>
+  </main>
+
+  <details class="pruefwerkzeug" data-mod="theme-picker" data-needs-core>
+    <summary>Prüfwerkzeug</summary>
+    <form>
+      <fieldset>
+        <legend>Thema</legend>
+        <label><input type="radio" name="ci" value="rohbau" checked> Rohbau</label>
+        <label><input type="radio" name="ci" value="7vis-0.2"> 7Vis 0.2</label>
+        <label><input type="radio" name="ci" value="pruefthema"> Prüfthema</label>
+      </fieldset>
+      <fieldset>
+        <legend>Bewegung</legend>
+        <label><input type="radio" name="bewegung" value="system" checked> Wie System</label>
+        <label><input type="radio" name="bewegung" value="reduziert"> Reduziert</label>
+      </fieldset>
+      <button type="button" data-picker-action="replay">Auftritte wiederholen</button>
+    </form>
+  </details>
+</body>
+</html>

@@ -1,0 +1,595 @@
+@layer tokens, base, modules, page;
+
+/*
+ * Mechanics layer: styles of the runtime modules. Reads roles (level 2), type and form (level 3) and
+ * mechanics (level 4). Never a palette name. Rules that matter without script come first.
+ */
+@layer modules {
+  /* headline: explicit lines are blocks with the reference gap (IM 11.1), with or without script. */
+  [data-headline-line] {
+    display: block;
+  }
+  [data-headline-line] + [data-headline-line] {
+    margin-block-start: var(--titel-zeilenluft);
+  }
+
+  /* Split text (text/split.js). */
+  .tx-sr {
+    position: absolute !important;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+  .tx-vis {
+    display: inline;
+  }
+  .tx-vis--block {
+    display: block;
+  }
+  .tx-w {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  /* Text decoration does not reach inline-blocks: every level takes it over, so a split link keeps its
+     underline (it then rises with its characters). */
+  .tx-vis,
+  .tx-w,
+  .tx-m,
+  .tx-c {
+    text-decoration: inherit;
+  }
+  /* Mask: clips vertically only; clearance per element from the splitter, minimum per CI (level 3). */
+  .tx-m {
+    display: inline-block;
+    overflow-x: visible;
+    overflow-y: clip;
+    vertical-align: top;
+    padding-block: var(--tx-luft-o, var(--maske-luft-oben, 0em)) var(--tx-luft-u, var(--maske-luft-unten, 0em));
+    margin-block: calc(-1 * var(--tx-luft-o, var(--maske-luft-oben, 0em))) calc(-1 * var(--tx-luft-u, var(--maske-luft-unten, 0em)));
+  }
+  .tx-c {
+    display: inline-block;
+  }
+  /* Row breaks pinned from the plain text (Split.pinRows). */
+  .tx-vis--rows {
+    white-space: nowrap;
+  }
+  /* For one synchronous measurement a plain clone stands in for the visual copy (Split.pinRows). */
+  .tx-vis.tx-off {
+    display: none !important;
+  }
+  .tx-plain {
+    display: inline;
+  }
+  .tx-plain--block {
+    display: block;
+  }
+  .tx-probe {
+    display: inline-block;
+    inline-size: 0;
+    block-size: 0;
+    vertical-align: baseline;
+  }
+
+  /* fold-card */
+  [data-fold-card-carrier] {
+    position: relative;
+  }
+  [data-mod~="fold-card"] {
+    transform-origin: 0% 50%;
+  }
+  [data-fold-card-image] {
+    position: relative;
+  }
+
+  /* webgl (spike S1): two fixed layers, one above the HTML (transparent scenes), one behind it (opaque
+     scenes). Never a pointer target, never in the accessibility tree (aria-hidden in the markup). */
+  .gl-ebene {
+    position: fixed;
+    inset: 0;
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    max-width: none;
+    pointer-events: none;
+  }
+  .gl-ebene--hinten {
+    z-index: 0;
+  }
+  .gl-ebene--vorn {
+    z-index: 8000;
+  }
+  /* A section whose back-layer scene draws turns transparent; the attribute is set and removed in the same
+     frame as the canvas changes, so the CSS surface is back the moment the scene stops. */
+  [data-scene-layer="hinten"][data-scene-live] {
+    background-color: transparent;
+  }
+  /* Still images stand in for a front-layer scene whenever WebGL cannot draw it: no WebGL 2 (aus), reduced
+     motion or guard (statisch), context lost (verloren). While the layer loads or runs, the still steps back,
+     so the figure's entrance never cuts from a picture. Back-layer scenes fall back to their CSS surface. */
+  html[data-webgl="laedt"] [data-scene-still],
+  html[data-webgl="live"] [data-scene-still],
+  [data-scene-still][data-scene-live] {
+    visibility: hidden;
+  }
+  /* One still per CI; only the one of the current CI is displayed (lazy, so only that one loads). */
+  [data-still-ci] {
+    display: none;
+  }
+  :root:not([data-ci]) [data-still-ci="rohbau"],
+  [data-ci="rohbau"] [data-still-ci="rohbau"],
+  [data-ci="7vis-0.2"] [data-still-ci="7vis-0.2"],
+  [data-ci="pruefthema"] [data-still-ci="pruefthema"] {
+    display: block;
+  }
+
+  /* form-regler */
+  .formregler__zeile {
+    display: flex;
+    align-items: center;
+    gap: calc(3 * var(--raum));
+    min-block-size: var(--knopf-hoehe);
+  }
+  .formregler__zeile input[type="range"] {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    min-block-size: var(--knopf-hoehe);
+    margin: 0;
+    accent-color: var(--ak-marke);
+  }
+
+  /* theme-picker (review tool of the probe page) */
+  .pruefwerkzeug {
+    position: fixed;
+    inset-inline-start: var(--raum);
+    inset-block-end: var(--raum);
+    z-index: 9000;
+    max-inline-size: calc(100vw - 2 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-feld);
+    background-color: var(--fl-erhoben);
+    color: var(--tx-stark);
+    box-shadow: var(--schatten-schwebend);
+    font-family: var(--schrift-label);
+    font-size: var(--groesse-label);
+    line-height: var(--zeilenhoehe-label);
+  }
+  .pruefwerkzeug > summary {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(3 * var(--raum));
+    cursor: pointer;
+    letter-spacing: var(--laufweite-label);
+    text-transform: var(--versal-label);
+    font-weight: var(--gewicht-label);
+  }
+  .pruefwerkzeug form {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    padding: 0 calc(3 * var(--raum)) calc(3 * var(--raum));
+  }
+  .pruefwerkzeug fieldset {
+    display: grid;
+    gap: var(--raum);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .pruefwerkzeug legend {
+    padding: 0 0 var(--raum);
+    color: var(--tx-leise);
+    letter-spacing: var(--laufweite-label);
+    text-transform: var(--versal-label);
+  }
+  .pruefwerkzeug label {
+    display: flex;
+    align-items: center;
+    gap: calc(2 * var(--raum));
+    min-block-size: 32px;
+    cursor: pointer;
+  }
+  .pruefwerkzeug input {
+    accent-color: var(--ak-marke);
+    inline-size: 18px;
+    block-size: 18px;
+    margin: 0;
+  }
+  .pruefwerkzeug button {
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(3 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-knopf);
+    background-color: var(--fl-grund);
+    color: var(--tx-stark);
+    font: inherit;
+    cursor: pointer;
+  }
+  .pruefwerkzeug button:hover {
+    border-color: var(--ak-marke);
+  }
+  .pruefwerkzeug form {
+    max-block-size: calc(100vh - 4 * var(--knopf-hoehe));
+    overflow-y: auto;
+  }
+  .pruefwerkzeug output {
+    display: block;
+    max-inline-size: 28ch;
+    color: var(--tx-leise);
+  }
+}
+
+/*
+ * Spike S2 and S3 (stage 2): force-slider, figure-stand-in, scene-stand-in. The page transition itself
+ * (page-router) needs no rules: frozen copy and revealed view are placed through the CSSOM.
+ */
+@layer modules {
+  /* force-slider, list layout: no script, list mode below 768 px (PLAN 9 no. 11). */
+  .kraefte-slider {
+    --slider-ton-a: var(--fl-grund);
+    --slider-ton-b: var(--fl-erhoben);
+  }
+  .kraefte-slider__kopf {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    max-inline-size: 60ch;
+    margin-block-end: calc(8 * var(--raum));
+  }
+  .kraefte-slider__nav {
+    margin-block-end: calc(6 * var(--raum));
+  }
+  .kraefte-slider__marker {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(2 * var(--raum));
+    margin: 0;
+    padding: 0;
+  }
+  .kraefte-slider__marker a {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(2 * var(--raum));
+    min-block-size: var(--knopf-hoehe);
+    min-inline-size: var(--knopf-hoehe);
+    padding: 0 calc(3 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-knopf);
+    color: var(--tx-stark);
+    text-decoration: none;
+  }
+  /* The darkest steps of the force scale sit close to the inverse surface: a hairline keeps every square visible. */
+  .kraefte-slider .kraft-marker__q {
+    box-shadow: inset 0 0 0 var(--linie-staerke) var(--li-rahmen);
+  }
+  .kraefte-slider__liste {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+  }
+  .kraefte-slider__kraft {
+    display: grid;
+    gap: calc(5 * var(--raum));
+    padding-block: calc(8 * var(--raum));
+    border-block-start: var(--linie-staerke) solid var(--li-linie);
+  }
+  .kraefte-slider__text {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    align-content: end;
+  }
+  .kraefte-slider__stand {
+    color: var(--tx-leise);
+  }
+  .kraefte-slider__karte {
+    justify-self: start;
+    inline-size: min(100%, 24rem);
+  }
+  .kraefte-slider__link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--knopf-hoehe);
+    color: var(--ak-marke-text);
+    font-weight: var(--gewicht-stark);
+  }
+  .kraefte-slider__pucker {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    padding: var(--karte-innen);
+  }
+  .kraefte-slider__pucker .knopf {
+    justify-self: start;
+    margin-block-start: calc(2 * var(--raum));
+  }
+  .kraefte-slider__flaeche,
+  .kraefte-slider__buehne,
+  .kraefte-slider__schritt {
+    display: none;
+  }
+
+  /* force-slider, slider mode: panels stacked, one visible (IM 11.7). */
+  .kraefte-slider[data-force-slider-mode="slider"] {
+    isolation: isolate;
+    overflow: clip;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: "kopf" "liste" "nav";
+    row-gap: calc(6 * var(--raum));
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    padding-block: calc(12 * var(--raum)) calc(6 * var(--raum));
+    background-color: var(--slider-ton-a);
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__kopf {
+    grid-area: kopf;
+    position: relative;
+    z-index: 2;
+    max-inline-size: 44ch;
+    margin: 0;
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__liste {
+    grid-area: liste;
+    position: relative;
+    z-index: 2;
+    align-items: end;
+    pointer-events: none;
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__kraft {
+    grid-area: 1 / 1;
+    grid-template-columns: minmax(0, 1fr) min(24rem, 34cqi);
+    grid-template-areas: "text karte";
+    align-items: end;
+    padding: 0;
+    border: 0;
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__text {
+    grid-area: text;
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__karte {
+    grid-area: karte;
+    align-self: start;
+    justify-self: end;
+    overflow: clip;
+    pointer-events: auto;
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__name {
+    pointer-events: none;
+  }
+  [data-force-slider-state="off"],
+  [data-force-slider-state="out"] {
+    visibility: hidden;
+  }
+  [data-force-slider-state="out"] :is([data-force-slider-title], [data-force-slider-line], [data-force-slider-card]) {
+    visibility: visible;
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__nav {
+    grid-area: nav;
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: calc(2 * var(--raum));
+    margin: 0;
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__marker {
+    gap: var(--raum);
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__marker a {
+    border-color: transparent;
+    opacity: var(--slider-inaktiv-deckkraft, 0.5);
+    scale: var(--slider-inaktiv-skala, 0.93);
+    transition:
+      opacity var(--slider-inaktiv-dauer, 0.35s) var(--ui-kurve),
+      scale var(--slider-inaktiv-dauer, 0.35s) var(--ui-kurve),
+      border-color var(--slider-nav-dauer, 0.6s) var(--ui-kurve);
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__marker a:hover,
+  [data-force-slider-mode="slider"] .kraefte-slider__marker a[aria-selected="true"] {
+    opacity: 1;
+    scale: 1;
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__marker a[aria-selected="true"] {
+    border-color: var(--ak-marke);
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__marker a[data-force-slider-queued] {
+    opacity: 1;
+    border-color: var(--li-rahmen);
+    border-style: dashed;
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__schritt {
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--knopf-hoehe);
+    block-size: var(--knopf-hoehe);
+    padding: 0;
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-knopf);
+    background-color: transparent;
+    color: var(--tx-stark);
+    cursor: pointer;
+  }
+  [data-force-slider-mode="slider"] .kraefte-slider__schritt:hover {
+    border-color: var(--ak-marke);
+  }
+  .kraefte-slider__schritt::before {
+    content: "";
+    inline-size: 9px;
+    block-size: 9px;
+    border-block-start: 2px solid currentColor;
+    border-inline-start: 2px solid currentColor;
+    rotate: -45deg;
+    translate: 2px 0;
+  }
+  .kraefte-slider__schritt--vor::before {
+    rotate: 135deg;
+    translate: -2px 0;
+  }
+
+  /* Surface and wipe (IM 11.7). Two calm tones (DS 0.2) or, where the CI asks for it, gradients. */
+  [data-force-slider-mode="slider"] .kraefte-slider__flaeche {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--slider-ton-a);
+  }
+  [data-force-slider-surface][data-force-slider-tone="b"] {
+    background: var(--slider-ton-b);
+  }
+  .kraefte-slider__wisch {
+    position: absolute;
+    inset: 0;
+    display: none;
+  }
+  [data-force-slider-wipe][data-force-slider-tone] {
+    display: block;
+    background: var(--slider-ton-a);
+  }
+  [data-force-slider-wipe][data-force-slider-tone="b"] {
+    background: var(--slider-ton-b);
+  }
+  @container style(--flaeche-stil: verlauf) {
+    .kraefte-slider__flaeche,
+    .kraefte-slider__wisch {
+      --slider-ton-a: linear-gradient(135deg, var(--fl-erhoben) 0%, var(--fl-grund) 62%);
+      --slider-ton-b: linear-gradient(225deg, var(--fl-erhoben) 0%, var(--fl-abgesenkt) 70%);
+    }
+  }
+  /* Reduced motion: no wipe, only the colour changes (W 05). */
+  html[data-motion="reduced"] .kraefte-slider__flaeche {
+    transition: background-color var(--ui-dauer-flaeche) var(--ui-kurve);
+  }
+
+  /* Stage of the figure: between the name and the card, above the text (the figure stands in front). */
+  [data-force-slider-mode="slider"] .kraefte-slider__buehne {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    z-index: 3;
+    inset-block: 18% 20%;
+    inset-inline: 44% 30%;
+    pointer-events: none;
+  }
+  @media (max-width: 991px) {
+    [data-force-slider-mode="slider"] .kraefte-slider__kraft {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "karte" "text";
+      align-content: end;
+      row-gap: calc(6 * var(--raum));
+    }
+    [data-force-slider-mode="slider"] .kraefte-slider__karte {
+      justify-self: start;
+    }
+    [data-force-slider-mode="slider"] .kraefte-slider__buehne {
+      inset-block: 16% 34%;
+      inset-inline: 56% 4%;
+    }
+  }
+
+  /* figure-stand-in: placeholder of the S1 figure. */
+  .figur {
+    display: grid;
+    justify-items: center;
+    gap: calc(2 * var(--raum));
+    inline-size: min(100%, 15rem);
+  }
+  .figur__koerper {
+    display: grid;
+    place-items: center;
+    inline-size: 64%;
+    aspect-ratio: 3 / 5;
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: 50% / 14%;
+    background-color: var(--fl-erhoben);
+    color: var(--tx-stark);
+    transform: perspective(48rem) rotateY(calc((var(--figur-dreh, 0) + var(--figur-zieh, 0)) * 1deg));
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: auto;
+  }
+  [data-figure-stand-in-armed="true"] .figur__koerper {
+    cursor: grab;
+    outline: var(--linie-staerke) dashed var(--li-rahmen);
+    outline-offset: 6px;
+  }
+  [data-figure-stand-in-drag="true"] .figur__koerper {
+    cursor: grabbing;
+  }
+  .figur__etiketten {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+  }
+  .figur__etikett {
+    grid-area: 1 / 1;
+    display: grid;
+    justify-items: center;
+    gap: var(--raum);
+    padding: calc(3 * var(--raum));
+    background-color: var(--fl-erhoben);
+    visibility: hidden;
+  }
+  .figur__etikett .kraft-marker__q {
+    inline-size: 2rem;
+    block-size: 2rem;
+  }
+  .figur__etikett[data-state="on"],
+  .figur__etikett[data-state="in"] {
+    visibility: visible;
+  }
+  .figur__etikett[data-state="in"] {
+    z-index: 1;
+    clip-path: circle(calc(var(--figur-blende, 0) * 160%) at 50% 66%);
+  }
+  .figur__hinweis {
+    color: var(--tx-leise);
+    text-align: center;
+  }
+
+  /* scene-stand-in: placeholder of the front WebGL canvas (S1) on the S3 probe pages. */
+  .szene {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    align-items: end;
+    justify-items: end;
+    padding: calc(6 * var(--raum)) calc(6 * var(--raum)) calc(20 * var(--raum));
+    pointer-events: none;
+  }
+  .szene__form {
+    display: grid;
+    place-items: center;
+    inline-size: 8rem;
+    aspect-ratio: 1;
+    border: 2px solid var(--ak-marke);
+    border-radius: var(--radius-karte);
+    background-color: color-mix(in srgb, var(--ak-marke) 22%, transparent);
+    color: var(--tx-stark);
+    rotate: calc(var(--szene-dreh, 0) * 1deg);
+  }
+  .szene__name {
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+  .szene__name[data-state="on"] {
+    visibility: visible;
+  }
+  [data-scene-stand-in-state="leer"] .szene__form {
+    visibility: hidden;
+  }
+  [data-scene-stand-in-state="eingefroren"] .szene__form {
+    border-style: dashed;
+  }
+}
