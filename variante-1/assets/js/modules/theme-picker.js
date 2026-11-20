@@ -1,8 +1,10 @@
 /**
- * theme-picker: review tool of the probe page (PLAN 7 swap test). Not part of delivered pages.
- * Switches the CI (data-ci on <html>), forces reduced motion at runtime, replays all entrances and
- * rehearses a page change (page-out queue, pause, page-in queue).
- * Initial CI: ?ci=<name> in the URL, else the last choice of this browser (localStorage, optional).
+ * theme-picker: review tool of the probe pages. Not part of delivered pages.
+ * Forces reduced motion at runtime, replays all entrances and rehearses a page change (page-out queue,
+ * pause, page-in queue). Switches the CI (data-ci on <html>) when the form offers a choice
+ * (radio inputs name="ci"); with rohbau as the only CI the pages offer none. The choice returns with a CI
+ * theme (CONTRACT 4.6). Initial CI: ?ci=<name> in the URL, else the last choice of this browser
+ * (localStorage, optional); names outside core.CIS are ignored.
  */
 import { core } from '../core/core.js';
 

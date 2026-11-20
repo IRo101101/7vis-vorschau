@@ -2,7 +2,9 @@
 
 /*
  * Theme "rohbau": the neutral shell (PLAN 7). Grey palette, system fonts, sizes and spacing of the
- * reference (IM 16) so the mechanics can be judged without any CI. Default until stage 6.
+ * reference (IM 16) so the mechanics can be judged without any CI. The default and, since the owner's
+ * decision of 20.11.2026, the only theme; the corporate identity follows later as one more theme file with
+ * the same levels 1 to 3 (CONTRACT 4).
  * Selected by <html data-ci="rohbau">; also applies when a page carries no data-ci at all.
  */
 @layer tokens {

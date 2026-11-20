@@ -117,14 +117,13 @@
   [data-scene-still][data-scene-live] {
     visibility: hidden;
   }
-  /* One still per CI; only the one of the current CI is displayed (lazy, so only that one loads). */
+  /* One still per CI; only the one of the current CI is displayed (lazy, so only that one loads). Rohbau is
+     the only CI today; a CI theme adds its still and its pair of selectors here. */
   [data-still-ci] {
     display: none;
   }
   :root:not([data-ci]) [data-still-ci="rohbau"],
-  [data-ci="rohbau"] [data-still-ci="rohbau"],
-  [data-ci="7vis-0.2"] [data-still-ci="7vis-0.2"],
-  [data-ci="pruefthema"] [data-still-ci="pruefthema"] {
+  [data-ci="rohbau"] [data-still-ci="rohbau"] {
     display: block;
   }
 
