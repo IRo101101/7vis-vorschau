@@ -917,3 +917,762 @@
     visibility: hidden;
   }
 }
+
+/*
+ * Stage 4 (home page bottom): mechanics of carousel, image swap and principle row, and the footer that every
+ * page shares (Drehbuch 2.3). Page layout of the home sections lives in pages/start.css.
+ */
+@layer modules {
+  /* carousel (IM 11.8). Without the module, or with fewer cards than the carousel needs, a grid. */
+  .karussell__fenster {
+    overflow: clip;
+  }
+  .karussell__reihe {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    gap: calc(8 * var(--raum)) var(--raster-luecke);
+    margin: 0;
+    padding: 0;
+  }
+  /* The row breaks out of the right page margin so cards run to the screen edge (IM 11.8). Card width:
+     (content width - peek - gaps) / visible cards; 100cqi is the content width of the section. */
+  [data-carousel-mode="karussell"] .karussell__fenster {
+    margin-inline-end: calc(-1 * var(--rand-seite));
+    touch-action: pan-y pinch-zoom;
+  }
+  [data-carousel-mode="karussell"] .karussell__reihe {
+    position: relative;
+    display: flex;
+    gap: var(--karussell-luecke);
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  [data-carousel-mode="karussell"] .karussell__karte {
+    flex: 0 0 calc((100cqi - var(--karussell-anschnitt) - (var(--karussell-sichtbar) - 1) * var(--karussell-luecke)) / var(--karussell-sichtbar));
+    min-inline-size: 0;
+  }
+  [data-carousel-mode="karussell"] :is(a, img) {
+    -webkit-user-drag: none;
+  }
+  [data-carousel-drag] .karussell__fenster {
+    cursor: grabbing;
+  }
+  .karussell__steuerung {
+    display: none;
+  }
+  [data-carousel-mode="karussell"] .karussell__steuerung {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: calc(3 * var(--raum));
+    margin-block-start: calc(10 * var(--raum));
+  }
+  .karussell__schritt {
+    display: inline-grid;
+    place-items: center;
+    inline-size: var(--knopf-hoehe);
+    block-size: var(--knopf-hoehe);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-knopf);
+    background-color: transparent;
+    color: var(--tx-stark);
+    cursor: pointer;
+  }
+  .karussell__schritt::before {
+    content: "";
+    inline-size: 9px;
+    block-size: 9px;
+    border-block-start: 2px solid currentColor;
+    border-inline-start: 2px solid currentColor;
+    rotate: -45deg;
+    translate: 2px 0;
+  }
+  .karussell__schritt--vor::before {
+    rotate: 135deg;
+    translate: -2px 0;
+  }
+  .karussell__schritt[aria-disabled="true"] {
+    opacity: var(--deckkraft-gesperrt);
+    cursor: default;
+  }
+  /* The small scale of strokes between the buttons: decoration with a fading mask (IM 11.8). */
+  .karussell__skala {
+    inline-size: calc(12 * var(--raum));
+    block-size: calc(4 * var(--raum));
+    background-image: repeating-linear-gradient(to right, currentColor 0 1px, transparent 1px calc(4 * var(--raum)));
+    -webkit-mask-image: linear-gradient(to right, transparent, currentColor 30%, currentColor 70%, transparent);
+    mask-image: linear-gradient(to right, transparent, currentColor 30%, currentColor 70%, transparent);
+    opacity: 0.7;
+  }
+
+  /* image-swap: the second image is hidden without the module; the module keeps it at 0 until hover. */
+  [data-image-swap-second] {
+    opacity: 0;
+  }
+  [data-image-swap="bereit"] [data-image-swap-second] {
+    opacity: 1;
+  }
+
+  /* principle-row (IM 11.10): a row from the module on; at rest only the active principle shows its image and
+     statement, the others their number and title. */
+  [data-principle-row-mode="reihe"] [data-principle-row-track] {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  [data-principle-row-mode="reihe"] [data-principle-row-state="off"] :is([data-principle-row-image], [data-principle-row-text]) {
+    visibility: hidden;
+  }
+  [data-principle-row-image] {
+    position: relative;
+    overflow: clip;
+  }
+  [data-principle-row-autoplay="aus"] [data-principle-row-pause] {
+    display: none;
+  }
+
+  /* Visibly marked placeholder of the study (Drehbuch [Platzhalter]). */
+  .platzhalter {
+    padding-inline: var(--raum);
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    border-radius: var(--radius-feld);
+    font-family: var(--schrift-mono);
+  }
+
+  /* Footer (Drehbuch 2.3, IM 7): one screen high; link columns at the top right, the large word mark with the
+     claim at the bottom, the copyright line below. No e-mail field, no social links, no lens scene. */
+  .fuss {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(calc(12 * var(--raum)), 1fr) auto auto;
+    grid-template-areas: "spalten" "." "marke" "zeile";
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    padding: calc(var(--kopf-hoehe) + 4 * var(--raum)) var(--rand-seite) calc(5 * var(--raum));
+    background-color: var(--fl-abgesenkt);
+    container-type: inline-size;
+  }
+  .fuss__spalten {
+    grid-area: spalten;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 13rem));
+    justify-content: end;
+    gap: calc(8 * var(--raum)) calc(6 * var(--raum));
+  }
+  .fuss__titel {
+    margin-block-end: calc(3 * var(--raum));
+    font-family: var(--schrift-zweit);
+    font-size: var(--groesse-titel-sm);
+    line-height: var(--zeilenhoehe-titel);
+    color: var(--tx-stark);
+  }
+  .fuss__liste {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+  }
+  .fuss__liste a,
+  .fuss__sprache {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: calc(8 * var(--raum));
+    color: var(--tx-normal);
+    text-decoration: none;
+  }
+  .fuss__liste a:hover {
+    color: var(--tx-stark);
+    text-decoration: underline;
+  }
+  .fuss__sprache[aria-current="true"] {
+    color: var(--tx-stark);
+    font-weight: var(--gewicht-stark);
+  }
+  .fuss__sprache--inaktiv {
+    color: var(--tx-leise);
+  }
+  .fuss__marke {
+    grid-area: marke;
+    display: grid;
+    gap: calc(3 * var(--raum));
+    color: var(--tx-stark);
+  }
+  .fuss__wortmarke {
+    inline-size: 100%;
+  }
+  .fuss__claim {
+    font-family: var(--schrift-titel);
+    font-weight: var(--gewicht-titel);
+    font-size: var(--groesse-titel-md);
+    line-height: var(--zeilenhoehe-titel);
+    letter-spacing: var(--laufweite-titel);
+  }
+  .fuss__zeile {
+    grid-area: zeile;
+    margin-block-start: calc(6 * var(--raum));
+  }
+  @media (max-width: 767px) {
+    .fuss__spalten {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      justify-content: stretch;
+    }
+  }
+}
+
+/*
+ * Stage 5 (shop route), appended: cart panel and cart lines (shell), quantity field, currency switch,
+ * product stage (product-stack), buy box column (info-slide, buy-box), info accordion, gallery.
+ * Page layouts live in pages/werkzeuge.css, produkt.css, kraefte.css, text.css and shop.css.
+ */
+@layer modules {
+  /* ---------- cart-panel (IS 5, IM 11.12): 1 gap from top, right and bottom, gap x 29 wide ---------- */
+  .korb {
+    --korb-rand: calc(4 * var(--raum));
+  }
+  .korb__schutz {
+    position: fixed;
+    inset: 0;
+    z-index: 7990;
+    display: none;
+  }
+  .korb[data-cart-panel-state="oeffnet"] .korb__schutz,
+  .korb[data-cart-panel-state="offen"] .korb__schutz {
+    display: block;
+  }
+  .korb__panel {
+    position: fixed;
+    inset-block: var(--korb-rand);
+    inset-inline-end: var(--korb-rand);
+    z-index: 8000;
+    display: flex;
+    flex-direction: column;
+    gap: calc(3 * var(--raum));
+    inline-size: min(calc(29 * var(--korb-rand)), calc(100vw - 2 * var(--korb-rand)));
+    padding: calc(5 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-karte);
+    background-color: var(--fl-erhoben);
+    box-shadow: var(--schatten-schwebend);
+    overflow: hidden;
+  }
+  .korb[data-cart-panel-state="zu"] .korb__panel {
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .korb__panel:focus {
+    outline: none;
+  }
+  .korb__panel:focus-visible {
+    outline: var(--fokus-breite) solid var(--ak-marke);
+    outline-offset: -4px;
+  }
+  @media (max-width: 479px) {
+    .korb__panel {
+      inset: 0;
+      inline-size: auto;
+      border: 0;
+      border-radius: 0;
+    }
+  }
+  .korb__kopf {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: calc(3 * var(--raum));
+  }
+  .korb__titel {
+    max-inline-size: 18ch;
+  }
+  .korb__schliessen {
+    flex: none;
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(2 * var(--raum));
+    border: 0;
+    background: none;
+    color: var(--tx-stark);
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+  }
+  .korb__status:empty,
+  .korb__status:not(:has(> :not([hidden]))) {
+    display: none;
+  }
+  .korb__liste {
+    flex: 1 1 auto;
+    list-style: none;
+    display: grid;
+    align-content: start;
+    gap: calc(2 * var(--raum));
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    min-block-size: 0;
+  }
+  .korb__leer {
+    flex: 1 1 auto;
+    display: grid;
+    align-content: end;
+  }
+  .korb__summe {
+    display: grid;
+    gap: calc(3 * var(--raum));
+  }
+  .korb__waehrung {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(3 * var(--raum));
+  }
+  .korb__kasse {
+    inline-size: 100%;
+  }
+
+  /* Cart line (panel and /warenkorb), the reference's row: picture, name, variant, price, quantity, remove. */
+  .zeile {
+    display: grid;
+    grid-template-columns: calc(18 * var(--raum)) minmax(0, 1fr) auto;
+    gap: calc(3 * var(--raum));
+    padding: calc(2 * var(--raum));
+    border-radius: var(--radius-karte);
+    background-color: var(--fl-abgesenkt);
+  }
+  .zeile__bild {
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    aspect-ratio: 4 / 5;
+    padding: var(--raum);
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    border-radius: calc(var(--radius-karte) / 2);
+    background-color: var(--fl-grund);
+  }
+  .zeile__bild .marke-muster {
+    padding: 0 2px;
+    font-size: 0.5625rem;
+    letter-spacing: 0;
+  }
+  .zeile__text {
+    display: grid;
+    align-content: start;
+    gap: calc(var(--raum) / 2);
+    min-inline-size: 0;
+  }
+  .zeile__name a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: var(--gewicht-stark);
+  }
+  .zeile__name a:hover {
+    text-decoration: underline;
+  }
+  .zeile__hinweis {
+    color: var(--sg-stop);
+    font-weight: var(--gewicht-stark);
+  }
+  .zeile__aktionen {
+    display: grid;
+    justify-items: end;
+    align-content: space-between;
+    gap: calc(2 * var(--raum));
+  }
+  .zeile__preis {
+    font-weight: var(--gewicht-stark);
+  }
+  .zeile__entfernen {
+    min-block-size: calc(8 * var(--raum));
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--tx-leise);
+    font: inherit;
+    font-size: var(--groesse-klein);
+    cursor: pointer;
+  }
+  .zeile__entfernen:hover {
+    color: var(--tx-stark);
+    text-decoration: underline;
+  }
+  .zeile[data-cart-line-state="ausverkauft"],
+  .zeile[data-cart-line-state="bestand"] {
+    outline: var(--linie-staerke) solid var(--sg-stop);
+  }
+
+  /* ---------- qty-select (IS 6): the real select lies transparent over its own display ---------- */
+  .menge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: calc(2 * var(--raum));
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(8 * var(--raum)) 0 calc(3 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-feld);
+    background-color: var(--fl-erhoben);
+    color: var(--tx-stark);
+    cursor: pointer;
+  }
+  .menge::after {
+    content: "";
+    position: absolute;
+    inset-inline-end: calc(3 * var(--raum));
+    inset-block-start: 50%;
+    inline-size: 7px;
+    block-size: 7px;
+    border-inline-end: 1.5px solid currentColor;
+    border-block-end: 1.5px solid currentColor;
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+  .menge__etikett {
+    color: var(--tx-leise);
+  }
+  .menge__wert {
+    display: none;
+  }
+  .menge select {
+    min-block-size: calc(var(--knopf-hoehe) - 2px);
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: max(16px, var(--groesse-text));
+    cursor: pointer;
+  }
+  .menge[data-qty-select="live"] .menge__wert {
+    display: inline;
+  }
+  .menge[data-qty-select="live"] select {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    opacity: 0;
+  }
+  .menge:focus-within {
+    outline: var(--fokus-breite) solid var(--ak-marke);
+    outline-offset: 2px;
+  }
+  .menge--klein {
+    min-block-size: calc(9 * var(--raum));
+  }
+
+  /* ---------- currency-switch ---------- */
+  .waehrung {
+    display: inline-flex;
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-feld);
+    overflow: hidden;
+  }
+  .waehrung button {
+    min-inline-size: calc(12 * var(--raum));
+    min-block-size: calc(9 * var(--raum));
+    padding: 0 calc(2 * var(--raum));
+    border: 0;
+    background-color: transparent;
+    color: var(--tx-normal);
+    font: inherit;
+    font-size: var(--groesse-klein);
+    cursor: pointer;
+  }
+  .waehrung button[aria-pressed="true"] {
+    background-color: var(--ak-marke);
+    color: var(--tx-auf-marke);
+  }
+
+  /* ---------- product-stack (IS 6, IM 11): screen-high sections, the next one revealed from the bottom ---------- */
+  .stapel {
+    position: relative;
+  }
+  .stapel__abschnitt {
+    position: relative;
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    overflow: clip;
+  }
+  .stapel__abschnitt--b {
+    background-color: var(--fl-erhoben);
+  }
+  .stapel__abschnitt--c {
+    background-color: var(--fl-abgesenkt);
+  }
+  .stapel__karte,
+  .stapel__hinweis {
+    display: none;
+  }
+  .stapel[data-product-stack-state="buehne"] {
+    block-size: calc((var(--stack-n, 3) + var(--stack-hold, 0)) * 100vh);
+    block-size: calc((var(--stack-n, 3) + var(--stack-hold, 0)) * 100svh);
+  }
+  .stapel[data-product-stack-state="buehne"] .stapel__bahn {
+    position: sticky;
+    inset-block-start: 0;
+    block-size: 100vh;
+    block-size: 100svh;
+    overflow: clip;
+  }
+  .stapel[data-product-stack-state="buehne"] .stapel__abschnitt {
+    position: absolute;
+    inset: 0;
+    min-block-size: 0;
+    /* Each section is its own layer: a later section covers everything of an earlier one. */
+    isolation: isolate;
+    background-color: var(--fl-grund);
+  }
+  .stapel[data-product-stack-state="buehne"] .stapel__abschnitt--b {
+    background-color: var(--fl-erhoben);
+  }
+  .stapel[data-product-stack-state="buehne"] .stapel__abschnitt--c {
+    background-color: var(--fl-abgesenkt);
+  }
+  .stapel[data-product-stack-state="buehne"] [data-product-stack-image] {
+    will-change: transform;
+  }
+  .stapel[data-product-stack-state="buehne"] .stapel__cta {
+    display: none;
+  }
+  .stapel[data-product-stack-state="buehne"] .stapel__karte {
+    position: absolute;
+    inset-block-end: calc(4 * var(--raum));
+    inset-inline-end: calc(4 * var(--raum));
+    z-index: 5;
+    display: grid;
+    grid-template-columns: calc(20 * var(--raum)) minmax(0, 1fr);
+    grid-template-areas: "bild text" "knopf knopf";
+    gap: calc(3 * var(--raum));
+    inline-size: min(calc(80 * var(--raum)), calc(100% - 8 * var(--raum)));
+    padding: calc(3 * var(--raum));
+  }
+  .stapel[data-product-stack-state="buehne"] .stapel__hinweis {
+    position: absolute;
+    inset-block-end: calc(4 * var(--raum));
+    inset-inline-start: var(--rand-seite);
+    z-index: 5;
+    display: grid;
+    gap: var(--raum);
+    color: var(--tx-stark);
+  }
+  .stapel__kartenbilder {
+    grid-area: bild;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: calc(var(--radius-karte) / 2);
+  }
+  .stapel__kartenbild {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background-color: var(--fl-abgesenkt);
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+  }
+  .stapel__kartenbild img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+  .stapel__kartenbild .marke-muster {
+    position: absolute;
+    inset-block-start: var(--raum);
+    inset-inline-start: var(--raum);
+  }
+  .stapel__kartentext {
+    grid-area: text;
+    display: grid;
+    align-content: space-between;
+    gap: var(--raum);
+    min-inline-size: 0;
+  }
+  .stapel__kartenzeile--name {
+    font-weight: var(--gewicht-stark);
+  }
+  .stapel__fenster {
+    display: block;
+    block-size: calc(1em * var(--zeilenhoehe-text));
+    overflow: hidden;
+  }
+  .stapel__kartenzeile.t-label .stapel__fenster {
+    block-size: calc(1em * var(--zeilenhoehe-label));
+  }
+  .stapel__streifen {
+    display: block;
+  }
+  .stapel__eintrag {
+    display: block;
+    block-size: calc(1em * var(--zeilenhoehe-text));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .stapel__kartenzeile.t-label .stapel__eintrag {
+    block-size: calc(1em * var(--zeilenhoehe-label));
+  }
+  .stapel__knoepfe {
+    grid-area: knopf;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .stapel__knopf {
+    inline-size: 100%;
+  }
+  .stapel__hinweis .stapel__fenster,
+  .stapel__hinweis .stapel__eintrag {
+    block-size: calc(1em * var(--zeilenhoehe-label));
+  }
+  .stapel__hinweis-linie {
+    display: block;
+    inline-size: calc(4 * var(--raum));
+    block-size: var(--linie-staerke);
+    background-color: currentColor;
+  }
+  @media (max-width: 767px) {
+    /* Phones keep the stage on /werkzeuge (reference: only the button stays of the card). */
+    .stapel[data-product-stack-state="buehne"] .stapel__karte {
+      inset-inline: var(--rand-seite);
+      inline-size: auto;
+      grid-template-columns: 1fr;
+      grid-template-areas: "knopf";
+      padding: 0;
+      border: 0;
+      background: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    .stapel[data-product-stack-state="buehne"] .stapel__kartenbilder,
+    .stapel[data-product-stack-state="buehne"] .stapel__kartentext,
+    .stapel[data-product-stack-state="buehne"] .stapel__hinweis {
+      display: none;
+    }
+  }
+
+  /* ---------- info-slide (IS 6 pdp-info): the buy box column floats right over the stage ---------- */
+  .spalte {
+    position: relative;
+    z-index: 6;
+    padding: calc(4 * var(--raum)) var(--rand-seite);
+  }
+  .spalte__innen {
+    display: grid;
+    gap: calc(3 * var(--raum));
+  }
+  @media (min-width: 768px) {
+    .stapel[data-product-stack-state="buehne"] .spalte {
+      position: absolute;
+      inset-block: 0;
+      inset-inline-end: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      inline-size: min(calc(29 * 4 * var(--raum)), 46vw);
+      padding: calc(var(--kopf-hoehe) + 2 * var(--raum)) calc(4 * var(--raum)) calc(4 * var(--raum));
+      pointer-events: none;
+    }
+    .stapel[data-product-stack-state="buehne"] .spalte__innen {
+      max-block-size: 100%;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      pointer-events: auto;
+      scrollbar-width: thin;
+    }
+  }
+  .infobox {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    padding: calc(4 * var(--raum));
+    border-radius: var(--radius-karte);
+    background-color: color-mix(in srgb, var(--fl-erhoben) var(--karte-deckkraft), transparent);
+    -webkit-backdrop-filter: blur(var(--karte-weichzeichner));
+    backdrop-filter: blur(var(--karte-weichzeichner));
+    color: var(--tx-stark);
+  }
+  .infobox__hinweis {
+    color: var(--tx-normal);
+  }
+
+  /* ---------- accordion of the info box (IS 6), own look; the questions of stage 4 style their own ---------- */
+  .akkordeon {
+    display: grid;
+  }
+  .akkordeon__eintrag {
+    border-block-end: var(--linie-staerke) solid var(--li-linie);
+  }
+  .akkordeon__knopf {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(3 * var(--raum));
+    inline-size: 100%;
+    min-block-size: calc(12 * var(--raum));
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--tx-stark);
+    font-family: var(--schrift-zweit);
+    font-size: var(--groesse-titel-sm);
+    text-align: start;
+    cursor: pointer;
+  }
+  .akkordeon__zeichen {
+    position: relative;
+    flex: none;
+    inline-size: 14px;
+    block-size: 14px;
+  }
+  .akkordeon__zeichen > span {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 50%;
+    block-size: 1.5px;
+    margin-block-start: -0.75px;
+    background-color: currentColor;
+  }
+  /* The vertical stroke is drawn upright; the module turns it by 90 degrees when the item opens (minus). */
+  .akkordeon__zeichen > span + span {
+    inset-block: 0;
+    inset-inline: 50% auto;
+    inline-size: 1.5px;
+    block-size: auto;
+    margin: 0 0 0 -0.75px;
+  }
+  .akkordeon__inhalt {
+    padding-block-end: calc(4 * var(--raum));
+  }
+
+  /* ---------- gallery (IM 11): three surfaces change places during the hold ---------- */
+  .galerie__worte {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .galerie__flaeche {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: calc(3 * var(--raum));
+  }
+  .galerie__bild {
+    aspect-ratio: 4 / 5;
+    margin: 0;
+  }
+  [data-gallery-mode="band"] .galerie__flaeche {
+    position: relative;
+    display: block;
+  }
+  [data-gallery-mode="band"] .galerie__bild {
+    position: absolute;
+    inset-inline-start: calc(var(--gx, 0) * 1%);
+    inset-block-start: calc(var(--gy, 0) * 1%);
+    inline-size: calc(var(--gw, 30) * 1%);
+    block-size: calc(var(--gh, 30) * 1%);
+    aspect-ratio: auto;
+  }
+  [data-gallery-state] {
+    transition: opacity var(--ui-dauer-zustand) var(--ui-kurve);
+  }
+  [data-gallery-state="aus"] {
+    opacity: 0.5;
+  }
+}

@@ -1,0 +1,207 @@
+@layer tokens, base, modules, page;
+
+/*
+ * /werkzeuge (stage 5): stage of the own tools (product stack, IS 3.2) and the catalogue by force with filter
+ * and sort. Page layer: layout only, scoped by the view. Stage after refmedia v1 products: giant name at the
+ * top left, picture in the middle, floating card at the bottom right, scroll hint at the bottom left.
+ */
+@layer page {
+  [data-view].seite--werkzeuge .buehne-abschnitt {
+    display: grid;
+    align-content: start;
+    padding-block-start: calc(var(--kopf-hoehe) + 2 * var(--raum));
+  }
+  [data-view].seite--werkzeuge .buehne-abschnitt__text {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    justify-items: start;
+    gap: calc(3 * var(--raum));
+    max-inline-size: min(100%, 64rem);
+  }
+  [data-view].seite--werkzeuge .buehne-abschnitt__titel {
+    --titel-zeichen: 13;
+    max-inline-size: 100%;
+  }
+  [data-view].seite--werkzeuge .buehne-abschnitt__bild {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 50%;
+    z-index: 1;
+    inline-size: min(34vw, 30rem);
+    aspect-ratio: 4 / 5;
+    margin: 0;
+    translate: -50% 12%;
+  }
+  [data-view].seite--werkzeuge .buehne-abschnitt__bild img,
+  [data-view].seite--werkzeuge .buehne-abschnitt__bild .bildplatz {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+  @media (max-width: 767px) {
+    [data-view].seite--werkzeuge .buehne-abschnitt__bild {
+      inline-size: min(70vw, 20rem);
+      translate: -50% 0;
+      inset-block-end: calc(22 * var(--raum));
+    }
+    [data-view].seite--werkzeuge .stapel:not([data-product-stack-state="buehne"]) .buehne-abschnitt__bild {
+      position: relative;
+      inset: auto;
+      translate: none;
+      margin: calc(6 * var(--raum)) auto 0;
+    }
+  }
+
+  /* ---------- catalogue ---------- */
+  [data-view].seite--werkzeuge .katalog {
+    display: grid;
+    gap: calc(6 * var(--raum));
+  }
+  [data-view].seite--werkzeuge .katalog__kopf {
+    display: grid;
+    gap: calc(4 * var(--raum));
+    max-inline-size: 60rem;
+  }
+  [data-view].seite--werkzeuge .katalog__werkzeug {
+    display: grid;
+    gap: calc(4 * var(--raum));
+    padding-block: calc(4 * var(--raum));
+    border-block: var(--linie-staerke) solid var(--li-linie);
+  }
+  [data-view].seite--werkzeuge .katalog__kraefte {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  [data-view].seite--werkzeuge .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(2 * var(--raum));
+  }
+  [data-view].seite--werkzeuge .chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: calc(10 * var(--raum));
+    padding: 0 calc(3 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-feld);
+    cursor: pointer;
+  }
+  [data-view].seite--werkzeuge .chip input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+  }
+  [data-view].seite--werkzeuge .chip:has(input:checked) {
+    background-color: var(--ak-marke);
+    border-color: var(--ak-marke);
+    color: var(--tx-auf-marke);
+  }
+  [data-view].seite--werkzeuge .chip:has(input:focus-visible) {
+    outline: var(--fokus-breite) solid var(--ak-marke);
+    outline-offset: 2px;
+  }
+  [data-view].seite--werkzeuge .katalog__optionen {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: calc(3 * var(--raum)) calc(6 * var(--raum));
+  }
+  [data-view].seite--werkzeuge .katalog__sortierung {
+    min-inline-size: 12rem;
+  }
+  [data-view].seite--werkzeuge .katalog__waehrung {
+    display: grid;
+    gap: var(--raum);
+  }
+  [data-view].seite--werkzeuge .katalog__gruppen {
+    display: grid;
+    gap: calc(14 * var(--raum));
+  }
+  [data-view].seite--werkzeuge .katalog__gruppe {
+    display: grid;
+    gap: calc(4 * var(--raum));
+  }
+  [data-view].seite--werkzeuge .katalog__gruppenkopf {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: calc(2 * var(--raum)) calc(5 * var(--raum));
+  }
+  [data-view].seite--werkzeuge .katalog__raster {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: calc(8 * var(--raum)) calc(2 * var(--raum));
+    margin: 0;
+    padding: 0;
+  }
+  [data-view].seite--werkzeuge .produktkarte__verweis {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    color: inherit;
+    text-decoration: none;
+  }
+  [data-view].seite--werkzeuge .produktkarte__bild {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background-color: var(--fl-abgesenkt);
+    border-radius: calc(var(--radius-karte) / 2);
+  }
+  [data-view].seite--werkzeuge .produktkarte__bild img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+  [data-view].seite--werkzeuge .produktkarte__bild .marke-muster {
+    position: absolute;
+    inset-block-start: calc(2 * var(--raum));
+    inset-inline-start: calc(2 * var(--raum));
+  }
+  [data-view].seite--werkzeuge .produktkarte__zeile {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: calc(2 * var(--raum));
+    padding-inline: calc(2 * var(--raum));
+  }
+  [data-view].seite--werkzeuge .produktkarte__name {
+    font-weight: var(--gewicht-stark);
+  }
+  [data-view].seite--werkzeuge .produktkarte__verweis:hover .produktkarte__name {
+    text-decoration: underline;
+  }
+  [data-view].seite--werkzeuge .produktkarte__kurz,
+  [data-view].seite--werkzeuge .produktkarte__status {
+    padding-inline: calc(2 * var(--raum));
+  }
+  [data-view].seite--werkzeuge .produktkarte[data-status="ausverkauft"] .produktkarte__bild {
+    opacity: 0.6;
+  }
+  [data-view].seite--werkzeuge .produktkarte[data-status="ausverkauft"] .produktkarte__status {
+    color: var(--sg-stop);
+  }
+  @media (max-width: 767px) {
+    /* Phones: two cards per row (a catalogue of a hundred cards in one column is endless), name above price. */
+    [data-view].seite--werkzeuge .katalog__raster {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: calc(6 * var(--raum)) calc(2 * var(--raum));
+    }
+    [data-view].seite--werkzeuge .produktkarte__zeile {
+      flex-direction: column;
+      gap: var(--raum);
+    }
+    [data-view].seite--werkzeuge .produktkarte__kurz {
+      display: none;
+    }
+  }
+}

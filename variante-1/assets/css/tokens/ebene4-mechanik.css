@@ -48,5 +48,11 @@
 
     /* Anti-flash guard: hard CSS limit after which guarded text shows even if no script ever ran. */
     --guard-limit: 2.5s;
+
+    /* Stage 4: other questions dim under the pointer (IM 11.13, F14: 0.55 in 0.3 s); carousel buttons at the
+       end of the row (IM 11.8: 0.5). */
+    --deckkraft-gedimmt: 0.55;
+    --dauer-gedimmt: 0.3s;
+    --deckkraft-gesperrt: 0.5;
   }
 }

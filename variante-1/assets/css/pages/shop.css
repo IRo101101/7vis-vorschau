@@ -1,0 +1,373 @@
+@layer tokens, base, modules, page;
+
+/*
+ * Shop pages of stage 5: /warenkorb, /kasse, /bestaetigung, /anmelden, /konto and the sample payment page.
+ * Page layer: layout only, scoped by the view. Checkout after refmedia v1 checkout: form on the left, the
+ * order summary on the right on a lowered surface; on phones the summary folds into a bar at the top.
+ */
+@layer page {
+  [data-view].seite--shop .shopseite,
+  [data-view].seite--zahlung .zahlung {
+    display: grid;
+    gap: calc(8 * var(--raum));
+    min-block-size: 70vh;
+    align-content: start;
+  }
+  [data-view].seite--shop .shopseite__kopf {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    justify-items: start;
+    max-inline-size: 60rem;
+  }
+  [data-view].seite--shop .shopseite__status:not(:has(> :not([hidden]))) {
+    display: none;
+  }
+  [data-view].seite--shop .shopseite__raster,
+  [data-view].seite--shop .bestaetigung {
+    display: grid;
+    gap: calc(8 * var(--raum));
+    align-items: start;
+  }
+  @media (min-width: 992px) {
+    [data-view].seite--shop .shopseite__raster,
+    [data-view].seite--shop .bestaetigung {
+      grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 1fr);
+    }
+  }
+  [data-view].seite--shop .shopseite__liste {
+    list-style: none;
+    display: grid;
+    gap: calc(2 * var(--raum));
+    margin: 0;
+    padding: 0;
+  }
+  [data-view].seite--shop .shopseite__summe,
+  [data-view].seite--shop .bestaetigung__summe {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    padding: calc(5 * var(--raum));
+  }
+  [data-view].seite--shop .shopseite__waehrung {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(3 * var(--raum));
+  }
+  [data-view].seite--shop .shopseite__weiter {
+    inline-size: 100%;
+  }
+  [data-view].seite--shop .shopseite__leer {
+    display: grid;
+    gap: calc(4 * var(--raum));
+    justify-items: start;
+  }
+
+  /* ---------- checkout ---------- */
+  [data-view].seite--shop .kasse__raster {
+    display: grid;
+    gap: calc(8 * var(--raum));
+    align-items: start;
+  }
+  [data-view].seite--shop .kasse__formular {
+    display: grid;
+    gap: calc(10 * var(--raum));
+    max-inline-size: 38rem;
+  }
+  [data-view].seite--shop .kasse__teil {
+    display: grid;
+    gap: calc(3 * var(--raum));
+  }
+  [data-view].seite--shop .kasse__teilkopf {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: calc(2 * var(--raum));
+  }
+  [data-view].seite--shop .kasse__teilkopf > p {
+    flex-basis: 100%;
+  }
+  [data-view].seite--shop .kasse__warten {
+    padding: calc(4 * var(--raum));
+    border-radius: var(--radius-karte);
+    background-color: var(--fl-abgesenkt);
+    color: var(--tx-normal);
+  }
+  [data-view].seite--shop .kasse__versand,
+  [data-view].seite--shop .kasse__rechnung {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  [data-view].seite--shop .kasse__wahlen {
+    display: grid;
+    gap: calc(2 * var(--raum));
+  }
+  [data-view].seite--shop .wahl--kachel {
+    align-items: center;
+    padding: calc(3 * var(--raum)) calc(4 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-karte);
+  }
+  [data-view].seite--shop .wahl--kachel:has(input:checked),
+  [data-view].seite--shop .wahl--fest {
+    border-color: var(--ak-marke);
+    box-shadow: inset 0 0 0 1px var(--ak-marke);
+  }
+  [data-view].seite--shop .wahl__text {
+    display: grid;
+    flex: 1 1 auto;
+    gap: calc(var(--raum) / 2);
+  }
+  [data-view].seite--shop .wahl__titel {
+    font-weight: var(--gewicht-stark);
+  }
+  [data-view].seite--shop .kasse__schritte {
+    display: grid;
+    gap: var(--raum);
+    margin: 0;
+    padding-inline-start: calc(5 * var(--raum));
+  }
+  [data-view].seite--shop .kasse__senden {
+    inline-size: 100%;
+    min-block-size: calc(var(--knopf-hoehe) + 4px);
+  }
+  [data-view].seite--shop .kasse__muster {
+    color: var(--tx-normal);
+  }
+  [data-view].seite--shop .kasse__uebersicht {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    padding: calc(5 * var(--raum));
+    border-radius: var(--radius-karte);
+    background-color: var(--fl-abgesenkt);
+  }
+  [data-view].seite--shop .kasse__uebersicht-inhalt {
+    display: grid;
+    gap: calc(4 * var(--raum));
+  }
+  [data-view].seite--shop .kasse__umschalter {
+    display: none;
+  }
+  [data-view].seite--shop .kasse__zeilen {
+    list-style: none;
+    display: grid;
+    gap: calc(3 * var(--raum));
+    margin: 0;
+    padding: 0;
+  }
+  [data-view].seite--shop .kasse-zeile {
+    display: grid;
+    grid-template-columns: calc(14 * var(--raum)) minmax(0, 1fr) auto;
+    gap: calc(3 * var(--raum));
+    align-items: start;
+  }
+  [data-view].seite--shop .kasse-zeile--knapp {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+  [data-view].seite--shop .kasse-zeile__bild {
+    display: grid;
+    align-content: start;
+    aspect-ratio: 4 / 5;
+    padding: calc(var(--raum) / 2);
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    border-radius: calc(var(--radius-karte) / 2);
+    background-color: var(--fl-grund);
+  }
+  [data-view].seite--shop .kasse-zeile__bild .marke-muster {
+    padding: 0 2px;
+    font-size: 0.5625rem;
+    letter-spacing: 0;
+  }
+  [data-view].seite--shop .kasse-zeile__text {
+    display: grid;
+    gap: calc(var(--raum) / 2);
+  }
+  [data-view].seite--shop .kasse-zeile__name {
+    font-weight: var(--gewicht-stark);
+  }
+  [data-view].seite--shop .kasse__code-zeile {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: calc(2 * var(--raum));
+  }
+  [data-view].seite--shop .summen__zeile--klein {
+    font-size: var(--groesse-klein);
+    border-block-start: 0;
+    padding-block-start: 0;
+  }
+  @media (min-width: 992px) {
+    [data-view].seite--shop .kasse__raster {
+      grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.8fr);
+    }
+    [data-view].seite--shop .kasse__uebersicht {
+      grid-column: 2;
+      grid-row: 1;
+      position: sticky;
+      inset-block-start: calc(var(--kopf-hoehe) + 4 * var(--raum));
+    }
+    [data-view].seite--shop .kasse__formular {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+  /* Phones: the summary folds into a bar with the total (reference "Order summary" bar). */
+  @media (max-width: 991px) {
+    html[data-core="live"] [data-view].seite--shop .kasse__umschalter {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      inline-size: 100%;
+      min-block-size: var(--knopf-hoehe);
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--tx-stark);
+      font: inherit;
+      font-weight: var(--gewicht-stark);
+      cursor: pointer;
+    }
+    [data-view].seite--shop .kasse__umschalter > span:first-child::after {
+      content: " +";
+    }
+    [data-view].seite--shop .kasse__umschalter[aria-expanded="true"] > span:first-child::after {
+      content: " −";
+    }
+    html[data-core="live"] [data-view].seite--shop [data-checkout-open="false"] .kasse__uebersicht-inhalt {
+      display: none;
+    }
+  }
+
+  /* ---------- confirmation, sign-in, account ---------- */
+  [data-view].seite--shop .bestaetigung__haupt {
+    display: grid;
+    gap: calc(4 * var(--raum));
+    justify-items: start;
+  }
+  [data-view].seite--shop .bestaetigung__konto {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    justify-items: start;
+    padding: calc(4 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-karte);
+  }
+  [data-view].seite--shop .anmelden {
+    justify-items: center;
+  }
+  [data-view].seite--shop .anmelden__karte {
+    display: grid;
+    gap: calc(5 * var(--raum));
+    inline-size: min(100%, 30rem);
+  }
+  [data-view].seite--shop .anmelden .formular {
+    display: grid;
+    gap: calc(4 * var(--raum));
+  }
+  [data-view].seite--shop .anmelden__zeile {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: calc(2 * var(--raum));
+  }
+  [data-view].seite--shop .anmelden__mehr {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(2 * var(--raum)) calc(6 * var(--raum));
+  }
+  [data-view].seite--shop .anmelden__mehr a,
+  [data-view].seite--shop .anmelden__gast a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--knopf-hoehe);
+  }
+  [data-view].seite--shop .konto__raster {
+    display: grid;
+    gap: calc(8 * var(--raum));
+    align-items: start;
+  }
+  @media (min-width: 992px) {
+    [data-view].seite--shop .konto__raster {
+      grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 1fr);
+    }
+  }
+  [data-view].seite--shop .konto__bestellungen,
+  [data-view].seite--shop .konto__einstellungen {
+    display: grid;
+    gap: calc(4 * var(--raum));
+  }
+  [data-view].seite--shop .konto__einstellungen {
+    padding: calc(5 * var(--raum));
+  }
+  [data-view].seite--shop .konto__liste {
+    list-style: none;
+    display: grid;
+    gap: calc(3 * var(--raum));
+    margin: 0;
+    padding: 0;
+  }
+  [data-view].seite--shop .bestellung {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    padding: calc(4 * var(--raum));
+  }
+  [data-view].seite--shop .bestellung__kopf {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: calc(2 * var(--raum)) calc(4 * var(--raum));
+  }
+  [data-view].seite--shop .bestellung__total {
+    margin-inline-start: auto;
+    font-weight: var(--gewicht-stark);
+  }
+  [data-view].seite--shop .konto__knoepfe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(2 * var(--raum));
+  }
+
+  /* ---------- sample payment page (outside the site) ---------- */
+  [data-view].seite--zahlung .zahlung {
+    justify-items: center;
+    padding-block-start: var(--sektion-luft);
+  }
+  [data-view].seite--zahlung .muster-band {
+    inline-size: min(100%, 34rem);
+  }
+  [data-view].seite--zahlung .zahlung__karte {
+    display: grid;
+    gap: calc(4 * var(--raum));
+    inline-size: min(100%, 34rem);
+    padding: calc(6 * var(--raum));
+  }
+  [data-view].seite--zahlung .zahlung__arten {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: calc(2 * var(--raum));
+  }
+  [data-view].seite--zahlung .zahlung__art {
+    display: grid;
+    place-items: center;
+    min-block-size: calc(14 * var(--raum));
+    padding: var(--raum);
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    border-radius: var(--radius-feld);
+    text-align: center;
+    font-size: var(--groesse-klein);
+  }
+  [data-view].seite--zahlung .zahlung__knoepfe {
+    display: grid;
+    gap: calc(2 * var(--raum));
+  }
+}
+
+/* Phones: long German words in the page titles (Musterbestellung) stay within the width. */
+@layer page {
+  @media (max-width: 479px) {
+    [data-view].seite--shop .shopseite__kopf .t-xl {
+      font-size: var(--groesse-titel-md);
+    }
+  }
+}

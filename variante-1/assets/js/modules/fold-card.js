@@ -25,6 +25,7 @@
 import { splitText } from '../text/split.js';
 import { invertEase } from '../motion/ease.js';
 import { TIMING } from '../motion/curves.js';
+import { inViewport } from '../core/dom.js';
 
 const T = TIMING.foldCard;
 
@@ -71,6 +72,8 @@ export default {
     let width = 0;
     let imageRatio = 0;
     let scheduled = false;
+    // A card far below the fold re-measures at its entrance, not at page-in (see headline.js, stage 4).
+    let stale = false;
 
     const api = {
       play: () => play(),
@@ -230,6 +233,10 @@ export default {
     }
 
     function settle() {
+      if (stale) {
+        stale = false;
+        relayout();
+      }
       if (state !== 'playing' && state !== 'shown') {
         state = 'hidden';
         play();
@@ -262,9 +269,17 @@ export default {
     }
 
     ctx.onIn(() => {
-      relayout();
+      if (state === 'hidden' && !inViewport(el)) stale = true;
+      else relayout();
       if (state !== 'hidden') return;
-      ctx.watchOnce('entrance', el, ({ visible }) => visible && play(), { threshold: opts.threshold, rootMargin: opts.rootMargin });
+      ctx.watchOnce('entrance', el, ({ visible }) => {
+        if (!visible) return;
+        if (stale) {
+          stale = false;
+          relayout();
+        }
+        play();
+      }, { threshold: opts.threshold, rootMargin: opts.rootMargin });
     });
     ctx.onOut(() => exit(), { onlyIfVisible: true });
 

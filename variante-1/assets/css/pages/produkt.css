@@ -1,0 +1,315 @@
+@layer tokens, base, modules, page;
+
+/*
+ * Product pages (stage 5): /pucker and the sample product pages muster-NNN. Page layer: layout only, scoped by
+ * the view ([data-view].seite--produkt). Composition after the reference recordings (refmedia v1 product):
+ * giant name at the top left, the picture in the middle of the stage, the buy box (here also the status box)
+ * floating at the bottom right, the info box sliding in under it; sections 2 and 3 follow in the stage.
+ */
+@layer page {
+  /* ---------- section 1 · hero ---------- */
+  [data-view].seite--produkt .produkt-held {
+    display: grid;
+    align-content: start;
+    padding-block-start: calc(var(--kopf-hoehe) + 2 * var(--raum));
+  }
+  [data-view].seite--produkt .produkt-held__text {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    justify-items: start;
+    gap: calc(3 * var(--raum));
+    max-inline-size: min(100%, 62rem);
+  }
+  [data-view].seite--produkt .produkt-held__titel {
+    --titel-zeichen: 13;
+    max-inline-size: 100%;
+  }
+  [data-view].seite--produkt .produkt-held__titel--pucker {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    margin: 0;
+  }
+  [data-view].seite--produkt .produkt-held__gross {
+    --titel-zeichen: 7;
+    display: block;
+  }
+  [data-view].seite--produkt .produkt-held__zusatz {
+    display: block;
+  }
+  [data-view].seite--produkt .produkt-held__bild {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 50%;
+    z-index: 1;
+    inline-size: min(36vw, 34rem);
+    aspect-ratio: 4 / 5;
+    margin: 0;
+    translate: -50% 18%;
+  }
+  [data-view].seite--produkt .produkt-held__bild img,
+  [data-view].seite--produkt .produkt-held__bild .bildplatz {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  /* ---------- sections 2 and 3 ---------- */
+  [data-view].seite--produkt .produkt-teil {
+    display: grid;
+    align-content: center;
+    padding-block-start: calc(var(--kopf-hoehe) + 4 * var(--raum));
+  }
+  [data-view].seite--produkt .produkt-teil__text {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    justify-items: start;
+    gap: calc(4 * var(--raum));
+    max-inline-size: min(100%, 44rem);
+  }
+  [data-view].seite--produkt .produkt-teil__grund {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    margin: 0;
+    opacity: 0.6;
+  }
+  [data-view].seite--produkt .produkt-teil__grund .bildplatz {
+    border: 0;
+  }
+  [data-view].seite--produkt .produkt-teil__bild {
+    position: absolute;
+    inset-block: 18% 10%;
+    inset-inline-start: 52%;
+    z-index: 0;
+    inline-size: min(22vw, 20rem);
+    margin: 0;
+  }
+  [data-view].seite--produkt .produkt-teil__bild img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+  [data-view].seite--produkt .produkt-ablauf {
+    padding-block-start: calc(var(--kopf-hoehe) + 4 * var(--raum));
+  }
+  [data-view].seite--produkt .galerie {
+    display: grid;
+    gap: calc(6 * var(--raum));
+  }
+  [data-view].seite--produkt .galerie__text {
+    display: grid;
+    align-content: start;
+    gap: calc(3 * var(--raum));
+  }
+  [data-view].seite--produkt .galerie__worte {
+    display: grid;
+    font-family: var(--schrift-titel);
+    font-weight: var(--gewicht-titel);
+  }
+  [data-view].seite--produkt .galerie__absatz {
+    max-inline-size: 28rem;
+  }
+  @media (min-width: 768px) {
+    /* The gallery stands between the text column and the buy box column, as in the reference. */
+    [data-view].seite--produkt .galerie {
+      grid-template-columns: minmax(14rem, 0.8fr) minmax(0, 1.6fr) min(calc(29 * 4 * var(--raum)), 46vw);
+      block-size: calc(100vh - var(--kopf-hoehe) - 8 * var(--raum));
+      block-size: calc(100svh - var(--kopf-hoehe) - 8 * var(--raum));
+    }
+    [data-view].seite--produkt .galerie__absatz {
+      align-self: end;
+    }
+    [data-view].seite--produkt [data-gallery-mode="band"] .galerie__flaeche {
+      block-size: 100%;
+    }
+  }
+
+  /* ---------- buy box (IS 3.3): name, status, short text, variants, quantity and button with the price ---------- */
+  [data-view].seite--produkt .kaufbox,
+  [data-view].seite--produkt .statusbox {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    padding: calc(4 * var(--raum));
+    border-radius: var(--radius-karte);
+  }
+  [data-view].seite--produkt .kaufbox__kopf {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: calc(3 * var(--raum));
+  }
+  [data-view].seite--produkt .kaufbox__name {
+    text-transform: var(--versal-titel);
+  }
+  [data-view].seite--produkt .kaufbox__status[data-status="ausverkauft"] {
+    color: var(--sg-stop);
+  }
+  [data-view].seite--produkt .kaufbox__varianten {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  [data-view].seite--produkt .kaufbox__wahlen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(2 * var(--raum));
+  }
+  [data-view].seite--produkt .variante {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: calc(2 * var(--raum));
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(3 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-feld);
+    cursor: pointer;
+  }
+  [data-view].seite--produkt .variante input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+  }
+  [data-view].seite--produkt .variante:has(input:checked) {
+    border-color: var(--ak-marke);
+    box-shadow: inset 0 0 0 1px var(--ak-marke);
+  }
+  [data-view].seite--produkt .variante:has(input:focus-visible) {
+    outline: var(--fokus-breite) solid var(--ak-marke);
+    outline-offset: 2px;
+  }
+  [data-view].seite--produkt .variante--aus {
+    color: var(--tx-leise);
+    cursor: not-allowed;
+  }
+  [data-view].seite--produkt .variante--aus .variante__name {
+    text-decoration: line-through;
+  }
+  [data-view].seite--produkt .kaufbox__zeile {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: calc(2 * var(--raum));
+  }
+  [data-view].seite--produkt .kaufbox__knopf {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(3 * var(--raum));
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(4 * var(--raum));
+    border: 0;
+    border-radius: var(--radius-knopf);
+    background-color: var(--ak-marke);
+    color: var(--tx-auf-marke);
+    font: inherit;
+    font-weight: var(--gewicht-stark);
+    cursor: pointer;
+  }
+  [data-view].seite--produkt .kaufbox__knopf:disabled,
+  [data-view].seite--produkt .kaufbox__knopf[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  [data-view].seite--produkt .kaufbox__knopf[aria-busy="true"] {
+    cursor: progress;
+  }
+  [data-view].seite--produkt .kaufbox__meldung:not(:has(> :not([hidden]))) {
+    display: none;
+  }
+  [data-view].seite--produkt .kaufbox__meldung [data-buy-box-msg]:not([data-buy-box-msg="ok"]) {
+    color: var(--sg-stop);
+    font-weight: var(--gewicht-stark);
+  }
+  [data-view].seite--produkt .kaufbox__fuss {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(2 * var(--raum));
+  }
+
+  /* ---------- status box of the Pucker (Drehbuch P4: in place of the buy box) ---------- */
+  [data-view].seite--produkt .statusbox__kopf {
+    display: grid;
+    grid-template-columns: calc(18 * var(--raum)) minmax(0, 1fr);
+    gap: calc(3 * var(--raum));
+    align-items: start;
+  }
+  [data-view].seite--produkt .statusbox__bild {
+    aspect-ratio: 1;
+    min-block-size: 0;
+  }
+  [data-view].seite--produkt .statusbox__titel {
+    display: grid;
+    gap: var(--raum);
+  }
+  [data-view].seite--produkt .statusbox__status {
+    color: var(--tx-stark);
+  }
+  [data-view].seite--produkt .statusbox__knoepfe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(2 * var(--raum));
+  }
+
+  /* ---------- P6 principles and P7 contact ---------- */
+  [data-view].seite--produkt .pucker-prinzipien__kopf,
+  [data-view].seite--produkt .pucker-kontakt {
+    display: grid;
+    gap: calc(4 * var(--raum));
+    justify-items: start;
+  }
+  [data-view].seite--produkt .pucker-prinzipien__liste {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+    gap: calc(8 * var(--raum)) calc(5 * var(--raum));
+    margin: calc(10 * var(--raum)) 0 0;
+    padding: 0;
+  }
+  [data-view].seite--produkt .prinzip {
+    display: grid;
+    align-content: start;
+    gap: calc(3 * var(--raum));
+  }
+  [data-view].seite--produkt .prinzip__bild {
+    aspect-ratio: 4 / 5;
+    min-block-size: 0;
+  }
+  [data-view].seite--produkt .prinzip__nr {
+    color: var(--tx-leise);
+  }
+
+  @media (max-width: 767px) {
+    [data-view].seite--produkt .produkt-held {
+      min-block-size: auto;
+      padding-block-end: calc(8 * var(--raum));
+    }
+    [data-view].seite--produkt .produkt-held__text {
+      order: -1;
+    }
+    [data-view].seite--produkt .produkt-held__bild {
+      position: relative;
+      inset: auto;
+      inline-size: min(80%, 22rem);
+      margin: calc(6 * var(--raum)) auto 0;
+      translate: none;
+    }
+    [data-view].seite--produkt .produkt-teil__bild {
+      display: none;
+    }
+  }
+  @media (max-width: 991px) {
+    /* The buy box column is narrow up to 991 px: quantity above the button (the button keeps its price). */
+    [data-view].seite--produkt .kaufbox__zeile {
+      grid-template-columns: 1fr;
+    }
+  }
+}

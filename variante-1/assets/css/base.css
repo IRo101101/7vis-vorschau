@@ -286,3 +286,250 @@ html[data-motion="reduced"] *::after {
   transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke !important;
   scroll-behavior: auto !important;
 }
+
+/*
+ * Stage 5 (shop route), appended: document-layer components every shop page needs without script.
+ * Fields after the DS (W 05: 44 px, label above the field, radius 2 px in the DS, here --radius-feld),
+ * prices in two currencies from one source, sample marks, image placeholders, data rows, sums.
+ */
+@layer base {
+  /* The hidden attribute always wins over a component's display (buttons, links and messages toggled by
+     the shop modules are often display flex or grid). */
+  [hidden] {
+    display: none !important;
+  }
+
+  /* A giant title measures its words against its own width: it must never shrink to its content in a grid
+     that starts its items (that loops: smaller font, narrower box, smaller font). */
+  .seite .t-riesig {
+    justify-self: stretch;
+  }
+
+  /* Pages of the shop route: the first section leaves room for the fixed header. */
+  .seite > :first-child:not(.stapel) {
+    padding-block-start: calc(var(--kopf-hoehe) + var(--sektion-luft));
+  }
+
+  /* Prices: every static price carries both currencies (data from muster-daten.js); CSS shows the chosen one.
+     Without script CHF stands (PLAN 6 [Anwalt]: whether EUR alone may stand for Swiss customers is open). */
+  [data-preis-w="EUR"] {
+    display: none;
+  }
+  html[data-waehrung="EUR"] [data-preis-w="CHF"] {
+    display: none;
+  }
+  html[data-waehrung="EUR"] [data-preis-w="EUR"] {
+    display: inline;
+  }
+
+  /* Sample mark (FRAGEN 1a, Drehbuch D11): every sample record and sample screen says so. */
+  .marke-muster {
+    display: inline-flex;
+    align-items: center;
+    inline-size: fit-content;
+    padding: 0 var(--raum);
+    border: var(--linie-staerke) solid currentColor;
+    border-radius: var(--radius-feld);
+    color: var(--tx-stark);
+    background-color: var(--fl-erhoben);
+  }
+  .muster-band {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--raum) calc(3 * var(--raum));
+    align-items: baseline;
+    padding: calc(3 * var(--raum)) calc(4 * var(--raum));
+    border: var(--linie-staerke) dashed var(--tx-stark);
+    border-radius: var(--radius-karte);
+    background-color: var(--fl-abgesenkt);
+    color: var(--tx-stark);
+  }
+  .muster-band strong {
+    font-weight: var(--gewicht-stark);
+  }
+
+  /* Image placeholder until the image list delivers (PLAN 6 "ohne Freigabe steht ein Platzhalter"). */
+  .bildplatz,
+  .platzhalter-bild {
+    display: grid;
+    place-items: center;
+    color: var(--tx-leise);
+  }
+  .bildplatz {
+    inline-size: 100%;
+    block-size: 100%;
+    min-block-size: calc(20 * var(--raum));
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    background-color: var(--fl-abgesenkt);
+  }
+  .bildplatz > span {
+    padding: var(--raum) calc(2 * var(--raum));
+    text-align: center;
+  }
+
+  /* Secondary and quiet buttons (DS: primary, secondary, still). */
+  .knopf--still {
+    background-color: transparent;
+    color: var(--tx-stark);
+    border-color: var(--li-rahmen);
+  }
+  .knopf--still:hover {
+    border-color: var(--tx-stark);
+    color: var(--tx-stark);
+  }
+  .knopf[aria-disabled="true"],
+  .knopf:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Data rows (DS component: label left, value right in mono). */
+  .daten {
+    display: grid;
+    margin: 0;
+  }
+  .datenzeile {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: calc(4 * var(--raum));
+    padding-block: calc(2 * var(--raum));
+    border-block-end: var(--linie-staerke) solid var(--li-linie);
+  }
+  .datenzeile dt {
+    color: var(--tx-normal);
+  }
+  .datenzeile dd {
+    margin: 0;
+    text-align: end;
+    color: var(--tx-stark);
+  }
+
+  /* Sums of cart, checkout and orders. */
+  .summen {
+    display: grid;
+    margin: 0;
+  }
+  .summen__zeile {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: calc(4 * var(--raum));
+    padding-block: calc(2 * var(--raum));
+    border-block-start: var(--linie-staerke) solid var(--li-linie);
+  }
+  .summen__zeile dt {
+    color: var(--tx-normal);
+  }
+  .summen__zeile dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+  }
+  .summen__zeile--total {
+    font-weight: var(--gewicht-stark);
+    font-size: var(--groesse-lead);
+  }
+  .summen__zeile--total dt {
+    color: var(--tx-stark);
+  }
+
+  /* Form fields (DS: 44 px, label above the field). Messages in the HTML, shown by the runtime. */
+  .feld {
+    display: grid;
+    gap: var(--raum);
+    min-inline-size: 0;
+  }
+  .feld__etikett {
+    font-size: var(--groesse-text);
+    color: var(--tx-normal);
+  }
+  .feld__optional {
+    color: var(--tx-leise);
+  }
+  .feld input,
+  .feld select,
+  .feld textarea {
+    inline-size: 100%;
+    min-block-size: var(--knopf-hoehe);
+    padding: calc(2 * var(--raum)) calc(3 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-feld);
+    background-color: var(--fl-erhoben);
+    color: var(--tx-stark);
+    font: inherit;
+    font-size: max(16px, var(--groesse-text));
+  }
+  .feld textarea {
+    min-block-size: calc(30 * var(--raum));
+    resize: vertical;
+  }
+  .feld [aria-invalid="true"] {
+    border-color: var(--sg-stop);
+    border-width: 2px;
+  }
+  .feld__fehler,
+  .wahl__fehler {
+    color: var(--sg-stop);
+    font-weight: var(--gewicht-stark);
+  }
+  .feld__fehler::before,
+  .wahl__fehler::before,
+  .formular-summe__titel::before {
+    content: "! ";
+  }
+  .feld__hilfe {
+    color: var(--tx-leise);
+    font-size: var(--groesse-klein);
+  }
+  .feldreihe {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: calc(3 * var(--raum));
+  }
+  .feldreihe--plz {
+    grid-template-columns: minmax(6rem, 1fr) minmax(0, 2fr);
+  }
+  .wahl {
+    display: flex;
+    align-items: flex-start;
+    gap: calc(2 * var(--raum));
+    min-block-size: var(--knopf-hoehe);
+    padding-block: calc(2 * var(--raum));
+    cursor: pointer;
+  }
+  .wahl input {
+    flex: none;
+    inline-size: 20px;
+    block-size: 20px;
+    margin: 0.1em 0 0;
+    accent-color: var(--ak-marke);
+  }
+  .formular-summe {
+    display: grid;
+    gap: var(--raum);
+    padding: calc(3 * var(--raum)) calc(4 * var(--raum));
+    border: 2px solid var(--sg-stop);
+    border-radius: var(--radius-karte);
+    background-color: var(--fl-erhoben);
+  }
+  .formular-summe__titel {
+    font-weight: var(--gewicht-stark);
+    color: var(--sg-stop);
+  }
+  .formular-summe ul {
+    margin: 0;
+    padding-inline-start: calc(5 * var(--raum));
+  }
+  .meldung {
+    padding: calc(3 * var(--raum)) calc(4 * var(--raum));
+    border-inline-start: 3px solid var(--tx-stark);
+    background-color: var(--fl-abgesenkt);
+  }
+  .meldung--stop {
+    border-inline-start-color: var(--sg-stop);
+  }
+  .meldung:focus {
+    outline: var(--fokus-breite) solid var(--ak-marke);
+  }
+}

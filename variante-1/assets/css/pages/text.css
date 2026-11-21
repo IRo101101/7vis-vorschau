@@ -1,0 +1,129 @@
+@layer tokens, base, modules, page;
+
+/*
+ * Text pages of stage 5: /fragen, /kontakt, /haendler, /lieferung-und-rueckgabe and the legal templates.
+ * Page layer: layout only, scoped by the view. After refmedia v1 faq, contact, teams and delivery: a giant
+ * title in two lines at the top, content below; forms with the label column on the left (teams).
+ */
+@layer page {
+  [data-view].seite--text .textseite {
+    display: grid;
+    gap: calc(10 * var(--raum));
+  }
+  [data-view].seite--text .textseite__kopf {
+    display: grid;
+    gap: calc(4 * var(--raum));
+    justify-items: start;
+  }
+  [data-view].seite--text .textseite__titel.t-riesig {
+    --titel-zeichen: 10;
+  }
+  [data-view].seite--text .textseite--held {
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    align-content: space-between;
+  }
+  [data-view].seite--text .textseite__spalten {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: calc(8 * var(--raum));
+    align-items: start;
+  }
+  [data-view].seite--text .textseite__block {
+    display: grid;
+    gap: calc(2 * var(--raum));
+  }
+  [data-view].seite--text .textseite__punkte {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    margin: 0;
+    padding-inline-start: calc(5 * var(--raum));
+  }
+  /* Form sections: label on the left, form on the right (refmedia teams). */
+  [data-view].seite--text .textseite--formular {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 992px) {
+    [data-view].seite--text .textseite--formular {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    }
+  }
+  [data-view].seite--text .textseite__haupt {
+    display: grid;
+    gap: calc(5 * var(--raum));
+    max-inline-size: 52rem;
+  }
+  [data-view].seite--text .formular {
+    display: grid;
+    gap: calc(4 * var(--raum));
+  }
+  [data-view].seite--text .formular__gruppe {
+    display: grid;
+    gap: calc(4 * var(--raum));
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  [data-view].seite--text .formular__gruppe + .formular__gruppe {
+    margin-block-start: calc(6 * var(--raum));
+  }
+  [data-view].seite--text .formular button[type="submit"] {
+    justify-self: start;
+  }
+
+  /* /fragen: the reference's rows, large question, square plus on the right; the other rows dim on hover. */
+  [data-view].seite--text .akkordeon--fragen {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  [data-view].seite--text .akkordeon--fragen .akkordeon__kopf {
+    margin: 0;
+    font-size: inherit;
+  }
+  [data-view].seite--text .akkordeon--fragen .akkordeon__knopf {
+    min-block-size: calc(20 * var(--raum));
+    padding-block: calc(4 * var(--raum));
+    font-size: var(--groesse-titel-md);
+    line-height: var(--zeilenhoehe-titel);
+  }
+  [data-view].seite--text .akkordeon__zeichen--kasten {
+    inline-size: calc(16 * var(--raum));
+    block-size: calc(16 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-feld);
+  }
+  [data-view].seite--text .akkordeon__zeichen--kasten > span:first-child {
+    inset-inline: 30%;
+  }
+  [data-view].seite--text .akkordeon__zeichen--kasten > span + span {
+    inset-block: 30%;
+  }
+  [data-view].seite--text .akkordeon--fragen .akkordeon__eintrag {
+    transition: opacity var(--ui-dauer-zustand) var(--ui-kurve);
+  }
+  @media (hover: hover) {
+    [data-view].seite--text .akkordeon--fragen:hover > .akkordeon__eintrag:not(:hover) {
+      opacity: 0.55;
+    }
+  }
+
+  /* Legal templates and delivery. */
+  [data-view].seite--text .textseite__recht {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: calc(8 * var(--raum)) calc(6 * var(--raum));
+  }
+  [data-view].seite--text .rechtsblock {
+    display: grid;
+    gap: calc(2 * var(--raum));
+    align-content: start;
+    padding-block-start: calc(3 * var(--raum));
+    border-block-start: var(--linie-staerke) solid var(--li-linie);
+  }
+  [data-view].seite--text .textseite__muster {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    inline-size: min(100%, 52rem);
+  }
+}

@@ -1,0 +1,78 @@
+@layer tokens, base, modules, page;
+
+/*
+ * /die-sieben-kraefte (stage 5): narrative page with the product stack, seven screen-high sections 01 to 07.
+ * Page layer: layout only, scoped by the view. Each section: force marker, giant name, effect line and the
+ * still of the home page figure for that force (bean to puck).
+ */
+@layer page {
+  [data-view].seite--kraefte .kraefte-auftakt {
+    display: grid;
+    gap: calc(4 * var(--raum));
+    justify-items: start;
+  }
+  [data-view].seite--kraefte .kraefte-auftakt__titel {
+    max-inline-size: 22ch;
+  }
+  [data-view].seite--kraefte .kraft-abschnitt {
+    display: grid;
+    align-content: start;
+    padding-block-start: calc(var(--kopf-hoehe) + 4 * var(--raum));
+  }
+  [data-view].seite--kraefte .kraft-abschnitt__text {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    justify-items: start;
+    gap: calc(3 * var(--raum));
+  }
+  [data-view].seite--kraefte .kraft-abschnitt__name {
+    --titel-zeichen: 10;
+  }
+  [data-view].seite--kraefte .kraft-abschnitt__wirkung {
+    max-inline-size: 30rem;
+  }
+  [data-view].seite--kraefte .kraft-abschnitt__stand {
+    color: var(--tx-leise);
+  }
+  [data-view].seite--kraefte .kraft-abschnitt__bild {
+    position: absolute;
+    inset-block-end: 4%;
+    inset-inline-end: 22%;
+    z-index: 1;
+    inline-size: min(42vh, 32vw, 30rem);
+    margin: 0;
+  }
+  [data-view].seite--kraefte .kraefte-karte .stapel__kartenbild {
+    border: 0;
+  }
+  [data-view].seite--kraefte .kraefte-karte .stapel__kartenbild img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+  }
+  [data-view].seite--kraefte .kraefte-schluss {
+    display: grid;
+    gap: calc(4 * var(--raum));
+    justify-items: start;
+  }
+  [data-view].seite--kraefte .kraefte-schluss__knoepfe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(2 * var(--raum));
+  }
+  @media (max-width: 767px) {
+    [data-view].seite--kraefte .kraft-abschnitt__bild {
+      inset-inline-end: 50%;
+      translate: 50% 0;
+      inset-block-end: calc(18 * var(--raum));
+      inline-size: min(60vw, 18rem);
+    }
+    [data-view].seite--kraefte .stapel:not([data-product-stack-state="buehne"]) .kraft-abschnitt__bild {
+      position: relative;
+      inset: auto;
+      translate: none;
+      margin: calc(4 * var(--raum)) auto 0;
+    }
+  }
+}

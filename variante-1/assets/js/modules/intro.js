@@ -111,11 +111,21 @@ export default {
     function curtain() {
       if (phase === 'vorhang' || phase === 'fertig') return;
       setPhase('vorhang');
-      let frames = T.curtainFrames;
+      // The opening shows `curtainFrames` frames after T: the tween starts one frame before that. Only real
+      // frames count (a callback added while a frame runs fires in that same frame, so a plain chain of
+      // nextFrame calls collapsed into the frame of T, and a long frame at T then ate into the opening).
+      let frames = Math.max(0, T.curtainFrames - 1);
+      let last = motion.now();
       const go = () => {
         if (frames > 0) {
-          frames -= 1;
-          ctx.nextFrame(go, 'late');
+          const stop = ctx.frame((t) => {
+            if (t <= last) return;
+            last = t;
+            frames -= 1;
+            if (frames > 0) return;
+            stop();
+            go();
+          }, 'late');
           return;
         }
         g.tween(el, { clipBottom: 100 }, {
@@ -192,11 +202,16 @@ export default {
       }
     }
 
-    // Displayed progress: follows the real one, at most one full sweep per `sweep` seconds.
+    // Displayed progress: follows the real one, at most one full sweep per `sweep` seconds. The first frame
+    // after the start only sets the base: the delta of that frame can hold time from before the start (a frame
+    // that began before a long boot task), which made the sweep up to 0.18 s shorter than `sweep`.
+    let counting = false;
     ctx.frame((t, dt) => {
       if (phase !== 'laeuft') return;
       const goal = real();
-      const next = Math.min(goal, shown + Math.max(0, dt) / Math.max(0.1, opts.sweep));
+      const delta = counting ? Math.max(0, dt) : 0;
+      counting = true;
+      const next = Math.min(goal, shown + delta / Math.max(0.1, opts.sweep));
       if (next !== shown) {
         shown = next;
         if (line) motion.set(line, { scaleX: shown });

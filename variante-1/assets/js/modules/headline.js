@@ -22,6 +22,7 @@
 import { splitText } from '../text/split.js';
 import { fitWords, fitLines } from '../text/fit.js';
 import { TIMING } from '../motion/curves.js';
+import { inViewport } from '../core/dom.js';
 
 const T = TIMING.headline;
 const LINE = '[data-headline-line]';
@@ -55,6 +56,9 @@ export default {
     let sp = null;
     let state = 'static';
     let scheduled = false;
+    // A title far below the fold re-measures at its entrance, not at page-in (stage 4: the work of every
+    // title at intro:done delayed the curtain of the Auftakt).
+    let stale = false;
 
     const api = {
       play: () => play(),
@@ -170,6 +174,10 @@ export default {
 
     function settle() {
       if (!sp) return;
+      if (stale) {
+        stale = false;
+        relayout();
+      }
       if (state !== 'playing' && state !== 'shown') {
         state = 'hidden';
         play();
@@ -202,9 +210,17 @@ export default {
       ctx.onOut(() => exit(), { onlyIfVisible: true });
     } else {
       ctx.onIn(() => {
-        relayout();
+        if (state === 'hidden' && !inViewport(el)) stale = true;
+        else relayout();
         if (state !== 'hidden') return;
-        ctx.watchOnce('entrance', el, ({ visible }) => visible && play(), { threshold: opts.threshold, rootMargin: opts.rootMargin });
+        ctx.watchOnce('entrance', el, ({ visible }) => {
+          if (!visible) return;
+          if (stale) {
+            stale = false;
+            relayout();
+          }
+          play();
+        }, { threshold: opts.threshold, rootMargin: opts.rootMargin });
       });
     }
 

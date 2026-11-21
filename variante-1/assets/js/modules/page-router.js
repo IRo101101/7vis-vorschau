@@ -437,6 +437,18 @@ export default {
       if (docUrl(location.href) === current) return; // anchor change inside the page
       navigate(location.href, { push: false, y: storedY(), kind: 'pop' });
     });
+    // Stage 5: modules ask for a page change through the store ({ href, extern }), e.g. the sign-in and the
+    // checkout hand-off (CONTRACT 7 'router:go'). A target outside the shell falls back to normal navigation.
+    ctx.on('router:go', (data) => {
+      if (!data || !data.href) return;
+      const href = new URL(data.href, location.href).href;
+      // extern: a page outside the site (the payment service's hosted page): a normal page load.
+      if (data.extern || core.state !== 'live') {
+        location.assign(href);
+        return;
+      }
+      navigate(href, { push: docUrl(href) !== docUrl(location.href), kind: 'link' });
+    });
 
     return {
       navigate: (href) => navigate(new URL(href, location.href).href, { push: docUrl(href) !== docUrl(location.href), kind: 'link' }),

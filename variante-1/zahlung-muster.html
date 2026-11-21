@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="de-CH" data-ci="rohbau">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Zahlungsseite (Muster) · Bezahldienst</title>
+  <meta name="description" content="Muster der Zahlungsseite eines Bezahldienstes. Gehört nicht zur Website, es wird nichts bezahlt.">
+  <link rel="stylesheet" href="assets/vendor/lenis-1.3.26/lenis.css">
+  <link rel="stylesheet" href="assets/css/tokens/ebene4-mechanik.css">
+  <link rel="stylesheet" href="assets/css/themes/rohbau.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/modules.css">
+  <link rel="stylesheet" href="assets/css/pages/shop.css">
+  <link rel="modulepreload" href="assets/js/core/core.js">
+  <link rel="modulepreload" href="assets/js/motion/engine.js">
+  <link rel="modulepreload" href="assets/js/motion/scroll.js">
+  <link rel="modulepreload" href="assets/vendor/lenis-1.3.26/lenis.js">
+  <link rel="modulepreload" href="assets/js/shop/muster.js">
+  <link rel="modulepreload" href="assets/js/shop/muster-daten.js">
+  <link rel="modulepreload" href="assets/js/modules/order-view.js">
+  <script type="module" src="assets/js/boot.js"></script>
+</head>
+<body>
+  <a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+
+  <main id="inhalt" data-view="zahlung" class="seite seite--zahlung" tabindex="-1">
+    <!-- Sample of the hosted payment page of Payrexx or wallee (PLAN 6 step 4, W 06 E3). It stands outside the
+         site: no shell, no router, a normal page load like the real hand-off. "Zahlung bestätigen" stands for the
+         signed webhook that alone confirms a payment; then the browser returns to /bestaetigung. -->
+    <section class="sx zahlung" data-theme="hell" aria-labelledby="zahlung-titel" data-mod="order-view" data-order-view-rolle="zahlung">
+      <p class="muster-band"><strong>Muster der Zahlungsseite des Bezahldienstes.</strong> Diese Seite gehört nicht zur Website von 7Vis. Hier wird nichts bezahlt.</p>
+      <div class="zahlung__karte karte" data-order-state="offen">
+        <p class="t-label">Zahlung an <span class="platzhalter">[Betreiberin]</span></p>
+        <h1 id="zahlung-titel" class="t-lg">Bezahlen Sie <span class="t-ziffern" data-order-field="total">CHF 0.00</span>.</h1>
+        <p class="t-text">Bestellung <span class="t-mono" data-order-field="nr"></span>, <span data-order-field="email"></span></p>
+        <div class="zahlung__arten" aria-label="Zahlungsarten (Muster)">
+          <span class="zahlung__art">Zahlungsart 1 (Muster)</span><span class="zahlung__art">Zahlungsart 2 (Muster)</span><span class="zahlung__art">Zahlungsart 3 (Muster)</span>
+        </div>
+        <p class="t-klein">Die Zahlungsarten legt der Vertrag mit dem Bezahldienst fest. Kartendaten gibt man nur hier ein, nie im Shop.</p>
+        <div class="zahlung__knoepfe">
+          <button type="button" class="knopf" data-order-action="bestaetigen">Zahlung bestätigen (Muster)</button>
+          <button type="button" class="knopf knopf--still" data-order-action="abbrechen">Abbrechen und zurück zum Shop</button>
+        </div>
+        <p class="meldung meldung--stop" data-order-fail role="alert" hidden>Das hat nicht geklappt. Bitte versuchen Sie es noch einmal.</p>
+      </div>
+      <div class="meldung" data-order-state="bezahlt" hidden><h1 class="t-lg">Diese Bestellung ist schon bezahlt.</h1><p><a href="bestaetigung.html" data-order-link="bestaetigung.html?bestellung={nr}">Zur Bestätigung</a></p></div>
+      <div class="meldung" data-order-state="keine" hidden><h1 class="t-lg">Zu dieser Zahlung gibt es keine Musterbestellung.</h1><p><a href="kasse.html">Zur Kasse</a></p></div>
+    </section>
+  </main>
+</body>
+</html>

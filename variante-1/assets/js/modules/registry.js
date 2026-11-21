@@ -20,6 +20,27 @@ const LOADERS = {
   nav: () => import('./nav.js'),
   'card-overlay': () => import('./card-overlay.js'),
   'figure-grip': () => import('./figure-grip.js'),
+  // Stage 4 (home page bottom)
+  carousel: () => import('./carousel.js'),
+  'image-swap': () => import('./image-swap.js'),
+  'section-lift': () => import('./section-lift.js'),
+  'principle-row': () => import('./principle-row.js'),
+  accordion: () => import('./accordion.js'),
+  // Stage 5 (shop route)
+  'cart-panel': () => import('./cart-panel.js'),
+  'qty-select': () => import('./qty-select.js'),
+  'currency-switch': () => import('./currency-switch.js'),
+  'buy-box': () => import('./buy-box.js'),
+  'product-stack': () => import('./product-stack.js'),
+  'info-slide': () => import('./info-slide.js'),
+  gallery: () => import('./gallery.js'),
+  catalogue: () => import('./catalogue.js'),
+  enquiry: () => import('./enquiry.js'),
+  checkout: () => import('./checkout.js'),
+  'cart-page': () => import('./cart-page.js'),
+  'order-view': () => import('./order-view.js'),
+  'sign-in': () => import('./sign-in.js'),
+  account: () => import('./account.js'),
 };
 
 export const MODULE_NAMES = Object.freeze(Object.keys(LOADERS));

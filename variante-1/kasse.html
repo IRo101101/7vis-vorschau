@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="de-CH" data-ci="rohbau">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Kasse (Muster) · 7Vis</title>
+  <meta name="description" content="Musterkasse der Studie: Kontakt, Lieferadresse, Versand, Übergabe an den Bezahldienst. Keine echte Bestellung.">
+  <link rel="stylesheet" href="assets/vendor/lenis-1.3.26/lenis.css">
+  <link rel="stylesheet" href="assets/css/tokens/ebene4-mechanik.css">
+  <link rel="stylesheet" href="assets/css/themes/rohbau.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/modules.css">
+  <link rel="stylesheet" href="assets/css/pages/shop.css">
+  <link rel="modulepreload" href="assets/js/core/core.js">
+  <link rel="modulepreload" href="assets/js/motion/engine.js">
+  <link rel="modulepreload" href="assets/js/motion/scroll.js">
+  <link rel="modulepreload" href="assets/vendor/lenis-1.3.26/lenis.js">
+  <link rel="modulepreload" href="assets/js/modules/nav.js">
+  <link rel="modulepreload" href="assets/js/modules/cart-panel.js">
+  <link rel="modulepreload" href="assets/js/shop/muster.js">
+  <link rel="modulepreload" href="assets/js/shop/muster-daten.js">
+  <link rel="modulepreload" href="assets/js/modules/checkout.js">
+  <link rel="modulepreload" href="assets/js/modules/currency-switch.js">
+  <script type="module" src="assets/js/boot.js"></script>
+</head>
+<body data-mod="page-router" data-page-router-shell="v1">
+  <a class="sprunglink" href="#inhalt">Zum Inhalt springen</a>
+
+  <!-- shell:start (copied from index.html by tests/shop-seiten.cjs) -->
+  <!-- Shell: everything outside [data-view] stays during page changes. -->
+  <svg class="marken-vorrat" aria-hidden="true" focusable="false">
+    <!-- Placeholder word mark of the rohbau (own construction): the real one comes with the logo direction
+         (PLAN 10, stage 6) as 7vis-wortmarke.svg. -->
+    <symbol id="v1-wortmarke" viewBox="0 0 300 100">
+      <path d="M0 0H76V18L36 100H14L52 20H0Z"/>
+      <path d="M90 0H112L132.5 76L153 0H175L144 100H121Z"/>
+      <path d="M190 0H210V100H190Z"/>
+      <path d="M291 22C285 4 238 5 238 28C238 50 289 46 289 72C289 97 238 96 232 76" fill="none" stroke="currentColor" stroke-width="20"/>
+    </symbol>
+  </svg>
+
+  <header class="kopf" data-mod="nav" data-theme="hell">
+    <nav class="kopf__nav" aria-label="Hauptnavigation">
+      <ul class="kopf__gruppe kopf__gruppe--links">
+        <li class="kopf__vorschau" data-nav-shop>
+          <a class="kopf__link" href="werkzeuge.html" data-nav-shop-trigger aria-controls="vorschau-werkzeuge">Werkzeuge</a>
+          <div id="vorschau-werkzeuge" class="vorschau" data-nav-shop-panel data-theme="hell" data-needs-core>
+            <ul class="vorschau__liste"><!-- vorschau:start -->
+              <li class="vorschau__kachel" data-nav-shop-item>
+                <a class="vorschau__verweis" href="pucker.html">
+                  <span class="vorschau__bild"><span class="karte__platzhalter">Bild folgt</span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Pucker</span><span class="vorschau__preis t-label">In Vorbereitung</span></span>
+                  <span class="vorschau__kurz t-klein">Mechanische Espresso-Tamperstation</span>
+                  <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-3" aria-hidden="true"></span>03 · Verdichten</span>
+                </a>
+              </li>
+              <li class="vorschau__kachel" data-nav-shop-item>
+                <a class="vorschau__verweis" href="muster-001.html">
+                  <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10.00</span><span data-preis-w="EUR">EUR 10.50</span></span></span>
+                  <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
+                  <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02 · Mahlen</span>
+                </a>
+              </li>
+              <li class="vorschau__kachel" data-nav-shop-item>
+                <a class="vorschau__verweis" href="muster-002.html">
+                  <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20.00</span><span data-preis-w="EUR">EUR 21.00</span></span></span>
+                  <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
+                  <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-4" aria-hidden="true"></span>04 · Pumpen</span>
+                </a>
+              </li>
+              <li class="vorschau__kachel" data-nav-shop-item>
+                <a class="vorschau__verweis" href="muster-003.html">
+                  <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 003</span><span class="vorschau__preis t-label">Ausverkauft</span></span>
+                  <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
+                  <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-6" aria-hidden="true"></span>06 · Fliessen</span>
+                </a>
+              </li>
+              <!-- vorschau:end --></ul>
+            <a class="knopf vorschau__knopf" href="werkzeuge.html" data-nav-shop-item>Werkzeuge ansehen</a>
+          </div>
+        </li>
+        <li><a class="kopf__link" href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
+      </ul>
+      <a class="kopf__marke" href="index.html" aria-label="7Vis, zur Startseite"><svg class="wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg></a>
+      <ul class="kopf__gruppe kopf__gruppe--rechts">
+        <li><a class="kopf__link" href="haendler.html">Händler</a></li>
+        <li><a class="kopf__link" href="konto.html">Konto</a></li>
+        <li><a class="kopf__link kopf__warenkorb" href="warenkorb.html" data-nav-cart aria-label="Warenkorb, 0 Artikel">Warenkorb (<span class="t-ziffern" data-nav-cart-count>0</span>)</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- WebGL layers (S1): back layer behind the sections, front layer above; the router of S3 cuts the front
+       layer with the edge of the reveal (data-transition-clip). -->
+  <div class="gl-ebenen" data-mod="webgl" aria-hidden="true" data-needs-core>
+    <canvas class="gl-ebene gl-ebene--hinten" data-gl-layer="hinten"></canvas>
+    <canvas class="gl-ebene gl-ebene--vorn" data-gl-layer="vorn" data-transition-clip></canvas>
+  </div>
+  <!-- Drag handle of the figure: follows the figure on screen, takes the pointer only while the slider allows it. -->
+  <div class="figur-griff" data-mod="figure-grip" aria-hidden="true" data-needs-core></div>
+  <!-- Cart panel (stage 5; IS 5, IM 11.12, Drehbuch 2.2): opens with the cart button of the header and after
+       adding to the cart. Without the runtime the cart button leads to /warenkorb. Lines are clones of the
+       template; the shop adapter (PLAN 6) is the only source of the cart. -->
+  <div class="korb" data-mod="cart-panel" data-needs-core>
+    <div class="korb__schutz" data-cart-panel-backdrop></div>
+    <section id="korb-panel" class="korb__panel" role="dialog" aria-modal="true" aria-labelledby="korb-titel" data-theme="hell" data-cart-panel-panel tabindex="-1">
+      <div class="korb__kopf" data-cart-panel-child>
+        <h2 id="korb-titel" class="korb__titel t-md"><span data-cart-panel-title="voll">Das liegt in Ihrem Warenkorb.</span><span data-cart-panel-title="leer" hidden>Ihr Warenkorb ist leer.</span></h2>
+        <button type="button" class="korb__schliessen" data-cart-panel-close aria-label="Warenkorb schliessen">Schliessen</button>
+      </div>
+      <p class="korb__muster marke-muster t-label" data-cart-panel-child>Musterdaten. In dieser Studie wird nichts verkauft.</p>
+      <p class="korb__status t-klein" role="status" data-cart-panel-status>
+        <span data-cart-panel-msg="laedt" hidden>Der Warenkorb wird aktualisiert.</span>
+        <span data-cart-panel-msg="aktualisiert" hidden>Der Warenkorb ist aktualisiert.</span>
+        <span data-cart-panel-msg="fehler" hidden>Das hat nicht geklappt. Bitte versuchen Sie es noch einmal.</span>
+        <span data-cart-panel-msg="ausverkauft" hidden>Eine Position ist so nicht lieferbar. Bitte passen Sie sie an.</span>
+      </p>
+      <ul class="korb__liste" data-cart-panel-list data-scroll-own aria-label="Positionen im Warenkorb"></ul>
+      <template data-cart-panel-template>
+        <li class="zeile" data-cart-line>
+          <a class="zeile__bild" href="werkzeuge.html" data-cart-line-link tabindex="-1" aria-hidden="true"><span class="marke-muster t-label">Muster</span></a>
+          <div class="zeile__text">
+            <p class="zeile__name"><a href="werkzeuge.html" data-cart-line-link data-cart-line-name>Artikel</a></p>
+            <p class="zeile__variante t-klein" data-cart-line-variant>Variante <span data-cart-line-variant-value>A</span></p>
+            <p class="zeile__einzel t-klein" data-cart-line-unit hidden>je <span class="t-ziffern" data-cart-line-unit-value></span></p>
+            <p class="zeile__hinweis t-klein" data-cart-line-note hidden><span data-cart-line-msg="ausverkauft">Ausverkauft. Bitte entfernen Sie diese Position.</span><span data-cart-line-msg="bestand">Nur noch <span data-cart-line-stock>0</span> Stück verfügbar.</span><span data-cart-line-msg="fehler">Die Änderung hat nicht geklappt.</span></p>
+          </div>
+          <div class="zeile__aktionen">
+            <p class="zeile__preis t-ziffern" data-cart-line-price></p>
+            <label class="menge menge--klein" data-mod="qty-select"><span class="menge__etikett">Menge</span><select data-cart-line-qty data-cart-line-qty-label="Menge für {name}"><option value="1">1</option></select><span class="menge__wert t-ziffern" data-qty-select-value aria-hidden="true">1</span></label>
+            <button type="button" class="zeile__entfernen" data-cart-line-remove data-cart-line-remove-label="{name} entfernen">Entfernen</button>
+          </div>
+        </li>
+      </template>
+      <div class="korb__leer" data-cart-panel-empty data-cart-panel-child hidden>
+        <a class="knopf" href="werkzeuge.html">Werkzeuge ansehen</a>
+      </div>
+      <div class="korb__summe" data-cart-panel-summary data-cart-panel-child>
+        <p class="korb__summentitel t-label">Übersicht</p>
+        <dl class="summen">
+          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0.00</dd></div>
+          <div class="summen__zeile"><dt>Versand</dt><dd>wird in der Kasse berechnet</dd></div>
+        </dl>
+        <div class="korb__waehrung"><span class="t-klein" id="korb-waehrung">Währung</span><div class="waehrung" role="group" aria-labelledby="korb-waehrung" data-mod="currency-switch"><button type="button" data-currency-switch-value="CHF" aria-pressed="true">CHF</button><button type="button" data-currency-switch-value="EUR" aria-pressed="false">EUR</button></div></div>
+        <a class="knopf korb__kasse" href="kasse.html" data-cart-panel-checkout>Zur Kasse gehen</a>
+        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Versand und Rabattcode folgen in der Kasse.</p>
+      </div>
+    </section>
+  </div>
+  <!-- shell:end -->
+
+  <main id="inhalt" data-view="kasse" class="seite seite--shop" tabindex="-1">
+    <!-- /kasse (PLAN 6 step 4; flow of the reference's hosted checkout, refmedia v1 section 5): contact with the
+         sign-in link, delivery address in Swiss format, shipping methods after the address, payment as a
+         hand-off to the payment service, review with the terms, the summary with the discount field.
+         A clearly marked study: nothing leaves the browser. -->
+    <section class="sx shopseite kasse" data-theme="hell" aria-labelledby="kasse-titel" data-mod="checkout">
+      <div class="shopseite__kopf">
+        <p class="kicker">Kasse</p>
+        <h1 id="kasse-titel" class="t-xl">Hier schliessen Sie Ihre Bestellung ab.</h1>
+        <p class="muster-band"><strong>Musterkasse, keine echte Bestellung.</strong> In dieser Studie verlässt nichts den Browser: kein Versand von Daten, keine Zahlung, keine Lieferung.</p>
+        <p class="meldung" role="status" data-checkout-cancelled hidden>Die Zahlung wurde abgebrochen. Ihr Warenkorb ist unverändert.</p>
+      </div>
+      <div class="shopseite__leer" data-checkout-empty hidden>
+        <p class="t-lead">Ihr Warenkorb ist leer.</p>
+        <a class="knopf" href="werkzeuge.html">Werkzeuge ansehen</a>
+      </div>
+      <div class="kasse__raster" data-checkout-grid>
+        <aside class="kasse__uebersicht" aria-labelledby="kasse-uebersicht" data-checkout-summary>
+          <button type="button" class="kasse__umschalter" aria-controls="kasse-uebersicht-inhalt" data-checkout-summary-toggle data-needs-core><span>Bestellübersicht</span><span class="t-ziffern" data-checkout-total-short>CHF 0.00</span></button>
+          <div id="kasse-uebersicht-inhalt" class="kasse__uebersicht-inhalt">
+            <h2 id="kasse-uebersicht" class="t-sm">Bestellübersicht</h2>
+            <ul class="kasse__zeilen" data-checkout-lines aria-label="Positionen"></ul>
+            <template data-checkout-line-template>
+              <li class="kasse-zeile"><span class="kasse-zeile__bild" aria-hidden="true"><span class="marke-muster t-label">Muster</span></span><span class="kasse-zeile__text"><span class="kasse-zeile__name" data-line-name>Artikel</span><span class="t-klein" data-line-variant>Variante <span data-line-variant-value>A</span></span><span class="t-klein">Menge <span class="t-ziffern" data-line-qty>1</span></span><span class="zeile__hinweis t-klein" data-line-note hidden>Nicht lieferbar, bitte im Warenkorb anpassen.</span></span><span class="kasse-zeile__preis t-ziffern" data-line-price></span></li>
+            </template>
+            <form class="kasse__code" action="kasse.html" method="post" data-checkout-code aria-label="Rabattcode">
+              <div class="feld"><label for="k-code" class="feld__etikett">Rabattcode</label><div class="kasse__code-zeile"><input id="k-code" name="code" type="text" autocomplete="off" aria-describedby="k-code-hinweis"><button type="submit" class="knopf knopf--still">Anwenden</button></div></div>
+              <p id="k-code-hinweis" class="t-klein" role="status"><span data-checkout-code-msg="info">Muster: Der Code MUSTER10 gibt 10 Prozent, Gutscheine folgen in Phase 2.</span><span data-checkout-code-msg="ok" hidden>Code <span data-checkout-code-name>MUSTER10</span> angewendet.</span><span class="feld__fehler" data-checkout-code-msg="ungueltig" hidden>Dieser Code ist ungültig.</span><span class="feld__fehler" data-checkout-code-msg="leer" hidden>Bitte geben Sie einen Code ein.</span><span class="feld__fehler" data-checkout-code-msg="fehler" hidden>Der Code konnte nicht geprüft werden.</span></p>
+            </form>
+            <dl class="summen">
+              <div class="summen__zeile"><dt>Zwischensumme</dt><dd data-checkout-sum="zwischen">CHF 0.00</dd></div>
+              <div class="summen__zeile" data-checkout-row="rabatt" hidden><dt>Rabatt (Muster)</dt><dd data-checkout-sum="rabatt">CHF 0.00</dd></div>
+              <div class="summen__zeile"><dt>Versand</dt><dd data-checkout-sum="versand"><span data-checkout-ship-state="offen">Lieferadresse eingeben</span><span data-checkout-ship-state="betrag" hidden data-checkout-ship-value></span></dd></div>
+              <div class="summen__zeile summen__zeile--total"><dt>Total</dt><dd data-checkout-sum="total">CHF 0.00</dd></div>
+              <div class="summen__zeile summen__zeile--klein" data-checkout-row="mwst"><dt>darin enthalten MWST 8,1 %</dt><dd data-checkout-sum="mwst">CHF 0.00</dd></div>
+              <div class="summen__zeile summen__zeile--klein" data-checkout-row="mwst-eu" hidden><dt>Mehrwertsteuer nach Lieferland</dt><dd><span class="platzhalter">[Anwalt]</span></dd></div>
+            </dl>
+            <div class="shopseite__waehrung" data-needs-core><span class="t-klein" id="k-waehrung">Währung</span><div class="waehrung" role="group" aria-labelledby="k-waehrung" data-mod="currency-switch"><button type="button" data-currency-switch-value="CHF" aria-pressed="true">CHF</button><button type="button" data-currency-switch-value="EUR" aria-pressed="false">EUR</button></div></div>
+          </div>
+        </aside>
+
+        <form class="kasse__formular" action="kasse.html" method="post" data-checkout-form aria-labelledby="kasse-titel">
+          <div class="formular-summe" data-formular-summe tabindex="-1" role="alert" hidden><p class="formular-summe__titel">Bitte prüfen Sie diese Angaben:</p><ul data-formular-liste></ul></div>
+          <section class="kasse__teil" aria-labelledby="k-kontakt">
+            <div class="kasse__teilkopf">
+              <h2 id="k-kontakt" class="t-sm">Kontakt</h2>
+              <a href="anmelden.html?weiter=kasse" data-checkout-signin>Anmelden</a>
+              <p class="t-klein" data-checkout-account hidden>Angemeldet als <span data-checkout-account-mail></span>.</p>
+            </div>
+            <div class="feld"><label for="k-email" class="feld__etikett">E-Mail</label><input id="k-email" name="email" type="email" autocomplete="email" required aria-describedby="k-email-fehler"><p id="k-email-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p></div>
+            <p class="t-klein">Sie können als Gast bestellen, ein Konto ist nicht nötig.</p>
+            <label class="wahl"><input type="checkbox" name="newsletter" value="1"><span>Ich möchte Neuigkeiten von 7Vis per E-Mail erhalten. Diese Einwilligung ist freiwillig und jederzeit widerrufbar.</span></label>
+            <p class="t-klein kasse__muster">Muster: In Phase 1 ist kein Newsletter-Versand vorgesehen. Ob dieses Feld bleibt, ist offen.</p>
+          </section>
+
+          <section class="kasse__teil" aria-labelledby="k-lieferung">
+            <h2 id="k-lieferung" class="t-sm">Lieferadresse</h2>
+            <div class="feld"><label for="k-land" class="feld__etikett">Land</label><select id="k-land" name="land" autocomplete="shipping country" required aria-describedby="k-land-fehler"><option value="CH" selected>Schweiz</option><option value="LI">Liechtenstein</option><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="FR">Frankreich</option><option value="IT">Italien</option></select><p id="k-land-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte wählen Sie ein Land.</p></div>
+            <div class="feldreihe">
+              <div class="feld"><label for="k-vorname" class="feld__etikett">Vorname</label><input id="k-vorname" name="vorname" type="text" autocomplete="shipping given-name" required aria-describedby="k-vorname-fehler"><p id="k-vorname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Ihren Vornamen ein.</p></div>
+              <div class="feld"><label for="k-nachname" class="feld__etikett">Nachname</label><input id="k-nachname" name="nachname" type="text" autocomplete="shipping family-name" required aria-describedby="k-nachname-fehler"><p id="k-nachname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Ihren Nachnamen ein.</p></div>
+            </div>
+            <div class="feld"><label for="k-firma" class="feld__etikett">Firma <span class="feld__optional">(freiwillig)</span></label><input id="k-firma" name="firma" type="text" autocomplete="shipping organization" aria-describedby="k-firma-fehler"><p id="k-firma-fehler" class="feld__fehler" data-feld-fehler hidden></p></div>
+            <div class="feld"><label for="k-strasse" class="feld__etikett">Strasse und Hausnummer</label><input id="k-strasse" name="strasse" type="text" autocomplete="shipping address-line1" required aria-describedby="k-strasse-fehler"><p id="k-strasse-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Strasse und Hausnummer ein.</p></div>
+            <div class="feld"><label for="k-zusatz" class="feld__etikett">Adresszusatz <span class="feld__optional">(freiwillig)</span></label><input id="k-zusatz" name="zusatz" type="text" autocomplete="shipping address-line2" aria-describedby="k-zusatz-fehler"><p id="k-zusatz-fehler" class="feld__fehler" data-feld-fehler hidden></p></div>
+            <div class="feldreihe feldreihe--plz">
+              <div class="feld"><label for="k-plz" class="feld__etikett">PLZ</label><input id="k-plz" name="plz" type="text" autocomplete="shipping postal-code" required inputmode="numeric" maxlength="10" aria-describedby="k-plz-fehler"><p id="k-plz-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige Postleitzahl ein, in der Schweiz vier Ziffern.</p></div>
+              <div class="feld"><label for="k-ort" class="feld__etikett">Ort</label><input id="k-ort" name="ort" type="text" autocomplete="shipping address-level2" required aria-describedby="k-ort-fehler"><p id="k-ort-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Ort ein.</p></div>
+            </div>
+            <div class="feld"><label for="k-telefon" class="feld__etikett">Telefon <span class="feld__optional">(freiwillig)</span></label><input id="k-telefon" name="telefon" type="tel" autocomplete="shipping tel" aria-describedby="k-telefon-fehler"><p id="k-telefon-fehler" class="feld__fehler" data-feld-fehler hidden></p></div>
+          </section>
+
+          <section class="kasse__teil" aria-labelledby="k-versand">
+            <h2 id="k-versand" class="t-sm">Versandart</h2>
+            <p class="kasse__warten" data-checkout-ship-wait>Geben Sie Ihre Lieferadresse ein, dann erscheinen die Versandarten.</p>
+            <fieldset class="kasse__versand" data-checkout-ship hidden aria-describedby="k-versand-hinweis">
+              <legend class="nur-vorlesen">Versandart</legend>
+              <div class="kasse__wahlen" data-checkout-ship-list></div>
+              <template data-checkout-ship-template><label class="wahl wahl--kachel"><input type="radio" name="versand" required><span class="wahl__text"><span class="wahl__titel" data-ship-name></span><span class="t-klein" data-ship-frist></span></span><span class="wahl__preis t-ziffern" data-ship-price></span></label></template>
+              <p id="k-versand-hinweis" class="t-klein">Musterregel: Versandregeln, Kosten und Lieferländer fehlen noch.</p>
+            </fieldset>
+          </section>
+
+          <section class="kasse__teil" aria-labelledby="k-zahlung">
+            <h2 id="k-zahlung" class="t-sm">Zahlung</h2>
+            <p class="t-text">Bezahlt wird auf der gesicherten Zahlungsseite des Bezahldienstes. Zahlungsdaten erreichen unseren Server nie.</p>
+            <div class="kasse__zahlart wahl wahl--kachel wahl--fest"><span class="wahl__text"><span class="wahl__titel">Zahlungsseite des Bezahldienstes (Muster)</span><span class="t-klein">Payrexx oder wallee, der Entscheid ist offen. <span class="platzhalter">[Platzhalter: Zahlungsarten folgen mit dem Bezahldienst.]</span></span></span></div>
+            <label class="wahl"><input type="checkbox" name="rechnung_gleich" value="1" checked><span>Rechnungsadresse wie Lieferadresse</span></label>
+            <fieldset class="kasse__rechnung" data-checkout-billing hidden>
+              <legend class="t-label">Rechnungsadresse</legend>
+              <div class="feldreihe">
+                <div class="feld"><label for="r-vorname" class="feld__etikett">Vorname</label><input id="r-vorname" name="rechnung_vorname" type="text" autocomplete="billing given-name" required aria-describedby="r-vorname-fehler"><p id="r-vorname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Vornamen ein.</p></div>
+                <div class="feld"><label for="r-nachname" class="feld__etikett">Nachname</label><input id="r-nachname" name="rechnung_nachname" type="text" autocomplete="billing family-name" required aria-describedby="r-nachname-fehler"><p id="r-nachname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Nachnamen ein.</p></div>
+              </div>
+              <div class="feld"><label for="r-strasse" class="feld__etikett">Strasse und Hausnummer</label><input id="r-strasse" name="rechnung_strasse" type="text" autocomplete="billing address-line1" required aria-describedby="r-strasse-fehler"><p id="r-strasse-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Strasse und Hausnummer ein.</p></div>
+              <div class="feldreihe feldreihe--plz">
+                <div class="feld"><label for="r-plz" class="feld__etikett">PLZ</label><input id="r-plz" name="rechnung_plz" type="text" autocomplete="billing postal-code" required inputmode="numeric" maxlength="10" aria-describedby="r-plz-fehler"><p id="r-plz-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige Postleitzahl ein.</p></div>
+                <div class="feld"><label for="r-ort" class="feld__etikett">Ort</label><input id="r-ort" name="rechnung_ort" type="text" autocomplete="billing address-level2" required aria-describedby="r-ort-fehler"><p id="r-ort-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Ort ein.</p></div>
+              </div>
+              <div class="feld"><label for="r-land" class="feld__etikett">Land</label><select id="r-land" name="rechnung_land" autocomplete="billing country"><option value="CH" selected>Schweiz</option><option value="LI">Liechtenstein</option><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="FR">Frankreich</option><option value="IT">Italien</option></select></div>
+            </fieldset>
+          </section>
+
+          <section class="kasse__teil" aria-labelledby="k-pruefen">
+            <h2 id="k-pruefen" class="t-sm">Bestellung prüfen</h2>
+            <ol class="kasse__schritte t-text">
+              <li>Sie prüfen Ihre Angaben und bestellen zahlungspflichtig.</li>
+              <li>Sie bezahlen auf der Zahlungsseite des Bezahldienstes.</li>
+              <li>Wir bestätigen die Bestellung per E-Mail. <span class="platzhalter">[Anwalt: Zeitpunkt des Vertragsschlusses]</span></li>
+            </ol>
+            <label class="wahl"><input id="k-agb" type="checkbox" name="agb" value="1" required aria-describedby="k-agb-fehler"><span>Ich habe die <a href="agb.html">AGB</a> und die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und stimme den AGB zu.</span></label>
+            <p id="k-agb-fehler" class="wahl__fehler t-klein" data-feld-fehler hidden>Bitte stimmen Sie den AGB zu.</p>
+            <p class="meldung meldung--stop" data-checkout-blocked tabindex="-1" hidden>Eine Position ist so nicht lieferbar. <a href="warenkorb.html">Warenkorb anpassen</a></p>
+            <button type="submit" class="knopf kasse__senden"><span data-checkout-label="bereit">Zahlungspflichtig bestellen</span><span data-checkout-label="laedt" hidden>Weiter zur Zahlung</span></button>
+            <p class="t-klein kasse__muster">Muster: Es entsteht keine Bestellung. Die nächste Seite zeigt die Übergabe an den Bezahldienst.</p>
+            <p class="meldung meldung--stop" data-checkout-fail tabindex="-1" role="alert" hidden>Die Kasse ist gerade nicht erreichbar. Bitte versuchen Sie es noch einmal.</p>
+          </section>
+        </form>
+      </div>
+    </section>
+    <!-- fuss:start (copied from index.html) -->
+    <footer class="fuss" data-theme="hell">
+      <div class="fuss__spalten">
+        <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
+          <p id="fuss-seiten" class="fuss__titel">Seiten</p>
+          <ul class="fuss__liste">
+            <li><a href="werkzeuge.html">Werkzeuge</a></li>
+            <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
+            <li><a href="haendler.html">Händler</a></li>
+            <li><a href="fragen.html">Fragen</a></li>
+            <li><a href="kontakt.html">Kontakt</a></li>
+          </ul>
+        </nav>
+        <nav class="fuss__spalte" aria-labelledby="fuss-recht">
+          <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
+          <ul class="fuss__liste">
+            <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
+            <li><a href="agb.html">AGB</a></li>
+            <li><a href="datenschutz.html">Datenschutz</a></li>
+            <li><a href="impressum.html">Impressum</a></li>
+            <li><a href="widerruf.html">Widerruf</a></li>
+          </ul>
+        </nav>
+        <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
+          <p id="fuss-sprache" class="fuss__titel">Sprache</p>
+          <ul class="fuss__liste">
+            <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
+            <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
+        <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
+        <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
+      </div>
+      <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
+    </footer>
+    <!-- fuss:end -->
+  </main>
+</body>
+</html>

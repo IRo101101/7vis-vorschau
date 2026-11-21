@@ -111,9 +111,16 @@ export const TIMING = Object.freeze({
   // IM 11.6, reduced per FRAGEN 4b
   guidedScroll: Object.freeze({ duration: 1.5, ease: 'schnapp', startFraction: 0.01, endFraction: 0.9, backFraction: 0.1 }),
   // IM 10 row "Zitat", IM 11.10 (used for the principles, stage 4)
-  quote: Object.freeze({ duration: 0.8, wordStagger: 0.02, ease: 'expo.out', fromXPercent: 110, autoplay: 5, transition: 0.9, inactiveOpacity: 0.65 }),
-  // IM 11.8 (stage 4)
-  carousel: Object.freeze({ duration: 1.2, ease: 'expo.out', dragThreshold: 12, gap: 8, peek: 24 }),
+  // Stage 4 adds: old statement fades in 0.4 s power2.in, the new image rises in its frame with the row's
+  // 0.9 s expo.out (IM 11.10, refmedia clip testimonials: words from 110 %, last word 0.23 s after the change).
+  quote: Object.freeze({ duration: 0.8, wordStagger: 0.02, ease: 'expo.out', fromXPercent: 110, autoplay: 5, transition: 0.9, inactiveOpacity: 0.65, fadeOut: 0.4, fadeOutEase: 'power2.in', imageFrom: 100 }),
+  // IM 11.8 (stage 4): 3 cards from 768 px, 1 below; a carousel from 4 showable cards, a row from 2 (PLAN 11).
+  // clickSlop is our own value: any pointer travel beyond it is no click (refmedia v1 F11, a short vertical
+  // drag on a card opened the product in the reference).
+  carousel: Object.freeze({ duration: 1.2, ease: 'expo.out', dragThreshold: 12, gap: 8, peek: 24, visible: 3, visibleNarrow: 1, minCarousel: 4, minRow: 2, clickSlop: 6 }),
+  // IM 11.9 "section-parallax" (stage 4, principles): starts 12 % of its height lower, reaches 0 while its top
+  // edge travels from the bottom to the top of the viewport (smoothstep); off for coarse pointers and reduced motion.
+  sectionLift: Object.freeze({ offset: 12 }),
   // IM 11.11, IM 11.12 (shell)
   panel: Object.freeze({ duration: 0.5, ease: 'paneel', itemFrom: 35, itemStagger: 0.06, closeItems: 0.25, closeItemStagger: 0.03 }),
   // IM 11.13
@@ -204,4 +211,28 @@ export const TIMING = Object.freeze({
       tint: 0.35,
     }),
   }),
+  // ---- Stage 5 (shop route), appended. Values of IS 5, IS 6 and the refmedia v1 clips cart, stack, product.
+  // IS 6 product-stack, IM 11, refmedia F8: sticky stage, next section revealed by clip from the bottom
+  // (linear with scroll), image of the coming section 6 % parallax at scale 1.12, active index at 50 %,
+  // snap from 80 % to the next section in 0.8 s (expo.out), otherwise back after 140 ms of rest; card image
+  // and rolling lines 0.6 s "streifen" over 100 %.
+  stack: Object.freeze({ activeAt: 0.5, snapAt: 0.8, snapDuration: 0.8, snapEase: 'expo.out', restMs: 140, parallax: 6, imageScale: 1.12, cardDuration: 0.6, cardEase: 'streifen', cardFrom: 100 }),
+  // IS 6 pdp-info "Einschub": over the first viewport of the stage the column slides up (h 0 to 0.75) and the
+  // info box fades in (h 0.25 to 1), curve "vorhang" (pdp-info-slide); from 768 px, never under reduced motion.
+  infoSlide: Object.freeze({ slideEnd: 0.75, fadeStart: 0.25, ease: 'vorhang' }),
+  // IM 11 "gallery": three image surfaces change places with the scroll during the hold of the last section.
+  gallery: Object.freeze({ ease: 'sine.inOut', activeOpacity: 1, inactiveOpacity: 0.5 }),
+  // IS 5, IM 11.12, refmedia clip cart (F19, F20): panel from the right, x 100 % to 0 and opacity in 0.5 s
+  // ("paneel"), children from x -12 % with 0.06 s; closing like the preview, but horizontal. A line that is
+  // being updated dims to 0.5. Sample adapter latency: adding about 1.1 s (button loading), changing a line
+  // about 0.55 s, removing about 0.45 s (measured in the clip).
+  cart: Object.freeze({
+    open: Object.freeze({ duration: 0.5, ease: 'paneel', childFromX: -12, childStagger: 0.06 }),
+    close: Object.freeze({ childDuration: 0.25, childStagger: 0.03, slideDuration: 0.5, fadeDuration: 0.3, fadeEase: 'power1.in', fadeLead: 0.325 }),
+    pendingOpacity: 0.5,
+    latency: Object.freeze({ add: 1.1, change: 0.55, remove: 0.45, slowFactor: 4 }),
+  }),
+  // Reveal of a part of a form that appears (shipping methods after the address, billing address): the
+  // accordion values of IM 11.13 (height 0 to auto in 0.6 s, expo.out).
+  reveal: Object.freeze({ duration: 0.6, ease: 'expo.out' }),
 });

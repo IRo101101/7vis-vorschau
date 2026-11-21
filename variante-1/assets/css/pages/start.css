@@ -1,7 +1,7 @@
 @layer tokens, base, modules, page;
 
 /*
- * Home page, stage 3 (storyboard sections 1, 1 to 2, 2). Page layer: layout only, scoped by [data-view].
+ * Home page, stages 3 and 4 (storyboard sections 1 to 7). Page layer: layout only, scoped by [data-view].
  * Composition after the reference recordings (refmedia v1): the hero stands still (sticky), the forces
  * slider slides over it, the hero card seems fixed and is covered by the slider's top edge; the figure sits
  * centred in the lower half of the hero and moves up and to the right into the slider. The two anchor boxes
@@ -306,15 +306,477 @@
     }
   }
 
-  /* ---------- After the slider: stage 4 follows ---------- */
-  [data-view="start"] .start-weiter {
-    min-block-size: 100vh;
-    min-block-size: 100svh;
+  /* ==================== Stage 4: sections 3 to 7 (storyboard rows 3, 4, 5a, 5b, 6, 7) ==================== */
+
+  /* ---------- Section 3 · Werkzeuge (IM 7 "Produktübersicht", IM 11.8) ---------- */
+  [data-view="start"] .werkzeuge {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: calc(28 * var(--raum));
+    padding-block: calc(32 * var(--raum));
+  }
+  /* Kicker on the left third, title and text from the second third (the reference's label and title). */
+  [data-view="start"] .werkzeuge__kopf {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    column-gap: var(--raster-luecke);
+  }
+  [data-view="start"] .werkzeuge__text {
+    display: grid;
+    justify-items: start;
+    gap: calc(4 * var(--raum));
+  }
+  [data-view="start"] .werkzeuge__titel {
+    max-inline-size: 22ch;
+  }
+  [data-view="start"] .werkzeug {
     display: grid;
     align-content: start;
-    gap: calc(5 * var(--raum));
+    gap: calc(2 * var(--raum));
+    color: inherit;
+    text-decoration: none;
   }
-  [data-view="start"] .start-weiter .t-lg {
+  [data-view="start"] .werkzeug:hover .werkzeug__name {
+    text-decoration: underline;
+  }
+  [data-view="start"] .werkzeug__bilder {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    margin-block-end: calc(2 * var(--raum));
+    overflow: hidden;
+    background-color: var(--fl-abgesenkt);
+  }
+  [data-view="start"] .werkzeug__bild {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  [data-view="start"] .werkzeug__bild img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+  [data-view="start"] .werkzeug__bild--folgt {
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    background-color: var(--fl-abgesenkt);
+    color: var(--tx-leise);
+  }
+  /* The Pucker has no second picture yet: the swap shows a second, darker placeholder. */
+  [data-view="start"] .werkzeug__bild--folgt.werkzeug__bild--zwei {
+    border-color: transparent;
+    background-color: var(--fl-invers);
+    color: var(--tx-invers);
+  }
+  [data-view="start"] .werkzeug__muster {
+    position: absolute;
+    inset-block-start: calc(3 * var(--raum));
+    inset-inline-start: calc(3 * var(--raum));
+    z-index: 1;
+    padding: 0 var(--raum);
+    border-radius: var(--radius-feld);
+    background-color: var(--fl-erhoben);
+    color: var(--tx-stark);
+  }
+  [data-view="start"] .werkzeug__zeile {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: calc(3 * var(--raum));
+  }
+  [data-view="start"] .werkzeug__zeile,
+  [data-view="start"] .werkzeug__kurz,
+  [data-view="start"] .werkzeug__kraft {
+    padding-inline: calc(3 * var(--raum));
+  }
+  [data-view="start"] .werkzeug__name {
+    font-weight: var(--gewicht-stark);
+  }
+  [data-view="start"] .werkzeug__preis {
+    white-space: nowrap;
+  }
+  [data-view="start"] .werkzeug__kraft {
+    gap: var(--raum);
+  }
+  [data-view="start"] .werkzeug__kraft .kraft-marker__q {
+    inline-size: 12px;
+    block-size: 12px;
+  }
+  @media (max-width: 767px) {
+    [data-view="start"] .werkzeuge {
+      row-gap: calc(16 * var(--raum));
+      padding-block: calc(24 * var(--raum));
+    }
+    [data-view="start"] .werkzeuge__kopf {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: calc(3 * var(--raum));
+    }
+  }
+
+  /* ---------- Section 4 · Narrativ, dark (IM 7 "Zutaten"): 100 vh, at least 800 px ---------- */
+  [data-view="start"] .erzaehlung {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas: "kopf bloecke" "bild bloecke";
+    gap: calc(8 * var(--raum)) calc(10 * var(--raum));
+    min-block-size: max(100vh, 800px);
+    min-block-size: max(100svh, 800px);
+    padding-block: calc(var(--kopf-hoehe) + 2 * var(--raum)) calc(6 * var(--raum));
+  }
+  [data-view="start"] .erzaehlung__kopf {
+    grid-area: kopf;
+    display: grid;
+    justify-items: start;
+    align-content: start;
+    gap: calc(4 * var(--raum));
+  }
+  [data-view="start"] .erzaehlung__titel {
+    max-inline-size: 12ch;
+    text-transform: var(--versal-titel);
+  }
+  /* Still instead of the water scene (PLAN 5 no. 34): image B-07 follows, a marked placeholder until then. */
+  [data-view="start"] .erzaehlung__bild {
+    grid-area: bild;
+    display: grid;
+    place-items: center;
+    min-block-size: calc(64 * var(--raum));
+    margin: 0;
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    background-color: var(--fl-abgesenkt);
+    color: var(--tx-leise);
+  }
+  [data-view="start"] .erzaehlung__bloecke {
+    grid-area: bloecke;
+    align-self: end;
+    display: grid;
+  }
+  [data-view="start"] .erzaehlung__block {
+    padding-block: calc(5 * var(--raum));
+    border-block-end: var(--linie-staerke) solid var(--li-linie);
+    font-size: var(--groesse-titel-sm);
+    line-height: 1.25;
+    color: var(--tx-stark);
+  }
+  [data-view="start"] .erzaehlung__block:last-child {
+    border-block-end: 0;
+  }
+  @media (max-width: 767px) {
+    [data-view="start"] .erzaehlung {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto auto;
+      grid-template-areas: "kopf" "bild" "bloecke";
+      min-block-size: 0;
+      padding-block-start: calc(16 * var(--raum));
+    }
+    [data-view="start"] .erzaehlung__bild {
+      aspect-ratio: 4 / 5;
+      min-block-size: 0;
+      max-block-size: 60svh;
+    }
+  }
+
+  /* ---------- Sections 5a and 5b: one stretch (IM 12 "Kundenstimmen-Strecke") ---------- */
+  [data-view="start"] .prinzipien-strecke {
+    position: relative;
+  }
+  /* 5a sticks at the top under the principles, which slide over it. */
+  [data-view="start"] .schriftzug {
+    position: sticky;
+    top: 0;
+    z-index: 0;
+    padding-block: calc(var(--kopf-hoehe) + 2 * var(--raum)) calc(16 * var(--raum));
+  }
+  /* Two lines at every width, as the reference's lettering keeps its lines: narrower than both words
+     together (about 7.5 em in capitals), wider than the longer word (about 4.5 em). */
+  /* Line height 1 instead of the reference's 0.8: the dots of the capital Ä in the second line would touch
+     the first line (PLAN 9 risk 9, umlauts in giant titles); the reference's lettering has no umlaut. */
+  [data-view="start"] .schriftzug__text {
+    max-inline-size: 6em;
+    line-height: 1;
+  }
+  /* The card of the stretch sticks at the top right from 5a to the end of 5b, above both. */
+  [data-view="start"] .prinzipien-karte {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+  }
+  [data-view="start"] .prinzipien-karte__kasten {
+    position: sticky;
+    top: 0;
+    display: grid;
+    justify-items: end;
+    align-content: start;
+    block-size: 100vh;
+    block-size: 100svh;
+    padding: calc(var(--kopf-hoehe) + 2 * var(--raum)) var(--rand-seite) 0;
+  }
+  [data-view="start"] .prinzipien-karte__platz {
+    inline-size: min(22rem, 40vw);
+    pointer-events: auto;
+  }
+  /* 5b on the offset surface: one viewport high, clips its content (section-lift moves it). */
+  [data-view="start"] .prinzipien {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr);
+    column-gap: calc(6 * var(--raum));
+    row-gap: calc(10 * var(--raum));
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    padding-block: calc(var(--kopf-hoehe) + 2 * var(--raum)) calc(6 * var(--raum));
+    overflow: clip;
+  }
+  [data-view="start"] .prinzipien__kopf {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    display: grid;
+    justify-items: start;
+    gap: calc(3 * var(--raum));
+    max-inline-size: 40rem;
+  }
+  [data-view="start"] .prinzipien__titel {
+    text-transform: var(--versal-titel);
+  }
+  [data-view="start"] .prinzipien__karte-mobil {
+    inline-size: 100%;
+  }
+  [data-view="start"] .prinzipien__fenster {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-self: end;
+    min-inline-size: 0;
+    overflow-x: clip;
+  }
+  [data-view="start"] .prinzipien__reihe {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    gap: calc(10 * var(--raum)) var(--raster-luecke);
+    margin: 0;
+    padding: 0;
+  }
+  [data-view="start"] .prinzip {
+    display: grid;
+    align-content: start;
+    gap: calc(4 * var(--raum));
+  }
+  /* Row mode: three principles across, the active one on the left (IM 11.10); on phones one. */
+  [data-view="start"] [data-principle-row-mode="reihe"] .prinzipien__reihe {
+    display: flex;
+    gap: 0;
+  }
+  [data-view="start"] [data-principle-row-mode="reihe"] .prinzip {
+    flex: 0 0 calc(100cqi / 3);
+    min-inline-size: 0;
+    padding-inline-end: calc(8 * var(--raum));
+  }
+  /* Three across: the statement never gets wider than a third, its longest word (about 9 em in the second
+     face, "Nockenmechanismus") keeps inside it on tablets. */
+  [data-view="start"] [data-principle-row-mode="reihe"] .prinzip__aussage {
+    font-size: min(var(--groesse-titel-md), calc((100cqi / 3 - 8 * var(--raum)) / 9));
+  }
+  [data-view="start"] .prinzip__kopf {
+    display: flex;
+    align-items: baseline;
+    gap: calc(2 * var(--raum));
+    font-family: var(--schrift-zweit);
+    font-size: var(--groesse-titel-sm);
+    font-weight: var(--gewicht-text);
+    line-height: 1.2;
+  }
+  [data-view="start"] .prinzip__nr {
+    flex: none;
+  }
+  [data-view="start"] .prinzip__bild {
+    inline-size: calc(28 * var(--raum));
+    aspect-ratio: 4 / 5;
+  }
+  [data-view="start"] .prinzip__bild-innen {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border: var(--linie-staerke) dashed var(--li-rahmen);
+    background-color: var(--fl-erhoben);
+    color: var(--tx-leise);
+  }
+  [data-view="start"] .prinzip__aussage {
+    font-size: var(--groesse-titel-md);
+    line-height: 1.15;
+    color: var(--tx-stark);
+    overflow-wrap: break-word;
+  }
+  /* Controls at the bottom right, where the reference keeps its thumbnails. */
+  [data-view="start"] .prinzipien__steuerung {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: end;
+    z-index: 1;
+    display: grid;
+    justify-items: end;
+    gap: calc(3 * var(--raum));
+  }
+  [data-view="start"] .prinzipien__marken {
+    list-style: none;
+    display: flex;
+    gap: var(--raum);
+    margin: 0;
+    padding: 0;
+  }
+  [data-view="start"] .prinzipien__marke {
+    inline-size: var(--knopf-hoehe);
+    block-size: var(--knopf-hoehe);
+    padding: 0;
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-knopf);
+    background-color: var(--fl-erhoben);
+    color: var(--tx-leise);
+    cursor: pointer;
+  }
+  [data-view="start"] .prinzipien__marke:hover,
+  [data-view="start"] .prinzipien__marke[aria-current="true"] {
+    border-color: var(--ak-marke);
+    color: var(--tx-stark);
+  }
+  [data-view="start"] .prinzipien__marke[aria-current="true"] {
+    box-shadow: inset 0 0 0 1px var(--ak-marke);
+  }
+  [data-view="start"] .prinzipien__schritte {
+    display: flex;
+    align-items: center;
+    gap: calc(2 * var(--raum));
+  }
+  [data-view="start"] .prinzipien__pause {
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(4 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-knopf);
+    background-color: transparent;
+    color: var(--tx-stark);
+    font: inherit;
+    cursor: pointer;
+  }
+  [data-view="start"] .prinzipien__pause:hover {
+    border-color: var(--ak-marke);
+  }
+  [data-view="start"] .prinzipien__stand {
+    min-inline-size: 5ch;
+    text-align: center;
+  }
+  @media (max-width: 767px) {
+    [data-view="start"] .prinzipien {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      row-gap: calc(8 * var(--raum));
+    }
+    [data-view="start"] .prinzipien__fenster,
+    [data-view="start"] .prinzipien__steuerung {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    [data-view="start"] .prinzipien__steuerung {
+      justify-items: start;
+    }
+    [data-view="start"] .prinzipien__marken {
+      gap: 2px;
+    }
+    [data-view="start"] [data-principle-row-mode="reihe"] .prinzip {
+      flex-basis: 100cqi;
+    }
+    [data-view="start"] [data-principle-row-mode="reihe"] .prinzip__aussage {
+      font-size: var(--groesse-titel-md);
+    }
+  }
+
+  /* ---------- Section 6 · Fragen (IM 7 "FAQ", IM 11.13) ---------- */
+  [data-view="start"] .fragen {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: calc(24 * var(--raum));
+    padding-block: calc(30 * var(--raum));
+  }
+  [data-view="start"] .fragen__kopf {
+    display: grid;
+    justify-items: start;
+    gap: calc(4 * var(--raum));
+  }
+  [data-view="start"] .fragen__titel {
+    max-inline-size: 22ch;
+  }
+  [data-view="start"] .fragen__liste {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  [data-view="start"] .frage {
+    border-block-end: var(--linie-staerke) solid var(--li-linie);
+    transition: opacity var(--dauer-gedimmt) var(--kurve-standard);
+  }
+  /* The other rows dim while the pointer is over the list (F14: 0.55 in 0.3 s, on the row wrapper). */
+  @media (hover: hover) {
+    [data-view="start"] .fragen__liste:hover > .frage:not(:hover) {
+      opacity: var(--deckkraft-gedimmt);
+    }
+  }
+  [data-view="start"] .frage__kopf {
+    font: inherit;
+  }
+  /* The whole question row is the button. */
+  [data-view="start"] .frage__knopf {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: calc(6 * var(--raum));
+    inline-size: 100%;
+    padding: calc(5 * var(--raum)) 0;
+    border: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+  [data-view="start"] .frage__text {
     max-inline-size: 24ch;
+    font-size: var(--groesse-titel-md);
+    line-height: 1.12;
+  }
+  [data-view="start"] .frage__zeichen {
+    position: relative;
+    display: grid;
+    place-items: center;
+    inline-size: calc(20 * var(--raum));
+    block-size: calc(16 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-knopf);
+  }
+  [data-view="start"] .frage__strich {
+    position: absolute;
+    inline-size: calc(6 * var(--raum));
+    block-size: 2px;
+    background-color: currentColor;
+  }
+  [data-view="start"] .frage__strich--senkrecht {
+    inline-size: 2px;
+    block-size: calc(6 * var(--raum));
+  }
+  [data-view="start"] .frage__innen {
+    max-inline-size: 64ch;
+    padding-block-end: calc(6 * var(--raum));
+  }
+  @media (max-width: 767px) {
+    [data-view="start"] .fragen {
+      row-gap: calc(14 * var(--raum));
+      padding-block: calc(24 * var(--raum));
+    }
+    [data-view="start"] .frage__zeichen {
+      inline-size: var(--knopf-hoehe);
+      block-size: var(--knopf-hoehe);
+    }
   }
 }
