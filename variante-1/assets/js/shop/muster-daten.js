@@ -10,7 +10,7 @@
  *   - the Pucker (force 03) with name and status, no price, no variants: it cannot be bought (FRAGEN 7a)
  *   - 100 sample records "Musterartikel 001" to "Musterartikel 100", visibly marked as samples, without 7Vis
  *     product names (PLAN 6, Drehbuch D11 b). 001 to 003 are the samples the home page and the preview of
- *     the navigation show since stage 3 (forces 02, 04, 06, CHF 10.00, CHF 20.00, sold out); 004 to 100
+ *     the navigation show since stage 3 (forces 02, 04, 06, CHF 10,00, CHF 20,00, sold out); 004 to 100
  *     follow the forces, so that the counts per force keep the proportions of the assortment list (W 07):
  *     16, 16, 15, 15, 15, 13, 10.
  *   - one amount per currency as an integer in Rappen and Cent, no exchange rate (PLAN 6, W 06)
@@ -68,7 +68,7 @@ function zufall(seed) {
 
 const drei = (n) => String(n).padStart(3, '0');
 
-/** Swiss retail amounts end on .00, .50 or .90 (5-Rappen rounding); the samples follow that. */
+/** Swiss retail amounts end on ,00, ,50 or ,90 (5-Rappen rounding); the samples follow that. */
 function endung(rappen) {
   const franken = Math.floor(rappen / 100);
   const rest = rappen % 100;
@@ -181,15 +181,27 @@ export const VORSCHAU = Object.freeze(['m001', 'm002', 'm003']);
 /**
  * Sample shipping rule (W 08: rules, costs and countries are missing). Invented for the study, shown as
  * "Musterregel" wherever it appears. Countries and labels of the delivery address form.
+ * Postcode rule per country (stage 7): format and range of the national post, checked in the checkout and
+ * by the adapter; plzHinweis is the hint of the error message (the generator writes one message per country
+ * into kasse.html, so the page and the check read the same rule).
+ *   CH 1000 to 9999 (four digits, no leading zero)   LI 9485 to 9498 (the eleven communes)
+ *   DE 01001 to 99999 (five digits, never 00)         AT 1010 to 9999 (four digits, no leading zero)
+ *   FR 01000 to 98999 (five digits, never 00 or 99)   IT 00010 to 99999 (five digits, never 00000 to 00009)
  */
 export const LAENDER = Object.freeze([
-  Object.freeze({ code: 'CH', name: 'Schweiz', plz: /^[1-9]\d{3}$/, plzHinweis: '4 Ziffern', mwst: true }),
-  Object.freeze({ code: 'LI', name: 'Liechtenstein', plz: /^94(8[5-9]|9\d)$/, plzHinweis: '4 Ziffern, 9485 bis 9499', mwst: true }),
-  Object.freeze({ code: 'DE', name: 'Deutschland', plz: /^\d{5}$/, plzHinweis: '5 Ziffern', mwst: false }),
-  Object.freeze({ code: 'AT', name: 'Österreich', plz: /^\d{4}$/, plzHinweis: '4 Ziffern', mwst: false }),
-  Object.freeze({ code: 'FR', name: 'Frankreich', plz: /^\d{5}$/, plzHinweis: '5 Ziffern', mwst: false }),
-  Object.freeze({ code: 'IT', name: 'Italien', plz: /^\d{5}$/, plzHinweis: '5 Ziffern', mwst: false }),
+  Object.freeze({ code: 'CH', name: 'Schweiz', plz: /^[1-9]\d{3}$/, plzHinweis: '4 Ziffern, zum Beispiel 8001', mwst: true }),
+  Object.freeze({ code: 'LI', name: 'Liechtenstein', plz: /^94(8[5-9]|9[0-8])$/, plzHinweis: '4 Ziffern von 9485 bis 9498, zum Beispiel 9490', mwst: true }),
+  Object.freeze({ code: 'DE', name: 'Deutschland', plz: /^(0[1-9]|[1-9]\d)\d{3}$/, plzHinweis: '5 Ziffern, zum Beispiel 10115', mwst: false }),
+  Object.freeze({ code: 'AT', name: 'Österreich', plz: /^[1-9]\d{3}$/, plzHinweis: '4 Ziffern ohne führende Null, zum Beispiel 1010', mwst: false }),
+  Object.freeze({ code: 'FR', name: 'Frankreich', plz: /^(0[1-9]|[1-8]\d|9[0-8])\d{3}$/, plzHinweis: '5 Ziffern, zum Beispiel 75001', mwst: false }),
+  Object.freeze({ code: 'IT', name: 'Italien', plz: /^(?!0000)\d{5}$/, plzHinweis: '5 Ziffern, zum Beispiel 00184', mwst: false }),
 ]);
+
+/** Postcode valid for the country? Unknown countries fail (the form offers only LAENDER). */
+export function plzGueltig(land, plz) {
+  const l = LAENDER.find((x) => x.code === land);
+  return !!l && l.plz.test(String(plz || '').trim());
+}
 
 export const VERSAND = Object.freeze({
   CH: Object.freeze([
@@ -203,6 +215,38 @@ export const VERSAND = Object.freeze({
 
 export function versandFuer(land) {
   return land === 'CH' || land === 'LI' ? VERSAND.CH : VERSAND.EU;
+}
+
+/** Cheapest shipping of a country per currency (shipping preview of the cart panel, PLAN 3). */
+export function versandAb(land) {
+  const arten = versandFuer(land);
+  return { CHF: Math.min(...arten.map((a) => a.preis.CHF)), EUR: Math.min(...arten.map((a) => a.preis.EUR)) };
+}
+
+/**
+ * Password rule of the customer accounts (shop decision E4, 12.09.2026: registration, password sign-in,
+ * long-lived session of 90 days, passkeys in phase 2). Length over composition (NIST SP 800-63B): 10 to 128
+ * characters, any characters (spaces and passphrases welcome), not the e-mail address or its name part, not
+ * on a short list of common passwords or a run of one character. The study checks it in the browser; the
+ * PHP shop checks the same rule on the server and stores only an Argon2id hash (UEBERGABE-PHP.md).
+ */
+export const PASSWORT = Object.freeze({ min: 10, max: 128, sitzungTage: 90, sperreVersuche: 5, sperreSekunden: 30 });
+
+const HAEUFIG = new Set(['passwort', 'passwort1', 'passwort12', 'passwort123', 'password', 'password1', 'password123', '1234567890', '0123456789', '12345678910', 'qwertzuiop', 'qwertyuiop', 'asdfghjkl', 'hallohallo', 'abcdefghij', 'iloveyou12', 'kaffeekaffee', 'espresso123', 'espresso1234', 'cappuccino1', '7vis7vis7vis', 'schweiz123', 'sommer2026', 'winter2026']);
+
+/** Why a password is refused, or null: 'leer', 'kurz', 'lang', 'email', 'haeufig'. */
+export function passwortGrund(passwort, email = '') {
+  const pw = String(passwort || '');
+  const n = [...pw].length;
+  if (!n) return 'leer';
+  if (n < PASSWORT.min) return 'kurz';
+  if (n > PASSWORT.max) return 'lang';
+  const low = pw.toLowerCase();
+  const mail = String(email || '').trim().toLowerCase();
+  const name = mail.split('@')[0] || '';
+  if (mail && (low === mail || (name.length >= 4 && low.includes(name)))) return 'email';
+  if (HAEUFIG.has(low) || /^(.)\1+$/.test(low) || '01234567890123456789'.includes(low) || 'abcdefghijklmnopqrstuvwxyz'.includes(low)) return 'haeufig';
+  return null;
 }
 
 /** Sample voucher (vouchers are phase 2, W 06): shows the field's success and error states. */
@@ -250,8 +294,10 @@ export function preisAb(p) {
 }
 
 /**
- * Amount in Rappen or Cent as text: "CHF 1'490.00". Thousands with an apostrophe (W 04), the decimal
- * point of Swiss price tags. Own formatter, so Node (generator) and the browser write the same text.
+ * Amount in Rappen or Cent as text: "CHF 1'490,00". Thousands with an apostrophe and the decimal comma of
+ * the house style (W 04: "Tausender mit Apostroph (100'000), Dezimalkomma (2,5 mm)"); W 04 does not name
+ * currency amounts, so the site keeps one rule for every number (stage 7; open point for the owner: Swiss
+ * price tags often write 10.00). Own formatter, so Node (generator) and the browser write the same text.
  */
 export function formatBetrag(betrag, waehrung = 'CHF') {
   if (!Number.isFinite(betrag)) return '';
@@ -259,7 +305,7 @@ export function formatBetrag(betrag, waehrung = 'CHF') {
   const abs = Math.abs(Math.round(betrag));
   const ganz = String(Math.floor(abs / 100)).replace(/\B(?=(\d{3})+(?!\d))/g, "'");
   const rest = String(abs % 100).padStart(2, '0');
-  return `${waehrung} ${negativ ? '-' : ''}${ganz}.${rest}`;
+  return `${waehrung} ${negativ ? '-' : ''}${ganz},${rest}`;
 }
 
 /** Included VAT of a gross amount (Swiss deliveries). */

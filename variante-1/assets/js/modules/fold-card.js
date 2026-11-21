@@ -26,6 +26,7 @@ import { splitText } from '../text/split.js';
 import { invertEase } from '../motion/ease.js';
 import { TIMING } from '../motion/curves.js';
 import { inViewport } from '../core/dom.js';
+import { guard } from '../core/guard.js';
 
 const T = TIMING.foldCard;
 
@@ -92,7 +93,8 @@ export default {
       },
     };
 
-    if (ctx.reduced) return api;
+    // Reduced motion, or the guard's CSS limit already showed the card (late script): it stays unfolded.
+    if (ctx.reduced || guard.expired(el)) return api;
     if (!fade && !carrier) {
       ctx.warn('unfold needs [data-fold-card-carrier], card left as it is', el);
       return api;

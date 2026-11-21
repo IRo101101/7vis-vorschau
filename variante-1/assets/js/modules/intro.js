@@ -23,11 +23,17 @@
  *     weighted by TIMING.intro.weights. The displayed value follows it, never faster than one full sweep in
  *     sweepMin, so the count 01 to 07 can be read. The count is a strip of the seven numbers in the HTML
  *     that moves one row per seventh (0.6 s, "streifen").
- *   - time limit: after `limit` seconds the intro ends whatever is still loading (WebGL then appears later
- *     or never; the still stands in); a second, real-time backstop ends it even if frames stall. If the
- *     core ends the intro first (its own limit), the curtain opens at once.
+ *   - time limit, counted from navigation start (stage 7; performance.now() is navigation relative): the
+ *     curtain is open `limit` seconds after the navigation at the latest, so the claim is never covered
+ *     longer, however late the script arrives (1.6 Mbit/s, 300 ms RTT: the module ran only after 4.7 s and
+ *     the old limit, counted from setup, kept the claim covered until 10.3 s). From `limit` minus curtain,
+ *     sweep and hold on the progress counts as complete; at `limit` minus the curtain the intro ends in any
+ *     case (real time, also when frames stall); a script that comes too late for a curtain hides the layer
+ *     at once, and one that finds the layer already hidden by the CSS limit leaves it hidden. If the core
+ *     ends the intro first (its own limit), the curtain opens at once.
  *   - the layer is shown by CSS from the first paint (no flash of the page, F4) and hides itself after a CSS
- *     time limit if no script ever runs; boot failure hides it at once.
+ *     time limit (3.5 s after the first paint, the only clock CSS has) if no script takes over; boot failure
+ *     hides it at once. Titles whose guard the CSS limit already showed stay as they are (core/guard.js).
  *   - reduced motion: no intro at all, the page is there at once.
  * Lenis is stopped while the layer covers the page.
  */
@@ -63,6 +69,12 @@ export default {
     let limitReached = false;
     let finishedAt = null;
     let startedAt = null;
+    // Navigation-relative deadlines in ms: curtain open at `limit`, intro end (T) at `latestEnd` at the latest.
+    const limitMs = opts.limit * 1000;
+    const curtainMs = T.curtainDuration * 1000 + T.curtainFrames * 17;
+    const latestEnd = limitMs - curtainMs;
+    const softAt = latestEnd - (opts.sweep + T.hold) * 1000;
+    const now = () => performance.now();
     const parts = { fonts: 0, load: document.readyState === 'complete' ? 1 : 0 };
     const stats = { started: null, ended: null, curtainEnd: null, reason: null, progressAtEnd: null };
 
@@ -79,6 +91,38 @@ export default {
     // Not the first view of this document (the intro already ran, or a page change brought us here): nothing.
     if (store.get('intro:done')) {
       hide();
+      return { get phase() { return phase; }, stats };
+    }
+
+    // The script came late: the CSS limit already hid the layer, or there is no time left for a curtain
+    // before the limit. The page has been there (or is there now) without the intro; it stays that way.
+    const cssGaveUp = !ctx.reduced && getComputedStyle(el).visibility === 'hidden';
+    if (!ctx.reduced && (cssGaveUp || now() >= latestEnd)) {
+      const left = limitMs - now();
+      stats.reason = cssGaveUp ? 'css' : 'spaet';
+      stats.started = stats.ended = now();
+      if (cssGaveUp || left < 400) {
+        hide();
+        stats.curtainEnd = now();
+      } else {
+        setPhase('vorhang');
+        g.tween(el, { clipBottom: 100 }, {
+          duration: (left - 2 * 17) / 1000,
+          ease: T.curtainEase,
+          onComplete: () => {
+            stats.curtainEnd = now();
+            motion.set(el, { clipBottom: 0 });
+            hide();
+          },
+        });
+        wait(left + 300).then(() => {
+          if (phase !== 'fertig') {
+            motion.set(el, { clipBottom: 0 });
+            hide();
+          }
+        });
+      }
+      store.set('intro:done', true);
       return { get phase() { return phase; }, stats };
     }
 
@@ -111,6 +155,25 @@ export default {
     function curtain() {
       if (phase === 'vorhang' || phase === 'fertig') return;
       setPhase('vorhang');
+      // Late end (the frames were slow or the core ended it): the curtain is shorter, never past the limit.
+      const left = limitMs - now();
+      if (left < curtainMs) {
+        if (left < 400) {
+          stats.curtainEnd = now();
+          hide();
+          return;
+        }
+        g.tween(el, { clipBottom: 100 }, {
+          duration: (left - 2 * 17) / 1000,
+          ease: T.curtainEase,
+          onComplete: () => {
+            stats.curtainEnd = now();
+            motion.set(el, { clipBottom: 0 });
+            hide();
+          },
+        });
+        return;
+      }
       // The opening shows `curtainFrames` frames after T: the tween starts one frame before that. Only real
       // frames count (a callback added while a frame runs fires in that same frame, so a plain chain of
       // nextFrame calls collapsed into the frame of T, and a long frame at T then ate into the opening).
@@ -230,18 +293,26 @@ export default {
       ctx.nextFrame(start, 'late');
     });
 
-    // Time limit (real time, independent of frames): progress counts as complete; backstop if frames stall.
+    // Time limits (real time, from navigation start, independent of frames): progress counts as complete at
+    // softAt; the intro ends at latestEnd whatever the frames do; the layer is gone shortly after the limit.
     let alive = true;
     ctx.own(() => {
       alive = false;
     });
-    wait(opts.limit * 1000).then(() => {
+    wait(Math.max(0, softAt - now())).then(() => {
       if (!alive) return;
       limitReached = true;
       if (phase === 'laedt') start();
     });
-    wait((opts.limit + opts.sweep + 1) * 1000).then(() => {
-      if (alive) end('backstop');
+    wait(Math.max(0, latestEnd - now())).then(() => {
+      if (alive) end('limit');
+    });
+    wait(Math.max(0, limitMs + 300 - now())).then(() => {
+      if (!alive || phase === 'fertig') return;
+      g.kill();
+      motion.set(el, { clipBottom: 0 });
+      stats.curtainEnd = now();
+      hide();
     });
 
     ctx.onDestroy(() => {

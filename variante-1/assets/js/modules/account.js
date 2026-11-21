@@ -1,7 +1,9 @@
 /**
  * account: /konto, the sample customer account (W 06 E4 and E5; reference: Shopify customer accounts,
  * refmedia v1 F24). Shows the orders of the sample account (two sample orders plus the ones placed in this
- * browser), the default address, the separate newsletter consent (E6, not ticked by default) and sign-out.
+ * browser), the default address, the session (E4: "Eingeloggt bleiben" for 90 days or until the browser
+ * closes, [data-account-session-art="bleiben|sitzung"], [data-account-bis]), the separate newsletter
+ * consent (E6, not ticked by default) and sign-out.
  * Not signed in: the state [data-account-state="aus"] with the way to /anmelden.
  * Markup: konto.html ([data-account-*], order list template as in shop/bestellung.js per order).
  */
@@ -21,6 +23,8 @@ export default {
     const addrOut = el.querySelector('[data-account-address]');
     const addrBefore = addrOut ? addrOut.textContent : '';
     const news = el.querySelector('[data-account-newsletter]');
+    const bisOut = el.querySelector('[data-account-bis]');
+    const bisBefore = bisOut ? bisOut.textContent : '';
     const hiddenBefore = new Map([...el.querySelectorAll('*')].map((n) => [n, n.hidden]));
     let alive = true;
     let konto = null;
@@ -40,6 +44,11 @@ export default {
       for (const n of el.querySelectorAll('[data-account-new]')) n.hidden = !konto.neu;
       if (addrOut) addrOut.textContent = konto.adresse ? adresseText(konto.adresse) : addrBefore;
       if (news) news.checked = !!konto.newsletter;
+      for (const n of el.querySelectorAll('[data-account-session-art]')) n.hidden = n.getAttribute('data-account-session-art') !== (konto.bleiben ? 'bleiben' : 'sitzung');
+      if (bisOut && konto.bis) {
+        const [y, m, d] = konto.bis.slice(0, 10).split('-');
+        bisOut.textContent = `${d}.${m}.${y}`;
+      }
       if (list && tpl) {
         list.textContent = '';
         for (const b of konto.bestellungen) {
@@ -91,6 +100,7 @@ export default {
         n.textContent = mailBefore[i];
       });
       if (addrOut) addrOut.textContent = addrBefore;
+      if (bisOut) bisOut.textContent = bisBefore;
       if (news) news.checked = news.defaultChecked;
       el.removeAttribute('data-account-view');
       const t = el.querySelector('[data-account-state="aus"] [tabindex="-1"]');

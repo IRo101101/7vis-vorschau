@@ -12,7 +12,10 @@
  *     even loaded when this is clear at start), still images and CSS surfaces carry the page;
  *   - otherwise 'einfach' or 'voll'; loading starts after the first frame (PLAN 7: scenes load after the
  *     first view), scenes are precompiled before they draw.
- * <html data-webgl="aus|statisch|laedt|live|verloren"> mirrors the state for CSS and tests.
+ *   - only on a page with a scene (CONTRACT line 8, stage 7): while the live document has no [data-scene]
+ *     (outside a frozen copy), three.js, the world and the scenes are not loaded at all ('ruht'); a page
+ *     change to a page with a scene loads them then. A world that exists stays for the rest of the visit.
+ * <html data-webgl="aus|statisch|ruht|laedt|live|verloren"> mirrors the state for CSS and tests.
  *
  * Store keys (CONTRACT 7): reads 'webgl:freeze', 'webgl:level-pin', 'webgl:probe', 'motion:reduced',
  * 'viewport', 'page:in'; writes 'webgl:level', 'webgl:progress', 'webgl:ready', 'webgl:lost'.
@@ -23,6 +26,12 @@ import { frame } from '../core/frame.js';
 import { clock } from '../core/clock.js';
 
 let webgl2Cache = null;
+
+/** A scene marker in the live document (a frozen copy of the old view does not count). */
+function hasScene() {
+  for (const n of document.querySelectorAll('[data-scene]')) if (!n.closest('[data-standbild]')) return true;
+  return false;
+}
 
 /** WebGL 2 present? Cheap probe on a throw-away canvas, its context released right away. */
 export function hasWebGL2() {
@@ -152,6 +161,11 @@ export default {
         world.setLevel(next);
         return;
       }
+      if (!hasScene()) {
+        // Nothing to draw: three.js stays unloaded until a page with a scene comes (page:in).
+        if (!loading) setState('ruht');
+        return;
+      }
       ensureWorld().catch((err) => {
         ctx.warn('WebGL layer failed to load, still images stay', err);
         loading = null;
@@ -161,7 +175,7 @@ export default {
     }
 
     // Expected path known at once: announce loading before the first frame so the still does not flash.
-    setState(target() === 'statisch' ? (webgl2 ? 'statisch' : 'aus') : 'laedt');
+    setState(target() === 'statisch' ? (webgl2 ? 'statisch' : 'aus') : hasScene() ? 'laedt' : 'ruht');
     store.set('webgl:lost', false);
 
     ctx.onMount(() => {
@@ -188,6 +202,7 @@ export default {
     });
     ctx.on('page:in', () => {
       if (world && !world.frozen) world.scan();
+      else if (!world && hasScene()) decide();
     });
     // Review aid: 'webgl:probe' events rehearse a context loss ('lose', 'restore').
     ctx.on('webgl:probe', (what) => {

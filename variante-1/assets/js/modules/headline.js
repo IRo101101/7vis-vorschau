@@ -17,12 +17,14 @@
  * data-headline-fit-lines every explicit line stays on one row at the breakpoints of
  * data-headline-fit-lines-at (default "d t"); below them the words fit and lines may wrap, as the reference
  * title does on phones (stage 3, hero claim).
- * Reduced motion: nothing is split, the text stands as in the HTML.
+ * Reduced motion: nothing is split, the text stands as in the HTML. The same when the script comes after the
+ * guard's CSS limit already showed the title (slow connection, stage 7): it is never hidden again.
  */
 import { splitText } from '../text/split.js';
 import { fitWords, fitLines } from '../text/fit.js';
 import { TIMING } from '../motion/curves.js';
 import { inViewport } from '../core/dom.js';
+import { guard } from '../core/guard.js';
 
 const T = TIMING.headline;
 const LINE = '[data-headline-line]';
@@ -74,7 +76,8 @@ export default {
       },
     };
 
-    if (ctx.reduced) return api;
+    // Reduced motion, or the guard's CSS limit already showed the title (late script): it stands as it is.
+    if (ctx.reduced || guard.expired(el)) return api;
     const explicit = !!el.querySelector(LINE);
     sp = splitText(el, { lineSelector: explicit ? LINE : null });
     if (!sp) {

@@ -16,7 +16,9 @@
  *   3 styles   stylesheets the target needs are added and awaited; extra ones are removed at the end
  *   4 freeze   the old view is cloned in its current state (module attributes, ids and form names
  *              removed, inert, aria-hidden, data-standbild) and fixed at the same place; sticky parts
- *              keep their stuck position
+ *              keep their stuck position. Shell elements that follow the view in the flow
+ *              ([data-page-router-follow], the footer since stage 7) are copied into the frozen copy and
+ *              hidden until the change settles, so the old page stays whole and nothing jumps
  *   5 swap     modules of the old view destroyed, new view inserted fixed and fully clipped, modules
  *              started, page-in queue run
  *   6 reveal   the new view starts 8 % lower and opens from the bottom up with clip-path, 0.9 s, curve
@@ -188,6 +190,19 @@ export default {
       s.margin = '0';
       s.zIndex = '998';
       s.pointerEvents = 'none';
+      // Followers (the footer): a copy rides at the end of the frozen view, the live one waits hidden.
+      for (const f of followers()) {
+        const copy = f.cloneNode(true);
+        for (const node of [copy, ...copy.querySelectorAll('[data-mod], [id], [name], [autofocus]')]) {
+          node.removeAttribute('data-mod');
+          node.removeAttribute('id');
+          node.removeAttribute('name');
+          node.removeAttribute('autofocus');
+        }
+        copy.removeAttribute('data-page-router-follow');
+        clone.append(copy);
+        f.style.visibility = 'hidden';
+      }
       document.body.append(clone);
       if (stuck.length) {
         const copies = clone.querySelectorAll(`*${SKIP}`);
@@ -200,6 +215,15 @@ export default {
         }
       }
       return clone;
+    }
+
+    const followers = () => [...document.querySelectorAll('body > [data-page-router-follow]')];
+
+    function unfollow() {
+      for (const f of followers()) {
+        f.style.removeProperty('visibility');
+        if (!f.getAttribute('style')) f.removeAttribute('style');
+      }
     }
 
     /* ---------- reveal ---------- */
@@ -359,6 +383,7 @@ export default {
       job.stage = 'settle';
       store.emit('transition:covered', { ...info });
       if (clone) clone.remove();
+      unfollow();
       for (const link of styles.stale) link.remove();
       if (clone) unplace(fresh);
       document.body.style.removeProperty('min-height');
@@ -391,6 +416,7 @@ export default {
         await transition(job);
         done += 1;
       } catch (err) {
+        unfollow();
         lastError = { message: String(err && err.message), stage: job.stage };
         ctx.warn(`page change failed in stage "${job.stage}", normal navigation`, err && err.message);
         hard(job);

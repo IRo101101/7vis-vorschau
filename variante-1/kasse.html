@@ -19,6 +19,7 @@
   <link rel="modulepreload" href="assets/vendor/lenis-1.3.26/lenis.js">
   <link rel="modulepreload" href="assets/js/modules/nav.js">
   <link rel="modulepreload" href="assets/js/modules/cart-panel.js">
+  <link rel="modulepreload" href="assets/js/modules/scroll-gauge.js">
   <link rel="modulepreload" href="assets/js/shop/muster.js">
   <link rel="modulepreload" href="assets/js/shop/muster-daten.js">
   <link rel="modulepreload" href="assets/js/modules/checkout.js">
@@ -59,7 +60,7 @@
               <li class="vorschau__kachel" data-nav-shop-item>
                 <a class="vorschau__verweis" href="muster-001.html">
                   <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
-                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10.00</span><span data-preis-w="EUR">EUR 10.50</span></span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10,00</span><span data-preis-w="EUR">EUR 10,50</span></span></span>
                   <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
                   <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02 · Mahlen</span>
                 </a>
@@ -67,7 +68,7 @@
               <li class="vorschau__kachel" data-nav-shop-item>
                 <a class="vorschau__verweis" href="muster-002.html">
                   <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
-                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20.00</span><span data-preis-w="EUR">EUR 21.00</span></span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20,00</span><span data-preis-w="EUR">EUR 21,00</span></span></span>
                   <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
                   <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-4" aria-hidden="true"></span>04 · Pumpen</span>
                 </a>
@@ -103,6 +104,8 @@
   </div>
   <!-- Drag handle of the figure: follows the figure on screen, takes the pointer only while the slider allows it. -->
   <div class="figur-griff" data-mod="figure-grip" aria-hidden="true" data-needs-core></div>
+  <!-- Scroll gauge (IM 11.14, PLAN 5 no. 6): own scroll indicator on the right; the native bar is hidden while it runs. -->
+  <div class="pegel" data-mod="scroll-gauge" aria-hidden="true" data-needs-core><span class="pegel__balken" data-scroll-gauge-bar></span></div>
   <!-- Cart panel (stage 5; IS 5, IM 11.12, Drehbuch 2.2): opens with the cart button of the header and after
        adding to the cart. Without the runtime the cart button leads to /warenkorb. Lines are clones of the
        template; the shop adapter (PLAN 6) is the only source of the cart. -->
@@ -143,12 +146,13 @@
       <div class="korb__summe" data-cart-panel-summary data-cart-panel-child>
         <p class="korb__summentitel t-label">Übersicht</p>
         <dl class="summen">
-          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0.00</dd></div>
-          <div class="summen__zeile"><dt>Versand</dt><dd>wird in der Kasse berechnet</dd></div>
+          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0,00</dd></div>
+          <div class="summen__zeile"><dt>Versand (Musterregel)</dt><dd><!-- versandvorschau:start --><span class="t-ziffern">ab <span data-preis-w="CHF">CHF 9,00</span><span data-preis-w="EUR">EUR 9,50</span></span><!-- versandvorschau:end --></dd></div>
         </dl>
+        <p class="korb__versand t-klein"><!-- versandhinweis:start -->Musterregel: Schweiz und Liechtenstein ab <span class="t-ziffern"><span data-preis-w="CHF">CHF 9,00</span><span data-preis-w="EUR">EUR 9,50</span></span>, übrige Länder ab <span class="t-ziffern"><span data-preis-w="CHF">CHF 24,00</span><span data-preis-w="EUR">EUR 25,00</span></span>. Die Versandart wählen Sie in der Kasse.<!-- versandhinweis:end --></p>
         <div class="korb__waehrung"><span class="t-klein" id="korb-waehrung">Währung</span><div class="waehrung" role="group" aria-labelledby="korb-waehrung" data-mod="currency-switch"><button type="button" data-currency-switch-value="CHF" aria-pressed="true">CHF</button><button type="button" data-currency-switch-value="EUR" aria-pressed="false">EUR</button></div></div>
         <a class="knopf korb__kasse" href="kasse.html" data-cart-panel-checkout>Zur Kasse gehen</a>
-        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Versand und Rabattcode folgen in der Kasse.</p>
+        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Rabattcode und Versandart folgen in der Kasse.</p>
       </div>
     </section>
   </div>
@@ -158,7 +162,10 @@
     <!-- /kasse (PLAN 6 step 4; flow of the reference's hosted checkout, refmedia v1 section 5): contact with the
          sign-in link, delivery address in Swiss format, shipping methods after the address, payment as a
          hand-off to the payment service, review with the terms, the summary with the discount field.
-         A clearly marked study: nothing leaves the browser. -->
+         A clearly marked study: nothing leaves the browser. Sample forms (CONTRACT 2 rule 9): fields carry
+         data-feld instead of name and the forms point to formular-muster.html with GET, so a submit without
+         script validates natively and ends on the marked sample page without sending a value. The PHP
+         template writes name and posts to its endpoint. -->
     <section class="sx shopseite kasse" data-theme="hell" aria-labelledby="kasse-titel" data-mod="checkout">
       <div class="shopseite__kopf">
         <p class="kicker">Kasse</p>
@@ -172,58 +179,58 @@
       </div>
       <div class="kasse__raster" data-checkout-grid>
         <aside class="kasse__uebersicht" aria-labelledby="kasse-uebersicht" data-checkout-summary>
-          <button type="button" class="kasse__umschalter" aria-controls="kasse-uebersicht-inhalt" data-checkout-summary-toggle data-needs-core><span>Bestellübersicht</span><span class="t-ziffern" data-checkout-total-short>CHF 0.00</span></button>
+          <button type="button" class="kasse__umschalter" aria-controls="kasse-uebersicht-inhalt" data-checkout-summary-toggle data-needs-core><span>Bestellübersicht</span><span class="t-ziffern" data-checkout-total-short>CHF 0,00</span></button>
           <div id="kasse-uebersicht-inhalt" class="kasse__uebersicht-inhalt">
             <h2 id="kasse-uebersicht" class="t-sm">Bestellübersicht</h2>
             <ul class="kasse__zeilen" data-checkout-lines aria-label="Positionen"></ul>
             <template data-checkout-line-template>
               <li class="kasse-zeile"><span class="kasse-zeile__bild" aria-hidden="true"><span class="marke-muster t-label">Muster</span></span><span class="kasse-zeile__text"><span class="kasse-zeile__name" data-line-name>Artikel</span><span class="t-klein" data-line-variant>Variante <span data-line-variant-value>A</span></span><span class="t-klein">Menge <span class="t-ziffern" data-line-qty>1</span></span><span class="zeile__hinweis t-klein" data-line-note hidden>Nicht lieferbar, bitte im Warenkorb anpassen.</span></span><span class="kasse-zeile__preis t-ziffern" data-line-price></span></li>
             </template>
-            <form class="kasse__code" action="kasse.html" method="post" data-checkout-code aria-label="Rabattcode">
-              <div class="feld"><label for="k-code" class="feld__etikett">Rabattcode</label><div class="kasse__code-zeile"><input id="k-code" name="code" type="text" autocomplete="off" aria-describedby="k-code-hinweis"><button type="submit" class="knopf knopf--still">Anwenden</button></div></div>
+            <form class="kasse__code" action="formular-muster.html#rabatt" method="get" data-checkout-code aria-label="Rabattcode">
+              <div class="feld"><label for="k-code" class="feld__etikett">Rabattcode</label><div class="kasse__code-zeile"><input id="k-code" data-feld="code" type="text" autocomplete="off" aria-describedby="k-code-hinweis"><button type="submit" class="knopf knopf--still">Anwenden</button></div></div>
               <p id="k-code-hinweis" class="t-klein" role="status"><span data-checkout-code-msg="info">Muster: Der Code MUSTER10 gibt 10 Prozent, Gutscheine folgen in Phase 2.</span><span data-checkout-code-msg="ok" hidden>Code <span data-checkout-code-name>MUSTER10</span> angewendet.</span><span class="feld__fehler" data-checkout-code-msg="ungueltig" hidden>Dieser Code ist ungültig.</span><span class="feld__fehler" data-checkout-code-msg="leer" hidden>Bitte geben Sie einen Code ein.</span><span class="feld__fehler" data-checkout-code-msg="fehler" hidden>Der Code konnte nicht geprüft werden.</span></p>
             </form>
             <dl class="summen">
-              <div class="summen__zeile"><dt>Zwischensumme</dt><dd data-checkout-sum="zwischen">CHF 0.00</dd></div>
-              <div class="summen__zeile" data-checkout-row="rabatt" hidden><dt>Rabatt (Muster)</dt><dd data-checkout-sum="rabatt">CHF 0.00</dd></div>
+              <div class="summen__zeile"><dt>Zwischensumme</dt><dd data-checkout-sum="zwischen">CHF 0,00</dd></div>
+              <div class="summen__zeile" data-checkout-row="rabatt" hidden><dt>Rabatt (Muster)</dt><dd data-checkout-sum="rabatt">CHF 0,00</dd></div>
               <div class="summen__zeile"><dt>Versand</dt><dd data-checkout-sum="versand"><span data-checkout-ship-state="offen">Lieferadresse eingeben</span><span data-checkout-ship-state="betrag" hidden data-checkout-ship-value></span></dd></div>
-              <div class="summen__zeile summen__zeile--total"><dt>Total</dt><dd data-checkout-sum="total">CHF 0.00</dd></div>
-              <div class="summen__zeile summen__zeile--klein" data-checkout-row="mwst"><dt>darin enthalten MWST 8,1 %</dt><dd data-checkout-sum="mwst">CHF 0.00</dd></div>
+              <div class="summen__zeile summen__zeile--total"><dt>Total</dt><dd data-checkout-sum="total">CHF 0,00</dd></div>
+              <div class="summen__zeile summen__zeile--klein" data-checkout-row="mwst"><dt>darin enthalten MWST 8,1 %</dt><dd data-checkout-sum="mwst">CHF 0,00</dd></div>
               <div class="summen__zeile summen__zeile--klein" data-checkout-row="mwst-eu" hidden><dt>Mehrwertsteuer nach Lieferland</dt><dd><span class="platzhalter">[Anwalt]</span></dd></div>
             </dl>
             <div class="shopseite__waehrung" data-needs-core><span class="t-klein" id="k-waehrung">Währung</span><div class="waehrung" role="group" aria-labelledby="k-waehrung" data-mod="currency-switch"><button type="button" data-currency-switch-value="CHF" aria-pressed="true">CHF</button><button type="button" data-currency-switch-value="EUR" aria-pressed="false">EUR</button></div></div>
           </div>
         </aside>
 
-        <form class="kasse__formular" action="kasse.html" method="post" data-checkout-form aria-labelledby="kasse-titel">
+        <form class="kasse__formular" action="formular-muster.html#kasse" method="get" data-checkout-form aria-labelledby="kasse-titel">
           <div class="formular-summe" data-formular-summe tabindex="-1" role="alert" hidden><p class="formular-summe__titel">Bitte prüfen Sie diese Angaben:</p><ul data-formular-liste></ul></div>
           <section class="kasse__teil" aria-labelledby="k-kontakt">
             <div class="kasse__teilkopf">
               <h2 id="k-kontakt" class="t-sm">Kontakt</h2>
-              <a href="anmelden.html?weiter=kasse" data-checkout-signin>Anmelden</a>
+              <a href="anmelden.html?weiter=kasse" data-checkout-signin>Anmelden oder Konto eröffnen</a>
               <p class="t-klein" data-checkout-account hidden>Angemeldet als <span data-checkout-account-mail></span>.</p>
             </div>
-            <div class="feld"><label for="k-email" class="feld__etikett">E-Mail</label><input id="k-email" name="email" type="email" autocomplete="email" required aria-describedby="k-email-fehler"><p id="k-email-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p></div>
-            <p class="t-klein">Sie können als Gast bestellen, ein Konto ist nicht nötig.</p>
-            <label class="wahl"><input type="checkbox" name="newsletter" value="1"><span>Ich möchte Neuigkeiten von 7Vis per E-Mail erhalten. Diese Einwilligung ist freiwillig und jederzeit widerrufbar.</span></label>
+            <div class="feld"><label for="k-email" class="feld__etikett">E-Mail</label><input id="k-email" data-feld="email" type="email" autocomplete="email" required aria-describedby="k-email-fehler"><p id="k-email-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p></div>
+            <p class="t-klein">Sie können als Gast bestellen, ein Konto ist nicht nötig. Mit einem Konto melden Sie sich mit E-Mail und Passwort an.</p>
+            <label class="wahl"><input type="checkbox" data-feld="newsletter" value="1"><span>Ich möchte Neuigkeiten von 7Vis per E-Mail erhalten. Diese Einwilligung ist freiwillig und jederzeit widerrufbar.</span></label>
             <p class="t-klein kasse__muster">Muster: In Phase 1 ist kein Newsletter-Versand vorgesehen. Ob dieses Feld bleibt, ist offen.</p>
           </section>
 
           <section class="kasse__teil" aria-labelledby="k-lieferung">
             <h2 id="k-lieferung" class="t-sm">Lieferadresse</h2>
-            <div class="feld"><label for="k-land" class="feld__etikett">Land</label><select id="k-land" name="land" autocomplete="shipping country" required aria-describedby="k-land-fehler"><option value="CH" selected>Schweiz</option><option value="LI">Liechtenstein</option><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="FR">Frankreich</option><option value="IT">Italien</option></select><p id="k-land-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte wählen Sie ein Land.</p></div>
+            <div class="feld"><label for="k-land" class="feld__etikett">Land</label><select id="k-land" data-feld="land" autocomplete="shipping country" required aria-describedby="k-land-fehler"><option value="CH" selected>Schweiz</option><option value="LI">Liechtenstein</option><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="FR">Frankreich</option><option value="IT">Italien</option></select><p id="k-land-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte wählen Sie ein Land.</p></div>
             <div class="feldreihe">
-              <div class="feld"><label for="k-vorname" class="feld__etikett">Vorname</label><input id="k-vorname" name="vorname" type="text" autocomplete="shipping given-name" required aria-describedby="k-vorname-fehler"><p id="k-vorname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Ihren Vornamen ein.</p></div>
-              <div class="feld"><label for="k-nachname" class="feld__etikett">Nachname</label><input id="k-nachname" name="nachname" type="text" autocomplete="shipping family-name" required aria-describedby="k-nachname-fehler"><p id="k-nachname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Ihren Nachnamen ein.</p></div>
+              <div class="feld"><label for="k-vorname" class="feld__etikett">Vorname</label><input id="k-vorname" data-feld="vorname" type="text" autocomplete="shipping given-name" required aria-describedby="k-vorname-fehler"><p id="k-vorname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Ihren Vornamen ein.</p></div>
+              <div class="feld"><label for="k-nachname" class="feld__etikett">Nachname</label><input id="k-nachname" data-feld="nachname" type="text" autocomplete="shipping family-name" required aria-describedby="k-nachname-fehler"><p id="k-nachname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Ihren Nachnamen ein.</p></div>
             </div>
-            <div class="feld"><label for="k-firma" class="feld__etikett">Firma <span class="feld__optional">(freiwillig)</span></label><input id="k-firma" name="firma" type="text" autocomplete="shipping organization" aria-describedby="k-firma-fehler"><p id="k-firma-fehler" class="feld__fehler" data-feld-fehler hidden></p></div>
-            <div class="feld"><label for="k-strasse" class="feld__etikett">Strasse und Hausnummer</label><input id="k-strasse" name="strasse" type="text" autocomplete="shipping address-line1" required aria-describedby="k-strasse-fehler"><p id="k-strasse-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Strasse und Hausnummer ein.</p></div>
-            <div class="feld"><label for="k-zusatz" class="feld__etikett">Adresszusatz <span class="feld__optional">(freiwillig)</span></label><input id="k-zusatz" name="zusatz" type="text" autocomplete="shipping address-line2" aria-describedby="k-zusatz-fehler"><p id="k-zusatz-fehler" class="feld__fehler" data-feld-fehler hidden></p></div>
+            <div class="feld"><label for="k-firma" class="feld__etikett">Firma <span class="feld__optional">(freiwillig)</span></label><input id="k-firma" data-feld="firma" type="text" autocomplete="shipping organization" aria-describedby="k-firma-fehler"><p id="k-firma-fehler" class="feld__fehler" data-feld-fehler hidden></p></div>
+            <div class="feld"><label for="k-strasse" class="feld__etikett">Strasse und Hausnummer</label><input id="k-strasse" data-feld="strasse" type="text" autocomplete="shipping address-line1" required aria-describedby="k-strasse-fehler"><p id="k-strasse-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Strasse und Hausnummer ein.</p></div>
+            <div class="feld"><label for="k-zusatz" class="feld__etikett">Adresszusatz <span class="feld__optional">(freiwillig)</span></label><input id="k-zusatz" data-feld="zusatz" type="text" autocomplete="shipping address-line2" aria-describedby="k-zusatz-fehler"><p id="k-zusatz-fehler" class="feld__fehler" data-feld-fehler hidden></p></div>
             <div class="feldreihe feldreihe--plz">
-              <div class="feld"><label for="k-plz" class="feld__etikett">PLZ</label><input id="k-plz" name="plz" type="text" autocomplete="shipping postal-code" required inputmode="numeric" maxlength="10" aria-describedby="k-plz-fehler"><p id="k-plz-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige Postleitzahl ein, in der Schweiz vier Ziffern.</p></div>
-              <div class="feld"><label for="k-ort" class="feld__etikett">Ort</label><input id="k-ort" name="ort" type="text" autocomplete="shipping address-level2" required aria-describedby="k-ort-fehler"><p id="k-ort-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Ort ein.</p></div>
+              <div class="feld"><label for="k-plz" class="feld__etikett">PLZ</label><input id="k-plz" data-feld="plz" type="text" autocomplete="shipping postal-code" required inputmode="numeric" pattern="[0-9]{4,5}" maxlength="5" aria-describedby="k-plz-fehler"><p id="k-plz-fehler" class="feld__fehler" data-feld-fehler hidden><!-- plz:start --><span data-plz-land="">Bitte geben Sie eine gültige Postleitzahl ein.</span><span data-plz-land="CH" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Schweiz: 4 Ziffern, zum Beispiel 8001).</span><span data-plz-land="LI" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Liechtenstein: 4 Ziffern von 9485 bis 9498, zum Beispiel 9490).</span><span data-plz-land="DE" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Deutschland: 5 Ziffern, zum Beispiel 10115).</span><span data-plz-land="AT" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Österreich: 4 Ziffern ohne führende Null, zum Beispiel 1010).</span><span data-plz-land="FR" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Frankreich: 5 Ziffern, zum Beispiel 75001).</span><span data-plz-land="IT" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Italien: 5 Ziffern, zum Beispiel 00184).</span><!-- plz:end --></p></div>
+              <div class="feld"><label for="k-ort" class="feld__etikett">Ort</label><input id="k-ort" data-feld="ort" type="text" autocomplete="shipping address-level2" required aria-describedby="k-ort-fehler"><p id="k-ort-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Ort ein.</p></div>
             </div>
-            <div class="feld"><label for="k-telefon" class="feld__etikett">Telefon <span class="feld__optional">(freiwillig)</span></label><input id="k-telefon" name="telefon" type="tel" autocomplete="shipping tel" aria-describedby="k-telefon-fehler"><p id="k-telefon-fehler" class="feld__fehler" data-feld-fehler hidden></p></div>
+            <div class="feld"><label for="k-telefon" class="feld__etikett">Telefon <span class="feld__optional">(freiwillig)</span></label><input id="k-telefon" data-feld="telefon" type="tel" autocomplete="shipping tel" aria-describedby="k-telefon-fehler"><p id="k-telefon-fehler" class="feld__fehler" data-feld-fehler hidden></p></div>
           </section>
 
           <section class="kasse__teil" aria-labelledby="k-versand">
@@ -241,19 +248,19 @@
             <h2 id="k-zahlung" class="t-sm">Zahlung</h2>
             <p class="t-text">Bezahlt wird auf der gesicherten Zahlungsseite des Bezahldienstes. Zahlungsdaten erreichen unseren Server nie.</p>
             <div class="kasse__zahlart wahl wahl--kachel wahl--fest"><span class="wahl__text"><span class="wahl__titel">Zahlungsseite des Bezahldienstes (Muster)</span><span class="t-klein">Payrexx oder wallee, der Entscheid ist offen. <span class="platzhalter">[Platzhalter: Zahlungsarten folgen mit dem Bezahldienst.]</span></span></span></div>
-            <label class="wahl"><input type="checkbox" name="rechnung_gleich" value="1" checked><span>Rechnungsadresse wie Lieferadresse</span></label>
-            <fieldset class="kasse__rechnung" data-checkout-billing hidden>
+            <label class="wahl"><input type="checkbox" data-feld="rechnung_gleich" value="1" checked><span>Rechnungsadresse wie Lieferadresse</span></label>
+            <fieldset class="kasse__rechnung" data-checkout-billing>
               <legend class="t-label">Rechnungsadresse</legend>
               <div class="feldreihe">
-                <div class="feld"><label for="r-vorname" class="feld__etikett">Vorname</label><input id="r-vorname" name="rechnung_vorname" type="text" autocomplete="billing given-name" required aria-describedby="r-vorname-fehler"><p id="r-vorname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Vornamen ein.</p></div>
-                <div class="feld"><label for="r-nachname" class="feld__etikett">Nachname</label><input id="r-nachname" name="rechnung_nachname" type="text" autocomplete="billing family-name" required aria-describedby="r-nachname-fehler"><p id="r-nachname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Nachnamen ein.</p></div>
+                <div class="feld"><label for="r-vorname" class="feld__etikett">Vorname</label><input id="r-vorname" data-feld="rechnung_vorname" type="text" autocomplete="billing given-name" aria-describedby="r-vorname-fehler"><p id="r-vorname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Vornamen ein.</p></div>
+                <div class="feld"><label for="r-nachname" class="feld__etikett">Nachname</label><input id="r-nachname" data-feld="rechnung_nachname" type="text" autocomplete="billing family-name" aria-describedby="r-nachname-fehler"><p id="r-nachname-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Nachnamen ein.</p></div>
               </div>
-              <div class="feld"><label for="r-strasse" class="feld__etikett">Strasse und Hausnummer</label><input id="r-strasse" name="rechnung_strasse" type="text" autocomplete="billing address-line1" required aria-describedby="r-strasse-fehler"><p id="r-strasse-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Strasse und Hausnummer ein.</p></div>
+              <div class="feld"><label for="r-strasse" class="feld__etikett">Strasse und Hausnummer</label><input id="r-strasse" data-feld="rechnung_strasse" type="text" autocomplete="billing address-line1" aria-describedby="r-strasse-fehler"><p id="r-strasse-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Strasse und Hausnummer ein.</p></div>
               <div class="feldreihe feldreihe--plz">
-                <div class="feld"><label for="r-plz" class="feld__etikett">PLZ</label><input id="r-plz" name="rechnung_plz" type="text" autocomplete="billing postal-code" required inputmode="numeric" maxlength="10" aria-describedby="r-plz-fehler"><p id="r-plz-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige Postleitzahl ein.</p></div>
-                <div class="feld"><label for="r-ort" class="feld__etikett">Ort</label><input id="r-ort" name="rechnung_ort" type="text" autocomplete="billing address-level2" required aria-describedby="r-ort-fehler"><p id="r-ort-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Ort ein.</p></div>
+                <div class="feld"><label for="r-plz" class="feld__etikett">PLZ</label><input id="r-plz" data-feld="rechnung_plz" type="text" autocomplete="billing postal-code" inputmode="numeric" pattern="[0-9]{4,5}" maxlength="5" aria-describedby="r-plz-fehler"><p id="r-plz-fehler" class="feld__fehler" data-feld-fehler hidden><!-- plz:start --><span data-plz-land="">Bitte geben Sie eine gültige Postleitzahl ein.</span><span data-plz-land="CH" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Schweiz: 4 Ziffern, zum Beispiel 8001).</span><span data-plz-land="LI" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Liechtenstein: 4 Ziffern von 9485 bis 9498, zum Beispiel 9490).</span><span data-plz-land="DE" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Deutschland: 5 Ziffern, zum Beispiel 10115).</span><span data-plz-land="AT" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Österreich: 4 Ziffern ohne führende Null, zum Beispiel 1010).</span><span data-plz-land="FR" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Frankreich: 5 Ziffern, zum Beispiel 75001).</span><span data-plz-land="IT" hidden>Bitte geben Sie eine gültige Postleitzahl ein (Italien: 5 Ziffern, zum Beispiel 00184).</span><!-- plz:end --></p></div>
+                <div class="feld"><label for="r-ort" class="feld__etikett">Ort</label><input id="r-ort" data-feld="rechnung_ort" type="text" autocomplete="billing address-level2" aria-describedby="r-ort-fehler"><p id="r-ort-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie den Ort ein.</p></div>
               </div>
-              <div class="feld"><label for="r-land" class="feld__etikett">Land</label><select id="r-land" name="rechnung_land" autocomplete="billing country"><option value="CH" selected>Schweiz</option><option value="LI">Liechtenstein</option><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="FR">Frankreich</option><option value="IT">Italien</option></select></div>
+              <div class="feld"><label for="r-land" class="feld__etikett">Land</label><select id="r-land" data-feld="rechnung_land" autocomplete="billing country"><option value="CH" selected>Schweiz</option><option value="LI">Liechtenstein</option><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="FR">Frankreich</option><option value="IT">Italien</option></select></div>
             </fieldset>
           </section>
 
@@ -264,54 +271,55 @@
               <li>Sie bezahlen auf der Zahlungsseite des Bezahldienstes.</li>
               <li>Wir bestätigen die Bestellung per E-Mail. <span class="platzhalter">[Anwalt: Zeitpunkt des Vertragsschlusses]</span></li>
             </ol>
-            <label class="wahl"><input id="k-agb" type="checkbox" name="agb" value="1" required aria-describedby="k-agb-fehler"><span>Ich habe die <a href="agb.html">AGB</a> und die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und stimme den AGB zu.</span></label>
+            <label class="wahl"><input id="k-agb" type="checkbox" data-feld="agb" value="1" required aria-describedby="k-agb-fehler"><span>Ich habe die <a href="agb.html">AGB</a> und die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und stimme den AGB zu.</span></label>
             <p id="k-agb-fehler" class="wahl__fehler t-klein" data-feld-fehler hidden>Bitte stimmen Sie den AGB zu.</p>
             <p class="meldung meldung--stop" data-checkout-blocked tabindex="-1" hidden>Eine Position ist so nicht lieferbar. <a href="warenkorb.html">Warenkorb anpassen</a></p>
             <button type="submit" class="knopf kasse__senden"><span data-checkout-label="bereit">Zahlungspflichtig bestellen</span><span data-checkout-label="laedt" hidden>Weiter zur Zahlung</span></button>
-            <p class="t-klein kasse__muster">Muster: Es entsteht keine Bestellung. Die nächste Seite zeigt die Übergabe an den Bezahldienst.</p>
+            <p class="t-klein kasse__muster">Muster: Es entsteht keine Bestellung. Die nächste Seite zeigt die Übergabe an den Bezahldienst. Ohne JavaScript endet die Studie auf einer Musterseite, Ihre Angaben werden nicht gesendet.</p>
             <p class="meldung meldung--stop" data-checkout-fail tabindex="-1" role="alert" hidden>Die Kasse ist gerade nicht erreichbar. Bitte versuchen Sie es noch einmal.</p>
           </section>
         </form>
       </div>
     </section>
-    <!-- fuss:start (copied from index.html) -->
-    <footer class="fuss" data-theme="hell">
-      <div class="fuss__spalten">
-        <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
-          <p id="fuss-seiten" class="fuss__titel">Seiten</p>
-          <ul class="fuss__liste">
-            <li><a href="werkzeuge.html">Werkzeuge</a></li>
-            <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
-            <li><a href="haendler.html">Händler</a></li>
-            <li><a href="fragen.html">Fragen</a></li>
-            <li><a href="kontakt.html">Kontakt</a></li>
-          </ul>
-        </nav>
-        <nav class="fuss__spalte" aria-labelledby="fuss-recht">
-          <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
-          <ul class="fuss__liste">
-            <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
-            <li><a href="agb.html">AGB</a></li>
-            <li><a href="datenschutz.html">Datenschutz</a></li>
-            <li><a href="impressum.html">Impressum</a></li>
-            <li><a href="widerruf.html">Widerruf</a></li>
-          </ul>
-        </nav>
-        <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
-          <p id="fuss-sprache" class="fuss__titel">Sprache</p>
-          <ul class="fuss__liste">
-            <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
-            <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
-        <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
-        <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
-      </div>
-      <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
-    </footer>
-    <!-- fuss:end -->
   </main>
+
+  <!-- fuss:start (copied from index.html) -->
+  <footer class="fuss" data-theme="hell" data-page-router-follow>
+    <div class="fuss__spalten">
+      <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
+        <p id="fuss-seiten" class="fuss__titel">Seiten</p>
+        <ul class="fuss__liste">
+          <li><a href="werkzeuge.html">Werkzeuge</a></li>
+          <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
+          <li><a href="haendler.html">Händler</a></li>
+          <li><a href="fragen.html">Fragen</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </nav>
+      <nav class="fuss__spalte" aria-labelledby="fuss-recht">
+        <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
+        <ul class="fuss__liste">
+          <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
+          <li><a href="agb.html">AGB</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="widerruf.html">Widerruf</a></li>
+        </ul>
+      </nav>
+      <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
+        <p id="fuss-sprache" class="fuss__titel">Sprache</p>
+        <ul class="fuss__liste">
+          <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
+          <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
+      <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
+      <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
+    </div>
+    <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
+  </footer>
+  <!-- fuss:end -->
 </body>
 </html>

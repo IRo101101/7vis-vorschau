@@ -10,8 +10,8 @@
  *                                    the sequence of spike S3 without the reveal, to watch disposal
  *   <output data-gl-anzeige>         level, frame time, active scenes (twice a second)
  */
-import { core } from '../core/core.js';
-import { wait } from '../core/dom.js';
+import { core } from '../../../assets/js/core/core.js';
+import { wait } from '../../../assets/js/core/dom.js';
 
 const LOSS_PAUSE_MS = 1500;
 const READOUT_MS = 500;

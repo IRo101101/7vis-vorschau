@@ -1,0 +1,201 @@
+@layer tokens, base, modules, page;
+
+/*
+ * Probe pages only (build/site/proben/, not delivered): the review tool (theme-picker), the form control of
+ * the S1 probe (form-regler) and the DOM stand-ins of spikes S2 and S3 (figure-stand-in, scene-stand-in).
+ * Moved out of assets/css/modules.css in stage 7, unchanged.
+ */
+@layer modules {
+  /* form-regler */
+  .formregler__zeile {
+    display: flex;
+    align-items: center;
+    gap: calc(3 * var(--raum));
+    min-block-size: var(--knopf-hoehe);
+  }
+  .formregler__zeile input[type="range"] {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    min-block-size: var(--knopf-hoehe);
+    margin: 0;
+    accent-color: var(--ak-marke);
+  }
+
+  /* theme-picker (review tool of the probe page) */
+  .pruefwerkzeug {
+    position: fixed;
+    inset-inline-start: var(--raum);
+    inset-block-end: var(--raum);
+    z-index: 9000;
+    max-inline-size: calc(100vw - 2 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-feld);
+    background-color: var(--fl-erhoben);
+    color: var(--tx-stark);
+    box-shadow: var(--schatten-schwebend);
+    font-family: var(--schrift-label);
+    font-size: var(--groesse-label);
+    line-height: var(--zeilenhoehe-label);
+  }
+  .pruefwerkzeug > summary {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(3 * var(--raum));
+    cursor: pointer;
+    letter-spacing: var(--laufweite-label);
+    text-transform: var(--versal-label);
+    font-weight: var(--gewicht-label);
+  }
+  .pruefwerkzeug form {
+    display: grid;
+    gap: calc(3 * var(--raum));
+    padding: 0 calc(3 * var(--raum)) calc(3 * var(--raum));
+  }
+  .pruefwerkzeug fieldset {
+    display: grid;
+    gap: var(--raum);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .pruefwerkzeug legend {
+    padding: 0 0 var(--raum);
+    color: var(--tx-leise);
+    letter-spacing: var(--laufweite-label);
+    text-transform: var(--versal-label);
+  }
+  .pruefwerkzeug label {
+    display: flex;
+    align-items: center;
+    gap: calc(2 * var(--raum));
+    min-block-size: 32px;
+    cursor: pointer;
+  }
+  .pruefwerkzeug input {
+    accent-color: var(--ak-marke);
+    inline-size: 18px;
+    block-size: 18px;
+    margin: 0;
+  }
+  .pruefwerkzeug button {
+    min-block-size: var(--knopf-hoehe);
+    padding: 0 calc(3 * var(--raum));
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: var(--radius-knopf);
+    background-color: var(--fl-grund);
+    color: var(--tx-stark);
+    font: inherit;
+    cursor: pointer;
+  }
+  .pruefwerkzeug button:hover {
+    border-color: var(--ak-marke);
+  }
+  .pruefwerkzeug form {
+    max-block-size: calc(100vh - 4 * var(--knopf-hoehe));
+    overflow-y: auto;
+  }
+  .pruefwerkzeug output {
+    display: block;
+    max-inline-size: 28ch;
+    color: var(--tx-leise);
+  }
+
+  /* figure-stand-in: placeholder of the S1 figure. */
+  .figur {
+    display: grid;
+    justify-items: center;
+    gap: calc(2 * var(--raum));
+    inline-size: min(100%, 15rem);
+  }
+  .figur__koerper {
+    display: grid;
+    place-items: center;
+    inline-size: 64%;
+    aspect-ratio: 3 / 5;
+    border: var(--linie-staerke) solid var(--li-rahmen);
+    border-radius: 50% / 14%;
+    background-color: var(--fl-erhoben);
+    color: var(--tx-stark);
+    transform: perspective(48rem) rotateY(calc((var(--figur-dreh, 0) + var(--figur-zieh, 0)) * 1deg));
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: auto;
+  }
+  [data-figure-stand-in-armed="true"] .figur__koerper {
+    cursor: grab;
+    outline: var(--linie-staerke) dashed var(--li-rahmen);
+    outline-offset: 6px;
+  }
+  [data-figure-stand-in-drag="true"] .figur__koerper {
+    cursor: grabbing;
+  }
+  .figur__etiketten {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+  }
+  .figur__etikett {
+    grid-area: 1 / 1;
+    display: grid;
+    justify-items: center;
+    gap: var(--raum);
+    padding: calc(3 * var(--raum));
+    background-color: var(--fl-erhoben);
+    visibility: hidden;
+  }
+  .figur__etikett .kraft-marker__q {
+    inline-size: 2rem;
+    block-size: 2rem;
+  }
+  .figur__etikett[data-state="on"],
+  .figur__etikett[data-state="in"] {
+    visibility: visible;
+  }
+  .figur__etikett[data-state="in"] {
+    z-index: 1;
+    clip-path: circle(calc(var(--figur-blende, 0) * 160%) at 50% 66%);
+  }
+  .figur__hinweis {
+    color: var(--tx-leise);
+    text-align: center;
+  }
+
+  /* scene-stand-in: placeholder of the front WebGL canvas (S1) on the S3 probe pages. */
+  .szene {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    align-items: end;
+    justify-items: end;
+    padding: calc(6 * var(--raum)) calc(6 * var(--raum)) calc(20 * var(--raum));
+    pointer-events: none;
+  }
+  .szene__form {
+    display: grid;
+    place-items: center;
+    inline-size: 8rem;
+    aspect-ratio: 1;
+    border: 2px solid var(--ak-marke);
+    border-radius: var(--radius-karte);
+    background-color: color-mix(in srgb, var(--ak-marke) 22%, transparent);
+    color: var(--tx-stark);
+    rotate: calc(var(--szene-dreh, 0) * 1deg);
+  }
+  .szene__name {
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+  .szene__name[data-state="on"] {
+    visibility: visible;
+  }
+  [data-scene-stand-in-state="leer"] .szene__form {
+    visibility: hidden;
+  }
+  [data-scene-stand-in-state="eingefroren"] .szene__form {
+    border-style: dashed;
+  }
+}

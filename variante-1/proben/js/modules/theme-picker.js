@@ -6,7 +6,7 @@
  * theme (CONTRACT 4.6). Initial CI: ?ci=<name> in the URL, else the last choice of this browser
  * (localStorage, optional); names outside core.CIS are ignored.
  */
-import { core } from '../core/core.js';
+import { core } from '../../../assets/js/core/core.js';
 
 const KEY = 'v1.probe.ci';
 

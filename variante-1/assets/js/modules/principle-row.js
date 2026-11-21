@@ -21,6 +21,9 @@
  * one come in from 110 % to the right with a fade (0.8 s, 0.02 s apart, expo.out); the image frames of the
  * old and the new principle move against the row so both stay at the left slot, and the new image rises
  * in its frame from below on top of the old one.
+ * Background pictures (optional, correction A 4): one [data-principle-row-backdrop] per principle anywhere in
+ * the section, in the same order; the picture of the new principle fades in over the old one (0.9 s,
+ * power2.inOut, IM 11.10), the others stand at 0. Their drift with the page is the module image-drift.
  * Autoplay: every 5 s, endless, only while the section is visible, restarted after every change. A pause
  * switch stops and resumes it; keyboard focus inside the section holds it (PLAN 7). Never under reduced
  * motion: then changes are instant, nothing is split, and the switch is hidden.
@@ -43,6 +46,7 @@ const SEL = Object.freeze({
   pause: '[data-principle-row-pause]',
   pauseLabel: '[data-principle-row-pause-label]',
   count: '[data-principle-row-count]',
+  backdrop: '[data-principle-row-backdrop]',
 });
 
 /** Remembers original attribute values so destroy restores the markup exactly. */
@@ -85,6 +89,8 @@ export default {
     fadeOut: T.fadeOut,
     fadeOutEase: T.fadeOutEase,
     imageFrom: T.imageFrom,
+    backdropFade: T.backdropFade,
+    backdropEase: T.backdropEase,
     start: 1,
   },
 
@@ -107,6 +113,9 @@ export default {
     const nextBtn = el.querySelector(SEL.next);
     const pauseBtn = el.querySelector(SEL.pause);
     const pauseLabels = [...el.querySelectorAll(SEL.pauseLabel)];
+    const found = [...el.querySelectorAll(SEL.backdrop)];
+    const backs = found.length === n ? found : [];
+    if (found.length && !backs.length) ctx.warn(`${found.length} background pictures for ${n} principles; the pictures stay as in the HTML`);
     const rec = recorder();
     const g = motion.group();
     let splits = [];
@@ -159,6 +168,10 @@ export default {
         if (heads[i]) motion.set(heads[i], { opacity: i === index ? 1 : opts.inactiveOpacity });
         if (texts[i]) motion.set(texts[i], { opacity: 1 });
       });
+      backs.forEach((b, i) => {
+        motion.set(b, { opacity: i === index ? 1 : 0 });
+        b.style.removeProperty('z-index');
+      });
     }
 
     function change(to, source = 'api') {
@@ -192,6 +205,13 @@ export default {
           motion.set(inners[target], { yPercent: opts.imageFrom });
           g.tween(inners[target], { yPercent: 0 }, glide);
         }
+      }
+      if (backs.length) {
+        // The new picture over the old one; the old one stays at 1 until the new one covers it.
+        backs[from].style.zIndex = '1';
+        backs[target].style.zIndex = '2';
+        motion.set(backs[target], { opacity: 0 });
+        g.tween(backs[target], { opacity: 1 }, { at, duration: opts.backdropFade, ease: opts.backdropEase });
       }
       if (texts[from]) g.tween(texts[from], { opacity: 0 }, { at, duration: opts.fadeOut, ease: opts.fadeOutEase });
       if (texts[target]) motion.set(texts[target], { opacity: 1 });
@@ -299,6 +319,11 @@ export default {
           for (const p of ['transform', 'opacity', 'z-index']) node.style.removeProperty(p);
         }
       });
+      for (const b of backs) {
+        motion.set(b, { opacity: 1 });
+        for (const p of ['opacity', 'z-index']) b.style.removeProperty(p);
+        if (!b.getAttribute('style')) b.removeAttribute('style');
+      }
       rec.restore();
       next = null;
     });
@@ -336,6 +361,9 @@ export default {
       },
       get busy() {
         return g.active;
+      },
+      get backdrops() {
+        return backs.length;
       },
       go: (i) => change(i, 'api'),
       pause: (on = true) => {

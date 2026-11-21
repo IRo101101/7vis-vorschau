@@ -77,7 +77,7 @@
               <li class="vorschau__kachel" data-nav-shop-item>
                 <a class="vorschau__verweis" href="muster-001.html">
                   <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
-                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10.00</span><span data-preis-w="EUR">EUR 10.50</span></span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10,00</span><span data-preis-w="EUR">EUR 10,50</span></span></span>
                   <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
                   <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02 · Mahlen</span>
                 </a>
@@ -85,7 +85,7 @@
               <li class="vorschau__kachel" data-nav-shop-item>
                 <a class="vorschau__verweis" href="muster-002.html">
                   <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
-                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20.00</span><span data-preis-w="EUR">EUR 21.00</span></span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20,00</span><span data-preis-w="EUR">EUR 21,00</span></span></span>
                   <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
                   <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-4" aria-hidden="true"></span>04 · Pumpen</span>
                 </a>
@@ -121,6 +121,8 @@
   </div>
   <!-- Drag handle of the figure: follows the figure on screen, takes the pointer only while the slider allows it. -->
   <div class="figur-griff" data-mod="figure-grip" aria-hidden="true" data-needs-core></div>
+  <!-- Scroll gauge (IM 11.14, PLAN 5 no. 6): own scroll indicator on the right; the native bar is hidden while it runs. -->
+  <div class="pegel" data-mod="scroll-gauge" aria-hidden="true" data-needs-core><span class="pegel__balken" data-scroll-gauge-bar></span></div>
   <!-- Cart panel (stage 5; IS 5, IM 11.12, Drehbuch 2.2): opens with the cart button of the header and after
        adding to the cart. Without the runtime the cart button leads to /warenkorb. Lines are clones of the
        template; the shop adapter (PLAN 6) is the only source of the cart. -->
@@ -161,12 +163,13 @@
       <div class="korb__summe" data-cart-panel-summary data-cart-panel-child>
         <p class="korb__summentitel t-label">Übersicht</p>
         <dl class="summen">
-          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0.00</dd></div>
-          <div class="summen__zeile"><dt>Versand</dt><dd>wird in der Kasse berechnet</dd></div>
+          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0,00</dd></div>
+          <div class="summen__zeile"><dt>Versand (Musterregel)</dt><dd><!-- versandvorschau:start --><span class="t-ziffern">ab <span data-preis-w="CHF">CHF 9,00</span><span data-preis-w="EUR">EUR 9,50</span></span><!-- versandvorschau:end --></dd></div>
         </dl>
+        <p class="korb__versand t-klein"><!-- versandhinweis:start -->Musterregel: Schweiz und Liechtenstein ab <span class="t-ziffern"><span data-preis-w="CHF">CHF 9,00</span><span data-preis-w="EUR">EUR 9,50</span></span>, übrige Länder ab <span class="t-ziffern"><span data-preis-w="CHF">CHF 24,00</span><span data-preis-w="EUR">EUR 25,00</span></span>. Die Versandart wählen Sie in der Kasse.<!-- versandhinweis:end --></p>
         <div class="korb__waehrung"><span class="t-klein" id="korb-waehrung">Währung</span><div class="waehrung" role="group" aria-labelledby="korb-waehrung" data-mod="currency-switch"><button type="button" data-currency-switch-value="CHF" aria-pressed="true">CHF</button><button type="button" data-currency-switch-value="EUR" aria-pressed="false">EUR</button></div></div>
         <a class="knopf korb__kasse" href="kasse.html" data-cart-panel-checkout>Zur Kasse gehen</a>
-        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Versand und Rabattcode folgen in der Kasse.</p>
+        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Rabattcode und Versandart folgen in der Kasse.</p>
       </div>
     </section>
   </div>
@@ -386,7 +389,7 @@
                   <span class="werkzeug__bild werkzeug__bild--zwei" data-image-swap-second aria-hidden="true"><img src="assets/img/start/muster-zwei-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"></span>
                   <span class="werkzeug__muster t-label">Muster</span>
                 </span>
-                <span class="werkzeug__zeile"><span class="werkzeug__name">Musterartikel 001</span><span class="werkzeug__preis t-ziffern"><span data-preis-w="CHF">CHF 10.00</span><span data-preis-w="EUR">EUR 10.50</span></span></span>
+                <span class="werkzeug__zeile"><span class="werkzeug__name">Musterartikel 001</span><span class="werkzeug__preis t-ziffern"><span data-preis-w="CHF">CHF 10,00</span><span data-preis-w="EUR">EUR 10,50</span></span></span>
                 <span class="kraft-marker werkzeug__kraft t-label"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02 · Mahlen</span>
               </a>
             </li>
@@ -397,7 +400,7 @@
                   <span class="werkzeug__bild werkzeug__bild--zwei" data-image-swap-second aria-hidden="true"><img src="assets/img/start/muster-zwei-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"></span>
                   <span class="werkzeug__muster t-label">Muster</span>
                 </span>
-                <span class="werkzeug__zeile"><span class="werkzeug__name">Musterartikel 002</span><span class="werkzeug__preis t-ziffern"><span data-preis-w="CHF">CHF 20.00</span><span data-preis-w="EUR">EUR 21.00</span></span></span>
+                <span class="werkzeug__zeile"><span class="werkzeug__name">Musterartikel 002</span><span class="werkzeug__preis t-ziffern"><span data-preis-w="CHF">CHF 20,00</span><span data-preis-w="EUR">EUR 21,00</span></span></span>
                 <span class="kraft-marker werkzeug__kraft t-label"><span class="kraft-marker__q kr-4" aria-hidden="true"></span>04 · Pumpen</span>
               </a>
             </li>
@@ -473,6 +476,21 @@
            the row glides so the active principle stands on the left, its statement enters word by word; a
            change every 5 s with a pause switch, held on keyboard focus, never under reduced motion. -->
       <section id="prinzipien" class="sx sx--abgesenkt prinzipien" data-theme="hell" data-mod="section-lift principle-row" aria-labelledby="prinzipien-titel">
+        <!-- Background pictures (IM 11.9 parallax, IM 11.10 cross-fade; correction A 4): one per principle, stacked,
+             drifting slower than the page over the whole stretch; the picture of the new principle fades in over
+             the old one, a quiet veil stays on top. Grey placeholders of the rohbau until the photos are delivered. -->
+        <div class="prinzipien__grund" data-mod="image-drift" data-image-drift-root=".prinzipien-strecke" aria-hidden="true">
+          <div class="prinzipien__bilder" data-image-drift-target>
+            <img class="prinzipien__grundbild" src="assets/img/start/prinzip-grund-1-rohbau.svg" alt="" width="1600" height="1000" loading="lazy" decoding="async" data-principle-row-backdrop>
+            <img class="prinzipien__grundbild" src="assets/img/start/prinzip-grund-2-rohbau.svg" alt="" width="1600" height="1000" loading="lazy" decoding="async" data-principle-row-backdrop>
+            <img class="prinzipien__grundbild" src="assets/img/start/prinzip-grund-3-rohbau.svg" alt="" width="1600" height="1000" loading="lazy" decoding="async" data-principle-row-backdrop>
+            <img class="prinzipien__grundbild" src="assets/img/start/prinzip-grund-4-rohbau.svg" alt="" width="1600" height="1000" loading="lazy" decoding="async" data-principle-row-backdrop>
+            <img class="prinzipien__grundbild" src="assets/img/start/prinzip-grund-5-rohbau.svg" alt="" width="1600" height="1000" loading="lazy" decoding="async" data-principle-row-backdrop>
+            <img class="prinzipien__grundbild" src="assets/img/start/prinzip-grund-6-rohbau.svg" alt="" width="1600" height="1000" loading="lazy" decoding="async" data-principle-row-backdrop>
+            <img class="prinzipien__grundbild" src="assets/img/start/prinzip-grund-7-rohbau.svg" alt="" width="1600" height="1000" loading="lazy" decoding="async" data-principle-row-backdrop>
+          </div>
+          <span class="prinzipien__schleier"></span>
+        </div>
         <div class="prinzipien__kopf">
           <p class="kicker">05 · Sieben Prinzipien</p>
           <h2 id="prinzipien-titel" class="t-lg prinzipien__titel">Der Pucker folgt sieben Prinzipien.</h2>
@@ -552,7 +570,8 @@
       </section>
     </div>
 
-    <!-- Section 6 · Fragen (IM 11.13): accordion, one answer open, the other rows dim under the pointer.
+    <!-- Section 6 · Fragen (IM 11.13): accordion, all closed at the start as on the reference /faq, one answer
+         open at a time, the other rows dim under the pointer.
          D10: F6 and F7 stay out until the answers are delivered. Without script every answer stands open. -->
     <section id="fragen" class="sx fragen" data-theme="hell" aria-labelledby="fragen-titel">
       <div class="fragen__kopf">
@@ -560,7 +579,7 @@
         <h2 id="fragen-titel" class="t-lg fragen__titel">Kurze Antworten zeigen den heutigen Stand.</h2>
         <a class="knopf fragen__knopf" href="kontakt.html">Kontakt aufnehmen</a>
       </div>
-      <ol class="fragen__liste" data-mod="accordion" data-accordion-open="1">
+      <ol class="fragen__liste" data-mod="accordion" data-accordion-open="0">
         <li class="frage" data-accordion-item>
           <h3 class="frage__kopf"><button type="button" id="frage-1" class="frage__knopf" data-accordion-trigger aria-expanded="true" aria-controls="antwort-1"><span class="frage__text t-zweit">Wann ist der Pucker lieferbar?</span><span class="frage__zeichen" aria-hidden="true" data-needs-core><span class="frage__strich"></span><span class="frage__strich frage__strich--senkrecht" data-accordion-icon></span></span></button></h3>
           <div id="antwort-1" class="frage__antwort" role="region" aria-labelledby="frage-1" data-accordion-panel><div class="frage__innen"><p class="t-text">Der Funktionsprototyp ist fertig, das Serienprodukt ist noch nicht am Markt. Einen Liefertermin gibt es noch nicht.</p></div></div>
@@ -583,46 +602,48 @@
         </li>
       </ol>
     </section>
-
-    <!-- Section 7 · Fusszeile (Drehbuch 2.3): one screen high, link columns with every legal page, language
-         choice, large word mark with the claim. No e-mail field (PLAN 11, FRAGEN 7a), no social links, no
-         lens scene (PLAN 5 no. 35). Shared by every page (styles in modules.css). -->
-    <footer class="fuss" data-theme="hell">
-      <div class="fuss__spalten">
-        <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
-          <p id="fuss-seiten" class="fuss__titel">Seiten</p>
-          <ul class="fuss__liste">
-            <li><a href="werkzeuge.html">Werkzeuge</a></li>
-            <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
-            <li><a href="haendler.html">Händler</a></li>
-            <li><a href="fragen.html">Fragen</a></li>
-            <li><a href="kontakt.html">Kontakt</a></li>
-          </ul>
-        </nav>
-        <nav class="fuss__spalte" aria-labelledby="fuss-recht">
-          <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
-          <ul class="fuss__liste">
-            <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
-            <li><a href="agb.html">AGB</a></li>
-            <li><a href="datenschutz.html">Datenschutz</a></li>
-            <li><a href="impressum.html">Impressum</a></li>
-            <li><a href="widerruf.html">Widerruf</a></li>
-          </ul>
-        </nav>
-        <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
-          <p id="fuss-sprache" class="fuss__titel">Sprache</p>
-          <ul class="fuss__liste">
-            <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
-            <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
-        <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
-        <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
-      </div>
-      <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
-    </footer>
   </main>
+
+  <!-- Section 7 · Fusszeile (Drehbuch 2.3): part of the shell after <main> since stage 7, so it is the page's
+       contentinfo landmark; the router freezes it with the old view (data-page-router-follow). One screen
+       high, link columns with every legal page, language choice, large word mark with the claim. No e-mail
+       field (PLAN 11, FRAGEN 7a), no social links, no lens scene (PLAN 5 no. 35). Shared by every page
+       (styles in modules.css, copied by tests/shop-seiten.cjs). -->
+  <footer class="fuss" data-theme="hell" data-page-router-follow>
+    <div class="fuss__spalten">
+      <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
+        <p id="fuss-seiten" class="fuss__titel">Seiten</p>
+        <ul class="fuss__liste">
+          <li><a href="werkzeuge.html">Werkzeuge</a></li>
+          <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
+          <li><a href="haendler.html">Händler</a></li>
+          <li><a href="fragen.html">Fragen</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </nav>
+      <nav class="fuss__spalte" aria-labelledby="fuss-recht">
+        <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
+        <ul class="fuss__liste">
+          <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
+          <li><a href="agb.html">AGB</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="widerruf.html">Widerruf</a></li>
+        </ul>
+      </nav>
+      <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
+        <p id="fuss-sprache" class="fuss__titel">Sprache</p>
+        <ul class="fuss__liste">
+          <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
+          <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
+      <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
+      <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
+    </div>
+    <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
+  </footer>
 </body>
 </html>

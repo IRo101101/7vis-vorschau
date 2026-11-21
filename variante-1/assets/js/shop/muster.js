@@ -9,13 +9,18 @@
  *               bei_aenderung(funktion)
  *   checkout    versandvorschau(land)   gutschein(code)   kasse(daten) -> { adresse, nr }
  *               bestellung(nr)   zahlung_bestaetigen(nr)   zahlung_abbrechen(nr)
- *   account     konto()   anmelden_start(email)   anmelden_code(email, code)   abmelden()   einstellung(name, wert)
+ *   account     konto()   registrieren(email, passwort, { bleiben })   anmelden(email, passwort, { bleiben })
+ *               passwort_vergessen(email)   passwort_setzen(email, passwort)   abmelden()   einstellung(name, wert)
  *   other       betrag(geld, sprache, waehrung)   anfrage(art, felder)
  *
  * Every call returns a promise; errors are Error objects with a `code`:
  *   'ausverkauft' variant sold out   'bestand' more than in stock (err.verfuegbar)   'hoechstmenge' more
  *   than HOECHSTMENGE in one line   'unbekannt' no such variant, line or order   'ungueltig' invalid input
- *   'stoerung' the shop does not answer (network, server)
+ *   'stoerung' the shop does not answer (network, server)   'vorhanden' an account with this address exists
+ *   'falsch' e-mail address or password do not match (one message for both, nothing is revealed)
+ *   'gesperrt' too many failed sign-ins, try again later (err.warten in seconds)
+ * 'ungueltig' of an account call names the field (err.feld 'email' | 'passwort') and for a password the
+ * reason of passwortGrund() (err.grund 'leer' | 'kurz' | 'lang' | 'email' | 'haeufig').
  *
  * The PHP adapter (shop project) implements the same calls against the shop's form endpoints; the pages
  * stay server rendered. Where it plugs in is listed in build/ETAPPE-5.md section 5.
@@ -28,7 +33,7 @@
  */
 import {
   PRODUKTE, KRAEFTE, HOECHSTMENGE, VERSAND, LAENDER, GUTSCHEINE, MUSTER_BESTELLUNGEN,
-  produktVon, varianteVon, versandFuer, formatBetrag, mwstAnteil,
+  produktVon, varianteVon, versandFuer, formatBetrag, mwstAnteil, plzGueltig, PASSWORT, passwortGrund,
 } from './muster-daten.js';
 import { TIMING } from '../motion/curves.js';
 
@@ -36,7 +41,8 @@ const KEYS = Object.freeze({
   cart: 'v1-warenkorb-muster',
   konto: 'v1-konto-muster',
   bestellungen: 'v1-bestellungen-muster',
-  anmeldung: 'v1-anmeldung-muster',
+  konten: 'v1-konten-muster',
+  versuche: 'v1-versuche-muster',
   stoerung: 'v1-stoerung-muster',
 });
 const L = TIMING.cart.latency;
@@ -67,6 +73,88 @@ function schreiben(key, value) {
 }
 
 const fehler = (code, message, extra = {}) => Object.assign(new Error(message), { code }, extra);
+
+/* ---------- session of the sample account ---------- */
+
+// "Eingeloggt bleiben" (E4: long-lived session of 90 days) keeps the session in localStorage with an end date;
+// without it the session lives in sessionStorage and ends with the browser. Both only in this browser.
+function sitzungLesen() {
+  const dauer = lesen(KEYS.konto, null);
+  if (dauer && dauer.email) {
+    if (!dauer.bis || Date.parse(dauer.bis) > Date.now()) return dauer;
+    schreiben(KEYS.konto, null);
+  }
+  try {
+    const raw = globalThis.sessionStorage && globalThis.sessionStorage.getItem(KEYS.konto);
+    if (raw) return JSON.parse(raw);
+  } catch (err) {
+    /* storage blocked */
+  }
+  return memory.get(`sitzung:${KEYS.konto}`) || null;
+}
+
+function sitzungSchreiben(sitzung) {
+  schreiben(KEYS.konto, null);
+  memory.delete(`sitzung:${KEYS.konto}`);
+  try {
+    if (globalThis.sessionStorage) globalThis.sessionStorage.removeItem(KEYS.konto);
+  } catch (err) {
+    /* storage blocked */
+  }
+  if (!sitzung) return;
+  if (sitzung.bleiben) {
+    schreiben(KEYS.konto, sitzung);
+    return;
+  }
+  memory.set(`sitzung:${KEYS.konto}`, sitzung);
+  try {
+    if (globalThis.sessionStorage) globalThis.sessionStorage.setItem(KEYS.konto, JSON.stringify(sitzung));
+  } catch (err) {
+    /* the session lives for this page only */
+  }
+}
+
+function sitzungStarten(email, bleiben, neu) {
+  const bis = bleiben ? new Date(Date.now() + PASSWORT.sitzungTage * 86400000).toISOString() : null;
+  sitzungSchreiben({ email, bleiben: !!bleiben, bis, neu: !!neu, seit: new Date().toISOString().slice(0, 10) });
+}
+
+/* ---------- passwords: only a check value (PBKDF2-SHA-256 with salt) is kept, never the password ---------- */
+
+const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
+
+async function pruefwert(passwort, salzHex) {
+  const subtle = globalThis.crypto && globalThis.crypto.subtle;
+  // Without Web Crypto (a page served over plain http from another host) the sample keeps no check value and
+  // takes any password that meets the rule; the PHP shop always stores an Argon2id hash.
+  if (!subtle) return null;
+  const salz = new Uint8Array(salzHex.match(/../g).map((h) => parseInt(h, 16)));
+  const key = await subtle.importKey('raw', new TextEncoder().encode(passwort), 'PBKDF2', false, ['deriveBits']);
+  return hex(await subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: salz, iterations: 100000 }, key, 256));
+}
+
+function neuesSalz() {
+  const b = new Uint8Array(16);
+  if (globalThis.crypto && globalThis.crypto.getRandomValues) globalThis.crypto.getRandomValues(b);
+  else for (let i = 0; i < b.length; i += 1) b[i] = Math.floor(Math.random() * 256);
+  return hex(b);
+}
+
+function konten() {
+  const k = lesen(KEYS.konten, null);
+  return k && typeof k === 'object' ? k : {};
+}
+
+function mailPruefen(email) {
+  const mail = String(email || '').trim().toLowerCase();
+  if (!gueltigeMail(mail)) throw fehler('ungueltig', 'Bitte eine gültige E-Mail-Adresse eingeben.', { feld: 'email' });
+  return mail;
+}
+
+function passwortPruefen(passwort, mail) {
+  const grund = passwortGrund(passwort, mail);
+  if (grund) throw fehler('ungueltig', 'Das Passwort erfüllt die Regel nicht.', { feld: 'passwort', grund });
+}
 
 function stoerung() {
   return lesen(KEYS.stoerung, null);
@@ -270,6 +358,9 @@ export const adapter = Object.freeze({
     const k = korb();
     if (!k.bestellbar) throw fehler('ungueltig', 'Der Warenkorb kann so nicht bestellt werden.');
     const waehrung = daten.waehrung === 'EUR' ? 'EUR' : 'CHF';
+    // The server checks again what the form checked (postcode per country, e-mail).
+    if (!gueltigeMail(daten.email) || !plzGueltig(daten.adresse.land, daten.adresse.plz)) throw fehler('ungueltig', 'Die Adresse ist unvollständig.');
+    if (daten.rechnung && !plzGueltig(daten.rechnung.land, daten.rechnung.plz)) throw fehler('ungueltig', 'Die Rechnungsadresse ist unvollständig.');
     const art = versandFuer(daten.adresse.land).find((a) => a.id === daten.versand);
     if (!art) throw fehler('ungueltig', 'Versandart fehlt.');
     const zeilen = k.zeilen.map((z) => ({ variante: z.variante, menge: z.menge }));
@@ -320,63 +411,110 @@ export const adapter = Object.freeze({
     return true;
   },
 
-  /* ---------- account (sample: e-mail plus a one-time code; any six digits pass, nothing is sent) ---------- */
+  /* ---------- account (E4: e-mail and password, "eingeloggt bleiben" for 90 days; sample, nothing is sent) ---------- */
 
   konto() {
-    const k = lesen(KEYS.konto, null);
+    const k = sitzungLesen();
     if (!k || !k.email) return Promise.resolve(null);
+    const profil = konten()[k.email] || {};
     const eigene = bestellungen().filter((b) => b.email === k.email && b.status !== 'offen');
     return Promise.all(eigene.map((b) => adapter.bestellung(b.nr))).then((list) => ({
       email: k.email,
-      seit: k.seit,
+      seit: profil.seit || k.seit,
       neu: !!k.neu,
-      newsletter: !!k.newsletter,
-      adresse: k.adresse || null,
+      bleiben: !!k.bleiben,
+      bis: k.bis || null,
+      newsletter: !!profil.newsletter,
+      adresse: profil.adresse || null,
       bestellungen: [...list.filter(Boolean), ...MUSTER_BESTELLUNGEN.map(musterBestellung)],
     }));
   },
 
   /** Synchronous check used by the checkout to tell guests from account holders. */
   kontoSofort() {
-    const k = lesen(KEYS.konto, null);
+    const k = sitzungLesen();
     return k && k.email ? k.email : null;
   },
 
-  async anmelden_start(email) {
-    const mail = String(email || '').trim();
-    if (!gueltigeMail(mail)) throw fehler('ungueltig', 'Bitte eine gültige E-Mail-Adresse eingeben.');
+  /** Registration (E4): e-mail and password; signs in at once. No marketing consent here (E6). */
+  async registrieren(email, passwort, { bleiben = false } = {}) {
+    const mail = mailPruefen(email);
+    passwortPruefen(passwort, mail);
     await warten(L.change);
-    const bekannt = lesen(KEYS.anmeldung, { bekannt: [] }).bekannt || [];
-    schreiben(KEYS.anmeldung, { bekannt, offen: mail.toLowerCase() });
-    return { email: mail, neu: !bekannt.includes(mail.toLowerCase()) };
+    const alle = konten();
+    if (alle[mail]) throw fehler('vorhanden', 'Für diese Adresse gibt es schon ein Konto.');
+    const salz = neuesSalz();
+    alle[mail] = { salz, wert: await pruefwert(passwort, salz), seit: new Date().toISOString().slice(0, 10), newsletter: false, adresse: null };
+    schreiben(KEYS.konten, alle);
+    sitzungStarten(mail, bleiben, true);
+    return { email: mail, neu: true };
   },
 
-  async anmelden_code(email, code) {
-    const mail = String(email || '').trim().toLowerCase();
-    if (!/^\d{6}$/.test(String(code || '').trim())) throw fehler('ungueltig', 'Der Code hat sechs Ziffern.');
+  /** Sign-in with password; five failed tries lock the address for 30 s (stands for the server's rate limit). */
+  async anmelden(email, passwort, { bleiben = false } = {}) {
+    const mail = mailPruefen(email);
+    if (!passwort) throw fehler('ungueltig', 'Bitte das Passwort eingeben.', { feld: 'passwort', grund: 'leer' });
+    const versuche = lesen(KEYS.versuche, null) || {};
+    const v = versuche[mail] || { n: 0, bis: 0 };
+    if (v.bis > Date.now()) throw fehler('gesperrt', 'Zu viele Versuche.', { warten: Math.ceil((v.bis - Date.now()) / 1000) });
     await warten(L.change);
-    const st = lesen(KEYS.anmeldung, { bekannt: [] });
-    if (st.offen !== mail) throw fehler('ungueltig', 'Bitte zuerst die E-Mail-Adresse eingeben.');
-    const bekannt = st.bekannt || [];
-    const neu = !bekannt.includes(mail);
-    schreiben(KEYS.anmeldung, { bekannt: neu ? [...bekannt, mail] : bekannt, offen: null });
-    const vorher = lesen(KEYS.konto, null);
-    schreiben(KEYS.konto, { email: mail, seit: new Date().toISOString().slice(0, 10), neu, newsletter: !!(vorher && vorher.email === mail && vorher.newsletter) });
-    return { email: mail, neu };
+    const konto = konten()[mail];
+    const ok = !!konto && (konto.wert === null || (await pruefwert(passwort, konto.salz)) === konto.wert);
+    if (!ok) {
+      v.n += 1;
+      if (v.n >= PASSWORT.sperreVersuche) {
+        v.n = 0;
+        v.bis = Date.now() + PASSWORT.sperreSekunden * 1000;
+      }
+      schreiben(KEYS.versuche, { ...versuche, [mail]: v });
+      if (v.bis > Date.now()) throw fehler('gesperrt', 'Zu viele Versuche.', { warten: PASSWORT.sperreSekunden });
+      throw fehler('falsch', 'E-Mail-Adresse oder Passwort stimmen nicht.');
+    }
+    const rest = { ...versuche };
+    delete rest[mail];
+    schreiben(KEYS.versuche, rest);
+    sitzungStarten(mail, bleiben, false);
+    return { email: mail, neu: false };
+  },
+
+  /** Asks for a reset link. Same answer whether the address has an account or not; the study sends nothing. */
+  async passwort_vergessen(email) {
+    const mail = mailPruefen(email);
+    await warten(L.change);
+    return { email: mail, gesendet: false, muster: true };
+  },
+
+  /** Stands for the page behind the reset link (a signed, short-lived token in the PHP shop). */
+  async passwort_setzen(email, passwort) {
+    const mail = mailPruefen(email);
+    passwortPruefen(passwort, mail);
+    await warten(L.change);
+    const alle = konten();
+    if (!alle[mail]) throw fehler('unbekannt', 'Zu dieser Adresse gibt es kein Musterkonto.');
+    const salz = neuesSalz();
+    alle[mail] = { ...alle[mail], salz, wert: await pruefwert(passwort, salz) };
+    schreiben(KEYS.konten, alle);
+    const versuche = { ...(lesen(KEYS.versuche, null) || {}) };
+    delete versuche[mail];
+    schreiben(KEYS.versuche, versuche);
+    return true;
   },
 
   async abmelden() {
-    schreiben(KEYS.konto, null);
+    sitzungSchreiben(null);
     return true;
   },
 
   async einstellung(name, wert) {
-    const k = lesen(KEYS.konto, null);
+    const k = sitzungLesen();
     if (!k) throw fehler('ungueltig', 'Nicht angemeldet.');
     await warten(L.remove);
-    if (name === 'newsletter') k.newsletter = !!wert;
-    if (name === 'adresse') k.adresse = wert;
-    schreiben(KEYS.konto, k);
+    const alle = konten();
+    const profil = alle[k.email] || { seit: k.seit, newsletter: false, adresse: null };
+    if (name === 'newsletter') profil.newsletter = !!wert;
+    if (name === 'adresse') profil.adresse = wert;
+    alle[k.email] = profil;
+    schreiben(KEYS.konten, alle);
     return adapter.konto();
   },
 
@@ -386,7 +524,7 @@ export const adapter = Object.freeze({
     return { art, gesendet: false, muster: true, felder: Object.keys(felder || {}).length };
   },
 
-  /** Amount in Rappen or Cent as text, e.g. { CHF: 1000 } -> "CHF 10.00" (own formatter, W 04). */
+  /** Amount in Rappen or Cent as text, e.g. { CHF: 1000 } -> "CHF 10,00" (own formatter, W 04). */
   betrag(geld, sprache = 'de-CH', waehrung = 'CHF') {
     if (!geld || !Number.isFinite(geld[waehrung])) return '';
     return formatBetrag(geld[waehrung], waehrung);
@@ -427,6 +565,7 @@ export function leeren() {
 
 /** Test and review aid: forget account, orders and sign-in state of the study. */
 export function zuruecksetzen() {
-  for (const key of [KEYS.konto, KEYS.bestellungen, KEYS.anmeldung, KEYS.stoerung]) schreiben(key, null);
+  for (const key of [KEYS.konto, KEYS.konten, KEYS.versuche, KEYS.bestellungen, KEYS.stoerung]) schreiben(key, null);
+  sitzungSchreiben(null);
   speichern([]);
 }

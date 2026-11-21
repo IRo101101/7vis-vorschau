@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
   <title>Anmelden (Muster) · 7Vis</title>
-  <meta name="description" content="Anmelden oder ein Konto eröffnen, mit E-Mail und Einmalcode. Muster der Studie, es wird nichts gesendet.">
+  <meta name="description" content="Anmelden oder ein Konto eröffnen, mit E-Mail und Passwort. Muster der Studie, es wird nichts gesendet.">
   <link rel="stylesheet" href="assets/vendor/lenis-1.3.26/lenis.css">
   <link rel="stylesheet" href="assets/css/tokens/ebene4-mechanik.css">
   <link rel="stylesheet" href="assets/css/themes/rohbau.css">
@@ -19,6 +19,7 @@
   <link rel="modulepreload" href="assets/vendor/lenis-1.3.26/lenis.js">
   <link rel="modulepreload" href="assets/js/modules/nav.js">
   <link rel="modulepreload" href="assets/js/modules/cart-panel.js">
+  <link rel="modulepreload" href="assets/js/modules/scroll-gauge.js">
   <link rel="modulepreload" href="assets/js/shop/muster.js">
   <link rel="modulepreload" href="assets/js/shop/muster-daten.js">
   <link rel="modulepreload" href="assets/js/modules/sign-in.js">
@@ -58,7 +59,7 @@
               <li class="vorschau__kachel" data-nav-shop-item>
                 <a class="vorschau__verweis" href="muster-001.html">
                   <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
-                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10.00</span><span data-preis-w="EUR">EUR 10.50</span></span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10,00</span><span data-preis-w="EUR">EUR 10,50</span></span></span>
                   <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
                   <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02 · Mahlen</span>
                 </a>
@@ -66,7 +67,7 @@
               <li class="vorschau__kachel" data-nav-shop-item>
                 <a class="vorschau__verweis" href="muster-002.html">
                   <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
-                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20.00</span><span data-preis-w="EUR">EUR 21.00</span></span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20,00</span><span data-preis-w="EUR">EUR 21,00</span></span></span>
                   <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
                   <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-4" aria-hidden="true"></span>04 · Pumpen</span>
                 </a>
@@ -102,6 +103,8 @@
   </div>
   <!-- Drag handle of the figure: follows the figure on screen, takes the pointer only while the slider allows it. -->
   <div class="figur-griff" data-mod="figure-grip" aria-hidden="true" data-needs-core></div>
+  <!-- Scroll gauge (IM 11.14, PLAN 5 no. 6): own scroll indicator on the right; the native bar is hidden while it runs. -->
+  <div class="pegel" data-mod="scroll-gauge" aria-hidden="true" data-needs-core><span class="pegel__balken" data-scroll-gauge-bar></span></div>
   <!-- Cart panel (stage 5; IS 5, IM 11.12, Drehbuch 2.2): opens with the cart button of the header and after
        adding to the cart. Without the runtime the cart button leads to /warenkorb. Lines are clones of the
        template; the shop adapter (PLAN 6) is the only source of the cart. -->
@@ -142,83 +145,123 @@
       <div class="korb__summe" data-cart-panel-summary data-cart-panel-child>
         <p class="korb__summentitel t-label">Übersicht</p>
         <dl class="summen">
-          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0.00</dd></div>
-          <div class="summen__zeile"><dt>Versand</dt><dd>wird in der Kasse berechnet</dd></div>
+          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0,00</dd></div>
+          <div class="summen__zeile"><dt>Versand (Musterregel)</dt><dd><!-- versandvorschau:start --><span class="t-ziffern">ab <span data-preis-w="CHF">CHF 9,00</span><span data-preis-w="EUR">EUR 9,50</span></span><!-- versandvorschau:end --></dd></div>
         </dl>
+        <p class="korb__versand t-klein"><!-- versandhinweis:start -->Musterregel: Schweiz und Liechtenstein ab <span class="t-ziffern"><span data-preis-w="CHF">CHF 9,00</span><span data-preis-w="EUR">EUR 9,50</span></span>, übrige Länder ab <span class="t-ziffern"><span data-preis-w="CHF">CHF 24,00</span><span data-preis-w="EUR">EUR 25,00</span></span>. Die Versandart wählen Sie in der Kasse.<!-- versandhinweis:end --></p>
         <div class="korb__waehrung"><span class="t-klein" id="korb-waehrung">Währung</span><div class="waehrung" role="group" aria-labelledby="korb-waehrung" data-mod="currency-switch"><button type="button" data-currency-switch-value="CHF" aria-pressed="true">CHF</button><button type="button" data-currency-switch-value="EUR" aria-pressed="false">EUR</button></div></div>
         <a class="knopf korb__kasse" href="kasse.html" data-cart-panel-checkout>Zur Kasse gehen</a>
-        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Versand und Rabattcode folgen in der Kasse.</p>
+        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Rabattcode und Versandart folgen in der Kasse.</p>
       </div>
     </section>
   </div>
   <!-- shell:end -->
 
   <main id="inhalt" data-view="anmelden" class="seite seite--shop" tabindex="-1">
-    <!-- /anmelden (refmedia v1 section 6, F24): sign in and sign up are one flow, e-mail, then a one-time code;
-         guests can still order. Study: nothing is sent, any six digits pass. E4 of the shop decisions says
-         password login; see ETAPPE-5 open points. -->
+    <!-- /anmelden after the shop decision E4 of 12.09.2026, confirmed by the owner on 21.11.2026: registration
+         with e-mail and password, sign-in with password and "Eingeloggt bleiben" (a session of 90 days), a
+         password reset, guest checkout stays; passkeys come later (phase 2). The marketing consent is not part
+         of the registration (E6), it lives on /konto. Study: the accounts exist only in this browser (only a
+         check value of the password is kept, never the password), nothing is sent. Sample forms (CONTRACT 2
+         rule 9): fields with data-feld, GET to the sample page, so a submit without script sends nothing.
+         Without script all three forms stand one below the other; with the module one shows at a time. -->
     <section class="sx shopseite anmelden" data-theme="hell" aria-labelledby="anmelden-titel" data-mod="sign-in">
       <div class="anmelden__karte">
         <p class="kicker">Konto</p>
         <h1 id="anmelden-titel" class="t-lg">Melden Sie sich an oder eröffnen Sie ein Konto.</h1>
-        <p class="muster-band"><strong>Muster.</strong> Es wird keine E-Mail gesendet. Jeder sechsstellige Code gilt.</p>
-        <form class="formular" action="anmelden.html" method="post" data-sign-in-step="email" aria-labelledby="anmelden-titel">
+        <p class="muster-band"><strong>Muster.</strong> Konten der Studie bestehen nur in diesem Browser. Es wird keine E-Mail gesendet, und vom Passwort bleibt nur ein Prüfwert in diesem Browser.</p>
+        <p class="meldung" role="status" data-sign-in-info hidden><span data-sign-in-info-art="geaendert">Ihr Passwort ist geändert. Melden Sie sich mit dem neuen Passwort an.</span></p>
+
+        <form id="anmelden" class="formular" action="formular-muster.html#anmelden" method="get" data-sign-in-step="anmelden" aria-labelledby="anmelden-form-titel">
+          <h2 id="anmelden-form-titel" class="t-sm">Mit einem Konto melden Sie sich hier an.</h2>
           <div class="formular-summe" data-formular-summe tabindex="-1" role="alert" hidden><p class="formular-summe__titel">Bitte prüfen Sie diese Angaben:</p><ul data-formular-liste></ul></div>
-          <p class="t-text">Mit Ihrer E-Mail-Adresse melden Sie sich an. Gibt es noch kein Konto, entsteht es dabei.</p>
-          <div class="feld"><label for="a-email" class="feld__etikett">E-Mail</label><div class="anmelden__zeile"><input id="a-email" name="email" type="email" autocomplete="email" required aria-describedby="a-email-fehler"><button type="submit" class="knopf">Weiter</button></div><p id="a-email-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p></div>
-          <p class="t-klein">Für das Konto gelten die <a href="agb.html">AGB</a> und die <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
-        </form>
-        <form class="formular" action="anmelden.html" method="post" data-sign-in-step="code" hidden aria-labelledby="anmelden-code-titel">
-          <h2 id="anmelden-code-titel" class="t-sm">Geben Sie den Code ein.</h2>
-          <p class="t-text"><span data-sign-in-new="false">Willkommen zurück.</span><span data-sign-in-new="true" hidden>Für diese Adresse gibt es noch kein Konto. Mit dem Code eröffnen Sie es.</span> Wir haben einen sechsstelligen Code an <strong data-sign-in-mail>Ihre Adresse</strong> gesendet. <span class="platzhalter">[Muster: nichts gesendet]</span></p>
-          <div class="feld"><label for="a-code" class="feld__etikett">Code</label><input id="a-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="a-code-hilfe a-code-fehler"><p id="a-code-hilfe" class="feld__hilfe">Sechs Ziffern</p><p id="a-code-fehler" class="feld__fehler" data-feld-fehler hidden>Der Code hat sechs Ziffern.</p></div>
+          <div class="feld"><label for="a-email" class="feld__etikett">E-Mail</label><input id="a-email" data-feld="email" type="email" autocomplete="username" required aria-describedby="a-email-fehler"><p id="a-email-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p></div>
+          <div class="feld"><label for="a-passwort" class="feld__etikett">Passwort</label><input id="a-passwort" data-feld="passwort" type="password" autocomplete="current-password" required maxlength="128" aria-describedby="a-passwort-fehler"><p id="a-passwort-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie Ihr Passwort ein.</p></div>
+          <label class="wahl" data-needs-core><input type="checkbox" data-sign-in-show><span>Passwort anzeigen</span></label>
+          <label class="wahl"><input id="a-bleiben" type="checkbox" data-feld="bleiben" value="1"><span>Eingeloggt bleiben (90 Tage). Auf fremden Geräten nicht wählen.</span></label>
+          <p class="meldung meldung--stop" role="alert" data-sign-in-msg="falsch" tabindex="-1" hidden>E-Mail-Adresse oder Passwort stimmen nicht.</p>
+          <p class="meldung meldung--stop" role="alert" data-sign-in-msg="gesperrt" tabindex="-1" hidden>Zu viele Versuche. Bitte warten Sie <span class="t-ziffern" data-sign-in-wait>30</span> Sekunden und versuchen Sie es dann noch einmal.</p>
           <button type="submit" class="knopf">Anmelden</button>
-          <p class="anmelden__mehr t-klein"><a href="anmelden.html" data-sign-in-again>Code erneut senden</a> <a href="anmelden.html" data-sign-in-back>Andere E-Mail-Adresse</a></p>
-          <p class="t-klein" data-sign-in-sent role="status" hidden>Muster: Ein neuer Code wäre jetzt unterwegs.</p>
+          <p class="anmelden__mehr t-klein"><a href="#passwort-vergessen" data-sign-in-go="vergessen">Passwort zurücksetzen</a> <a href="#konto-eroeffnen" data-sign-in-go="registrieren">Konto eröffnen</a></p>
+          <p class="t-klein">Anmelden mit Passkey ist für später vorgesehen.</p>
         </form>
+
+        <form id="konto-eroeffnen" class="formular" action="formular-muster.html#anmelden" method="get" data-sign-in-step="registrieren" aria-labelledby="registrieren-titel">
+          <h2 id="registrieren-titel" class="t-sm">Ein neues Konto eröffnen Sie mit E-Mail und Passwort.</h2>
+          <div class="formular-summe" data-formular-summe tabindex="-1" role="alert" hidden><p class="formular-summe__titel">Bitte prüfen Sie diese Angaben:</p><ul data-formular-liste></ul></div>
+          <div class="feld"><label for="n-email" class="feld__etikett">E-Mail</label><input id="n-email" data-feld="email" type="email" autocomplete="email" required aria-describedby="n-email-fehler"><p id="n-email-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p></div>
+          <div class="feld"><label for="n-passwort" class="feld__etikett">Passwort</label><input id="n-passwort" data-feld="passwort" type="password" autocomplete="new-password" required minlength="10" maxlength="128" aria-describedby="n-passwort-regel n-passwort-fehler"><p id="n-passwort-regel" class="feld__hilfe">Mindestens 10 Zeichen. Gut ist ein Satz aus mehreren Wörtern; Leerzeichen und Sonderzeichen sind erlaubt. Nicht Ihre E-Mail-Adresse und kein häufiges Passwort.</p><p id="n-passwort-fehler" class="feld__fehler" data-feld-fehler hidden><span data-passwort-grund="leer">Bitte wählen Sie ein Passwort.</span><span data-passwort-grund="kurz" hidden>Das Passwort ist zu kurz: mindestens 10 Zeichen.</span><span data-passwort-grund="lang" hidden>Das Passwort ist zu lang: höchstens 128 Zeichen.</span><span data-passwort-grund="email" hidden>Das Passwort darf Ihre E-Mail-Adresse nicht enthalten.</span><span data-passwort-grund="haeufig" hidden>Dieses Passwort ist zu häufig. Bitte wählen Sie ein anderes.</span></p></div>
+          <label class="wahl" data-needs-core><input type="checkbox" data-sign-in-show><span>Passwort anzeigen</span></label>
+          <label class="wahl"><input id="n-bleiben" type="checkbox" data-feld="bleiben" value="1"><span>Eingeloggt bleiben (90 Tage). Auf fremden Geräten nicht wählen.</span></label>
+          <p class="meldung meldung--stop" role="alert" data-sign-in-msg="vorhanden" tabindex="-1" hidden>Für diese Adresse gibt es schon ein Konto. <a href="#anmelden" data-sign-in-go="anmelden">Anmelden</a> oder <a href="#passwort-vergessen" data-sign-in-go="vergessen">Passwort zurücksetzen</a>.</p>
+          <button type="submit" class="knopf">Konto eröffnen</button>
+          <p class="t-klein">Für das Konto gelten die <a href="agb.html">AGB</a> und die <a href="datenschutz.html">Datenschutzerklärung</a>. Neuigkeiten per E-Mail wählen Sie, wenn Sie möchten, später im Konto.</p>
+          <p class="anmelden__mehr t-klein"><a href="#anmelden" data-sign-in-go="anmelden">Zur Anmeldung</a></p>
+        </form>
+
+        <form id="passwort-vergessen" class="formular" action="formular-muster.html#anmelden" method="get" data-sign-in-step="vergessen" aria-labelledby="vergessen-titel">
+          <h2 id="vergessen-titel" class="t-sm">Ein vergessenes Passwort setzen Sie per E-Mail zurück.</h2>
+          <div class="formular-summe" data-formular-summe tabindex="-1" role="alert" hidden><p class="formular-summe__titel">Bitte prüfen Sie diese Angaben:</p><ul data-formular-liste></ul></div>
+          <div class="feld"><label for="v-email" class="feld__etikett">E-Mail</label><input id="v-email" data-feld="email" type="email" autocomplete="email" required aria-describedby="v-email-fehler"><p id="v-email-fehler" class="feld__fehler" data-feld-fehler hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p></div>
+          <button type="submit" class="knopf">Link anfordern</button>
+          <div class="meldung" role="status" data-sign-in-sent tabindex="-1" hidden><p>Gibt es zu dieser Adresse ein Konto, ist ein Link zum Zurücksetzen unterwegs. Er gilt eine Stunde. <span class="platzhalter">[Muster: nichts gesendet]</span></p><p><button type="button" class="knopf knopf--still" data-sign-in-go="neu">Musterlink öffnen</button></p></div>
+          <p class="anmelden__mehr t-klein"><a href="#anmelden" data-sign-in-go="anmelden">Zur Anmeldung</a></p>
+        </form>
+
+        <form id="passwort-neu" class="formular" action="formular-muster.html#anmelden" method="get" data-sign-in-step="neu" hidden aria-labelledby="neu-titel">
+          <h2 id="neu-titel" class="t-sm">Hier legen Sie ein neues Passwort fest.</h2>
+          <p class="t-text">Konto: <strong data-sign-in-mail>Ihre Adresse</strong> <span class="platzhalter">[Muster: steht für die Seite hinter dem Link]</span></p>
+          <div class="formular-summe" data-formular-summe tabindex="-1" role="alert" hidden><p class="formular-summe__titel">Bitte prüfen Sie diese Angaben:</p><ul data-formular-liste></ul></div>
+          <div class="feld"><label for="p-passwort" class="feld__etikett">Neues Passwort</label><input id="p-passwort" data-feld="passwort" type="password" autocomplete="new-password" required minlength="10" maxlength="128" aria-describedby="p-passwort-regel p-passwort-fehler"><p id="p-passwort-regel" class="feld__hilfe">Mindestens 10 Zeichen. Gut ist ein Satz aus mehreren Wörtern; Leerzeichen und Sonderzeichen sind erlaubt. Nicht Ihre E-Mail-Adresse und kein häufiges Passwort.</p><p id="p-passwort-fehler" class="feld__fehler" data-feld-fehler hidden><span data-passwort-grund="leer">Bitte wählen Sie ein Passwort.</span><span data-passwort-grund="kurz" hidden>Das Passwort ist zu kurz: mindestens 10 Zeichen.</span><span data-passwort-grund="lang" hidden>Das Passwort ist zu lang: höchstens 128 Zeichen.</span><span data-passwort-grund="email" hidden>Das Passwort darf Ihre E-Mail-Adresse nicht enthalten.</span><span data-passwort-grund="haeufig" hidden>Dieses Passwort ist zu häufig. Bitte wählen Sie ein anderes.</span></p></div>
+          <label class="wahl" data-needs-core><input type="checkbox" data-sign-in-show><span>Passwort anzeigen</span></label>
+          <p class="meldung meldung--stop" role="alert" data-sign-in-msg="unbekannt" tabindex="-1" hidden>Zu dieser Adresse gibt es in diesem Browser kein Musterkonto. <a href="#konto-eroeffnen" data-sign-in-go="registrieren">Konto eröffnen</a></p>
+          <button type="submit" class="knopf">Passwort speichern</button>
+        </form>
+
         <p class="meldung" role="status" data-sign-in-done hidden><span data-sign-in-done-new="false">Sie sind angemeldet.</span><span data-sign-in-done-new="true" hidden>Ihr Konto ist eröffnet, Sie sind angemeldet.</span> Es geht weiter.</p>
         <p class="meldung meldung--stop" role="alert" data-sign-in-fail hidden>Das hat nicht geklappt. Bitte versuchen Sie es noch einmal.</p>
         <p class="anmelden__gast" data-sign-in-guest hidden><a href="kasse.html">Ohne Konto weiter: als Gast bestellen</a></p>
       </div>
     </section>
-    <!-- fuss:start (copied from index.html) -->
-    <footer class="fuss" data-theme="hell">
-      <div class="fuss__spalten">
-        <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
-          <p id="fuss-seiten" class="fuss__titel">Seiten</p>
-          <ul class="fuss__liste">
-            <li><a href="werkzeuge.html">Werkzeuge</a></li>
-            <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
-            <li><a href="haendler.html">Händler</a></li>
-            <li><a href="fragen.html">Fragen</a></li>
-            <li><a href="kontakt.html">Kontakt</a></li>
-          </ul>
-        </nav>
-        <nav class="fuss__spalte" aria-labelledby="fuss-recht">
-          <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
-          <ul class="fuss__liste">
-            <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
-            <li><a href="agb.html">AGB</a></li>
-            <li><a href="datenschutz.html">Datenschutz</a></li>
-            <li><a href="impressum.html">Impressum</a></li>
-            <li><a href="widerruf.html">Widerruf</a></li>
-          </ul>
-        </nav>
-        <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
-          <p id="fuss-sprache" class="fuss__titel">Sprache</p>
-          <ul class="fuss__liste">
-            <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
-            <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
-        <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
-        <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
-      </div>
-      <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
-    </footer>
-    <!-- fuss:end -->
   </main>
+
+  <!-- fuss:start (copied from index.html) -->
+  <footer class="fuss" data-theme="hell" data-page-router-follow>
+    <div class="fuss__spalten">
+      <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
+        <p id="fuss-seiten" class="fuss__titel">Seiten</p>
+        <ul class="fuss__liste">
+          <li><a href="werkzeuge.html">Werkzeuge</a></li>
+          <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
+          <li><a href="haendler.html">Händler</a></li>
+          <li><a href="fragen.html">Fragen</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </nav>
+      <nav class="fuss__spalte" aria-labelledby="fuss-recht">
+        <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
+        <ul class="fuss__liste">
+          <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
+          <li><a href="agb.html">AGB</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="widerruf.html">Widerruf</a></li>
+        </ul>
+      </nav>
+      <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
+        <p id="fuss-sprache" class="fuss__titel">Sprache</p>
+        <ul class="fuss__liste">
+          <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
+          <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
+      <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
+      <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
+    </div>
+    <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
+  </footer>
+  <!-- fuss:end -->
 </body>
 </html>

@@ -132,7 +132,10 @@
     background-color: var(--fl-abgesenkt);
     color: var(--tx-leise);
   }
+  /* Correction A (finding 8): the label of a placeholder in --tx-normal (9.6:1 at rest instead of 4.75:1),
+     so it also reaches AA early while a card unfolds and its image fades in. */
   [data-view="start"] .karte__platzhalter {
+    color: var(--tx-normal);
     font-family: var(--schrift-label);
     font-size: var(--groesse-label);
     letter-spacing: var(--laufweite-label);
@@ -531,6 +534,42 @@
     padding-block: calc(var(--kopf-hoehe) + 2 * var(--raum)) calc(6 * var(--raum));
     overflow: clip;
   }
+  /* Correction A (finding 4): background pictures of the principles (IM 11.9 parallax, IM 11.10). Behind the
+     content in the section's own stacking context; the wrapper is 120 % high and drifts from -20 % to 0 over
+     the stretch (module image-drift), the pictures cross-fade (principle-row). Every picture is opaque by
+     default (the engine drops opacity 1 at rest); the module sets the others to 0. Without script the first
+     one lies on top. */
+  [data-view="start"] .prinzipien__grund {
+    position: absolute;
+    inset: 0;
+    max-block-size: 100svh;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  [data-view="start"] .prinzipien__bilder {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    block-size: 120%;
+  }
+  [data-view="start"] .prinzipien__grundbild {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    max-inline-size: none;
+    object-fit: cover;
+  }
+  [data-view="start"] .prinzipien__grundbild:first-child {
+    z-index: 1;
+  }
+  [data-view="start"] .prinzipien__schleier {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background-color: color-mix(in srgb, var(--fl-abgesenkt) 40%, transparent);
+  }
   [data-view="start"] .prinzipien__kopf {
     grid-column: 1 / -1;
     grid-row: 1;
@@ -624,6 +663,7 @@
   [data-view="start"] .prinzipien__marken {
     list-style: none;
     display: flex;
+    flex-wrap: wrap;
     gap: var(--raum);
     margin: 0;
     padding: 0;
@@ -682,14 +722,26 @@
     [data-view="start"] .prinzipien__steuerung {
       justify-items: start;
     }
+    /* Correction A (finding 7): seven 44 px buttons need 320 px; below that they wrap into a second row
+       instead of running out of the section (320 px: the row ran from 17 to 337 px in a box ending at 303). */
     [data-view="start"] .prinzipien__marken {
       gap: 2px;
+      max-inline-size: 100%;
+    }
+    [data-view="start"] .prinzipien__steuerung {
+      max-inline-size: 100%;
     }
     [data-view="start"] [data-principle-row-mode="reihe"] .prinzip {
       flex-basis: 100cqi;
     }
     [data-view="start"] [data-principle-row-mode="reihe"] .prinzip__aussage {
       font-size: var(--groesse-titel-md);
+    }
+  }
+  @media (max-width: 359px) {
+    /* four and three instead of six and one */
+    [data-view="start"] .prinzipien__marken {
+      max-inline-size: calc(4 * var(--knopf-hoehe) + 3 * 2px);
     }
   }
 

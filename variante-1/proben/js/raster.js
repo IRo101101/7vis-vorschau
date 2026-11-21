@@ -9,9 +9,9 @@
  * Drawn directly into the layer (no render target): the world sets viewport and scissor, the shader works
  * in device pixels relative to the closing surface, so 1 px lines stay 1 px at every pixel ratio.
  */
-import { readRoles, toColour, over } from '../tokens.js';
-import { resolveEase } from '../../motion/ease.js';
-import { TIMING } from '../../motion/curves.js';
+import { readRoles, toColour, over } from '../../assets/js/gl/tokens.js';
+import { resolveEase } from '../../assets/js/motion/ease.js';
+import { TIMING } from '../../assets/js/motion/curves.js';
 
 const ROLES = ['--fl-grund', '--li-linie', '--li-rahmen', '--ak-marke-still'];
 const MINOR = 24;

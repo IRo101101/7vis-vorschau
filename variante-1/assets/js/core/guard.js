@@ -21,6 +21,17 @@ export const guard = {
     root.querySelectorAll('[data-guard]:not([data-guard="free"])').forEach((el) => this.release(el));
   },
 
+  /**
+   * The CSS time limit already showed this element (the script came after --guard-limit): the reader has
+   * seen it, so a module must not hide it again for an entrance (stage 7, slow connections). Only true while
+   * the guard is still held by the CSS and the guard rule applies at all.
+   */
+  expired(el) {
+    if (!el || !el.hasAttribute('data-guard') || el.getAttribute('data-guard') === 'free') return false;
+    if (!globalThis.matchMedia || !matchMedia('(scripting: enabled) and (prefers-reduced-motion: no-preference)').matches) return false;
+    return getComputedStyle(el).visibility === 'visible';
+  },
+
   /** Called by the module loader after setup of all modules on an element. */
   afterSetup(el, held) {
     if (!el.hasAttribute('data-guard')) return;

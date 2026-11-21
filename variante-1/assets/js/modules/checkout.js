@@ -3,7 +3,8 @@
  * refmedia v1 section 5: contact with sign-in link, delivery address, shipping methods only after the
  * address, payment, order summary with discount field, one button).
  *
- * Markup: kasse.html. Parts: [data-checkout-form] (the order form, POST for the PHP shop) with the sections
+ * Markup: kasse.html. Parts: [data-checkout-form] (the order form: GET to the sample page in the study, POST
+ * to its endpoint in the PHP shop) with the sections
  * contact, delivery address, shipping ([data-checkout-ship-wait], [data-checkout-ship] with
  * [data-checkout-ship-list] and <template data-checkout-ship-template>), payment ([data-checkout-billing]
  * opens when "Rechnungsadresse wie Lieferadresse" is unticked), review (terms consent, submit with
@@ -15,14 +16,17 @@
  * Differences to the reference, on purpose (PLAN 6 [Anwalt], E6): the newsletter box is separate and NOT
  * ticked; the terms need an active tick; the steps up to the contract are listed; wrong input is listed
  * with links before the order. Guests order without an account; signed-in sample accounts get their
- * e-mail filled in. Swiss address format (postcode before town, 4 digits); the postcode rule follows the
- * country. Payment data never touch this page: the button hands over to the payment service (sample page).
- * Everything stays in the browser (sample adapter).
+ * e-mail filled in. Swiss address format (postcode before town, 4 digits); the postcode rule and its message
+ * follow the country (LAENDER in muster-daten.js; one message per country in the HTML, [data-plz-land]).
+ * Payment data never touch this page: the button hands over to the payment service (sample page).
+ * Everything stays in the browser (sample adapter). Sample form (CONTRACT 2 rule 9): fields are found by name
+ * or data-feld; without script the billing fields follow their box by CSS and the form ends on the sample
+ * page; with the module the billing fields are required while they are shown.
  */
 import { TIMING } from '../motion/curves.js';
 import { adapter } from '../shop/muster.js';
-import { formatBetrag, mwstAnteil, LAENDER } from '../shop/muster-daten.js';
-import { pruefen, feldPruefen, zusammenfassung, aufraeumen, werte } from '../shop/formular.js';
+import { formatBetrag, mwstAnteil, plzGueltig } from '../shop/muster-daten.js';
+import { pruefen, feldPruefen, zusammenfassung, aufraeumen, werte, feld, feldName } from '../shop/formular.js';
 
 const R = TIMING.reveal;
 const ADDRESS = ['land', 'vorname', 'nachname', 'strasse', 'plz', 'ort'];
@@ -42,7 +46,10 @@ export default {
     const shipList = q('[data-checkout-ship-list]');
     const shipTpl = q('[data-checkout-ship-template]');
     const billing = q('[data-checkout-billing]');
-    const same = form.elements.rechnung_gleich;
+    const F = (name) => feld(form, name);
+    const same = F('rechnung_gleich');
+    const billingFields = billing ? [...billing.querySelectorAll('input, select')] : [];
+    const requiredBefore = new Map(billingFields.map((f) => [f, f.required]));
     const linesEl = q('[data-checkout-lines]');
     const lineTpl = q('[data-checkout-line-template]');
     const codeForm = q('[data-checkout-code]');
@@ -66,7 +73,7 @@ export default {
     let shipOn = false;
     let busy = false;
     let alive = true;
-    let land = form.elements.land ? form.elements.land.value : 'CH';
+    let land = F('land') ? F('land').value : 'CH';
 
     const W = () => (store.get('shop:waehrung') === 'EUR' ? 'EUR' : 'CHF');
     const fmt = (n) => formatBetrag(n, W());
@@ -75,18 +82,36 @@ export default {
 
     /* ---------- address and postcode rule ---------- */
 
+    const landOf = (field) => (feldName(field) === 'rechnung_plz' ? (F('rechnung_land') || {}).value || 'CH' : (F('land') || {}).value || 'CH');
+
+    /** Postcode rule of the field's country; the message of that country is the one shown. */
     function plzOk(field) {
-      if (field.name !== 'plz' && field.name !== 'rechnung_plz') return true;
-      const code = field.name === 'plz' ? form.elements.land.value : (form.elements.rechnung_land || {}).value || 'CH';
-      const l = LAENDER.find((x) => x.code === code);
-      return !l || l.plz.test(field.value.trim());
+      const name = feldName(field);
+      if (name !== 'plz' && name !== 'rechnung_plz') return true;
+      const code = landOf(field);
+      const msg = document.getElementById(`${field.id}-fehler`);
+      if (msg) {
+        const own = msg.querySelector(`[data-plz-land="${code}"]`);
+        for (const span of msg.querySelectorAll('[data-plz-land]')) span.hidden = own ? span !== own : span.getAttribute('data-plz-land') !== '';
+      }
+      return plzGueltig(code, field.value);
     }
 
     function addressValid() {
       return ADDRESS.every((n) => {
-        const f = form.elements[n];
+        const f = F(n);
         return f && f.checkValidity() && plzOk(f);
       });
+    }
+
+    /** Billing address open (box unticked): its text fields are required; closed: they are left out. */
+    function billingState() {
+      if (!billing || !same) return;
+      const open = !same.checked;
+      for (const f of billingFields) {
+        if (f.tagName === 'INPUT' && f.type === 'text') f.required = open;
+        f.disabled = !open;
+      }
     }
 
     /* ---------- shipping methods appear after the address ---------- */
@@ -125,7 +150,7 @@ export default {
         }
         return;
       }
-      const code = form.elements.land.value;
+      const code = F('land').value;
       if (shipOn && code === land && shipList.children.length) return;
       land = code;
       const v = await adapter.versandvorschau(code);
@@ -179,7 +204,7 @@ export default {
       }
       if (sums.total) sums.total.textContent = fmt(total);
       if (totalShort) totalShort.textContent = fmt(total);
-      const swiss = ['CH', 'LI'].includes(form.elements.land.value);
+      const swiss = ['CH', 'LI'].includes(F('land').value);
       if (rows.mwst) rows.mwst.hidden = !swiss;
       if (rows['mwst-eu']) rows['mwst-eu'].hidden = swiss;
       if (sums.mwst) sums.mwst.textContent = fmt(mwstAnteil(total));
@@ -227,9 +252,9 @@ export default {
       if (states.signin) states.signin.hidden = !!k;
       if (!k) return;
       if (accountMail) accountMail.textContent = k.email;
-      if (!form.elements.email.value) form.elements.email.value = k.email;
+      if (F('email') && !F('email').value) F('email').value = k.email;
       if (k.adresse) {
-        for (const [name, value] of Object.entries(k.adresse)) if (form.elements[name] && !form.elements[name].value) form.elements[name].value = value;
+        for (const [name, value] of Object.entries(k.adresse)) if (F(name) && !F(name).value) F(name).value = value;
         renderShip();
       }
     });
@@ -237,25 +262,30 @@ export default {
     /* ---------- events ---------- */
 
     ctx.listen(form, 'input', (e) => {
-      if (ADDRESS.includes(e.target.name)) renderShip();
+      if (ADDRESS.includes(feldName(e.target))) renderShip();
       if (e.target.getAttribute('aria-invalid') === 'true') feldPruefen(e.target, plzOk);
     });
     ctx.listen(form, 'change', (e) => {
-      if (ADDRESS.includes(e.target.name)) renderShip();
-      if (e.target.name === 'versand') totals();
-      if (e.target.name === 'land') {
-        if (form.elements.plz.value) feldPruefen(form.elements.plz, plzOk);
+      const name = feldName(e.target);
+      if (ADDRESS.includes(name)) renderShip();
+      if (name === 'versand') totals();
+      if (name === 'land') {
+        if (F('plz').value) feldPruefen(F('plz'), plzOk);
         totals();
       }
+      if (name === 'rechnung_land' && F('rechnung_plz') && F('rechnung_plz').value) feldPruefen(F('rechnung_plz'), plzOk);
       if (e.target === same && billing) {
+        billingState();
         reveal(billing, !same.checked);
-        for (const f of billing.querySelectorAll('input, select')) f.disabled = same.checked;
       }
     });
     ctx.listen(form, 'focusout', (e) => {
       if (e.target.value && e.target.matches('input, select, textarea')) feldPruefen(e.target, plzOk);
     });
-    if (billing && same) for (const f of billing.querySelectorAll('input, select')) f.disabled = same.checked;
+    if (billing && same) {
+      billing.hidden = same.checked;
+      billingState();
+    }
 
     if (codeForm) {
       codeForm.noValidate = true;
@@ -326,6 +356,7 @@ export default {
       busy = true;
       setLabel('laedt');
       const v = werte(form);
+      if (!v.rechnung_gleich) for (const k of ['vorname', 'nachname', 'strasse', 'plz', 'ort', 'land']) v[`rechnung_${k}`] = (F(`rechnung_${k}`) || {}).value || '';
       const adresse = Object.fromEntries(['land', 'vorname', 'nachname', 'firma', 'strasse', 'zusatz', 'plz', 'ort', 'telefon'].map((k) => [k, v[k] || '']));
       const rechnung = v.rechnung_gleich ? null : Object.fromEntries(['vorname', 'nachname', 'strasse', 'plz', 'ort', 'land'].map((k) => [k, v[`rechnung_${k}`] || '']));
       try {
@@ -379,7 +410,10 @@ export default {
         for (const p of ['height', 'overflow', '--akk-h']) n.style.removeProperty(p);
         if (!n.getAttribute('style')) n.removeAttribute('style');
       }
-      if (billing) for (const f of billing.querySelectorAll('input, select')) f.disabled = false;
+      for (const f of billingFields) {
+        f.disabled = false;
+        f.required = requiredBefore.get(f);
+      }
       if (toggle) toggle.removeAttribute('aria-expanded');
       if (aside) aside.removeAttribute('data-checkout-open');
       if (submit) submit.removeAttribute('aria-busy');

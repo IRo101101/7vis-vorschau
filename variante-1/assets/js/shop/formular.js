@@ -11,7 +11,24 @@
  * novalidate and these helpers show the own messages: aria-invalid on the field, its message, and a summary
  * with links to every wrong field (UWG duty "Eingabefehler vor der Bestellung korrigierbar", PLAN 6 [Anwalt]).
  * Without script the browser's own validation runs.
+ *
+ * Sample forms of the study (stage 7, CONTRACT 2 rule 9): fields carry data-feld="<name>" instead of name, and
+ * the form points to formular-muster.html with GET. A submit without script (or with a failed module) then
+ * validates natively and ends on the marked sample page without sending a single value. The PHP templates
+ * write name="<name>" and post to their endpoint; these helpers read either attribute.
  */
+
+/** Name of a field: name (PHP shop, buy box, catalogue) or data-feld (sample forms of the study). */
+export function feldName(field) {
+  return (field && (field.getAttribute('name') || field.getAttribute('data-feld'))) || '';
+}
+
+/** First field of a form (or any root) with that name, in either attribute. */
+export function feld(root, name) {
+  if (!root) return null;
+  const n = CSS.escape(name);
+  return root.querySelector(`[name="${n}"], [data-feld="${n}"]`);
+}
 
 export function fehlerElement(field) {
   const ids = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
@@ -22,15 +39,27 @@ export function fehlerElement(field) {
   return null;
 }
 
+/**
+ * Visible name of a field for the error summary: the group's legend for radio buttons, else the field's own
+ * label (label[for] or a wrapping label, field.labels), then aria-labelledby, then aria-label. Never the
+ * technical name (the terms box showed "agb", review stage 7). Optional marks "(freiwillig)" are dropped.
+ */
 export function labelText(field) {
-  const l = field.id ? field.ownerDocument.querySelector(`label[for="${CSS.escape(field.id)}"]`) : null;
-  const t = (l ? l.textContent : field.getAttribute('aria-label') || field.name || '').replace(/\s+/g, ' ').trim();
-  return t;
+  const clean = (t) => String(t || '').replace(/\s+/g, ' ').replace(/\s*\(freiwillig\)\s*/g, ' ').trim();
+  if (field.type === 'radio') {
+    const legend = field.closest('fieldset') && field.closest('fieldset').querySelector('legend');
+    if (legend && clean(legend.textContent)) return clean(legend.textContent);
+  }
+  const labels = field.labels && field.labels.length ? [...field.labels] : [];
+  if (labels.length) return clean(labels.map((l) => l.textContent).join(' '));
+  const by = (field.getAttribute('aria-labelledby') || '').split(/\s+/).filter(Boolean).map((id) => field.ownerDocument.getElementById(id)).filter(Boolean);
+  if (by.length) return clean(by.map((n) => n.textContent).join(' '));
+  return clean(field.getAttribute('aria-label') || field.getAttribute('title') || '');
 }
 
 /** Mark one field; extra(field) may return false for a custom rule (e.g. the postcode of a country). */
 export function feldPruefen(field, extra) {
-  if (!field || field.disabled || field.closest('[hidden]')) return true;
+  if (!field || field.matches(':disabled') || field.closest('[hidden]')) return true;
   let ok = field.checkValidity();
   if (ok && extra) ok = extra(field) !== false;
   const msg = fehlerElement(field);
@@ -51,8 +80,8 @@ export function pruefen(root, extra) {
   const wrong = [];
   for (const f of fields) {
     if (f.type === 'radio') {
-      if (seenRadio.has(f.name)) continue;
-      seenRadio.add(f.name);
+      if (seenRadio.has(feldName(f))) continue;
+      seenRadio.add(feldName(f));
     }
     if (!feldPruefen(f, extra)) wrong.push(f);
   }
@@ -92,17 +121,18 @@ export function aufraeumen(root, box) {
   }
 }
 
-/** Plain object of the form values (radio and checkbox aware). */
+/** Plain object of the form values (radio and checkbox aware; name or data-feld). */
 export function werte(form) {
   const out = {};
   for (const f of form.elements) {
-    if (!f.name || f.disabled) continue;
+    const name = feldName(f);
+    if (!name || f.matches(':disabled')) continue;
     if (f.type === 'radio') {
-      if (f.checked) out[f.name] = f.value;
+      if (f.checked) out[name] = f.value;
     } else if (f.type === 'checkbox') {
-      out[f.name] = f.checked;
-    } else if (f.tagName !== 'BUTTON' && f.type !== 'submit') {
-      out[f.name] = f.value.trim();
+      out[name] = f.checked;
+    } else if (f.tagName !== 'BUTTON' && f.tagName !== 'FIELDSET' && f.type !== 'submit') {
+      out[name] = f.value.trim();
     }
   }
   return out;

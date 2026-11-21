@@ -78,6 +78,11 @@
   [data-view].seite--produkt .produkt-teil__grund .bildplatz {
     border: 0;
   }
+  /* Correction A (finding 8): a placeholder in place of the background picture stays at full strength, so its
+     label keeps AA (the dimming at 0.6 is for a real picture; the placeholder is dark on dark anyway). */
+  [data-view].seite--produkt .produkt-teil__grund:has(> .bildplatz) {
+    opacity: 1;
+  }
   [data-view].seite--produkt .produkt-teil__bild {
     position: absolute;
     inset-block: 18% 10%;

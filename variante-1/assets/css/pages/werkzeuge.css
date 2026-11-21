@@ -85,7 +85,7 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    min-block-size: calc(10 * var(--raum));
+    min-block-size: var(--knopf-hoehe);
     padding: 0 calc(3 * var(--raum));
     border: var(--linie-staerke) solid var(--li-rahmen);
     border-radius: var(--radius-feld);

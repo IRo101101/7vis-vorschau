@@ -79,6 +79,13 @@ export default {
     const g = motion.group();
     let state = 'zu';
     let cart = null;
+    // The lines carry a qty-select module each; the core starts modules in added markup only once it is live
+    // (MutationObserver), so the first lines wait for 'core:live' (stage 7; the panel is closed until then).
+    let ready = !!store.get('core:live');
+    if (!ready) store.when('core:live').then(() => {
+      ready = true;
+      render();
+    });
     let back = null;
     let alive = true;
     const pending = new Set();
@@ -208,7 +215,7 @@ export default {
     const fmt = (geld) => adapter.betrag(geld, 'de-CH', store.get('shop:waehrung') || 'CHF');
 
     function render() {
-      if (!alive || !cart) return;
+      if (!alive || !cart || !ready) return;
       zeilenRendern(list, tpl, cart, { fmt, pending, motion });
       const has = cart.zeilen.length > 0;
       for (const t of titles) t.hidden = t.getAttribute('data-cart-panel-title') !== (has ? 'voll' : 'leer');

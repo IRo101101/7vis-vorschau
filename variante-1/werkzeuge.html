@@ -19,6 +19,7 @@
   <link rel="modulepreload" href="assets/vendor/lenis-1.3.26/lenis.js">
   <link rel="modulepreload" href="assets/js/modules/nav.js">
   <link rel="modulepreload" href="assets/js/modules/cart-panel.js">
+  <link rel="modulepreload" href="assets/js/modules/scroll-gauge.js">
   <link rel="modulepreload" href="assets/js/shop/muster.js">
   <link rel="modulepreload" href="assets/js/shop/muster-daten.js">
   <link rel="modulepreload" href="assets/js/modules/product-stack.js">
@@ -61,7 +62,7 @@
               <li class="vorschau__kachel" data-nav-shop-item>
                 <a class="vorschau__verweis" href="muster-001.html">
                   <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
-                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10.00</span><span data-preis-w="EUR">EUR 10.50</span></span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10,00</span><span data-preis-w="EUR">EUR 10,50</span></span></span>
                   <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
                   <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02 · Mahlen</span>
                 </a>
@@ -69,7 +70,7 @@
               <li class="vorschau__kachel" data-nav-shop-item>
                 <a class="vorschau__verweis" href="muster-002.html">
                   <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
-                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20.00</span><span data-preis-w="EUR">EUR 21.00</span></span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20,00</span><span data-preis-w="EUR">EUR 21,00</span></span></span>
                   <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
                   <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-4" aria-hidden="true"></span>04 · Pumpen</span>
                 </a>
@@ -105,6 +106,8 @@
   </div>
   <!-- Drag handle of the figure: follows the figure on screen, takes the pointer only while the slider allows it. -->
   <div class="figur-griff" data-mod="figure-grip" aria-hidden="true" data-needs-core></div>
+  <!-- Scroll gauge (IM 11.14, PLAN 5 no. 6): own scroll indicator on the right; the native bar is hidden while it runs. -->
+  <div class="pegel" data-mod="scroll-gauge" aria-hidden="true" data-needs-core><span class="pegel__balken" data-scroll-gauge-bar></span></div>
   <!-- Cart panel (stage 5; IS 5, IM 11.12, Drehbuch 2.2): opens with the cart button of the header and after
        adding to the cart. Without the runtime the cart button leads to /warenkorb. Lines are clones of the
        template; the shop adapter (PLAN 6) is the only source of the cart. -->
@@ -145,12 +148,13 @@
       <div class="korb__summe" data-cart-panel-summary data-cart-panel-child>
         <p class="korb__summentitel t-label">Übersicht</p>
         <dl class="summen">
-          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0.00</dd></div>
-          <div class="summen__zeile"><dt>Versand</dt><dd>wird in der Kasse berechnet</dd></div>
+          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0,00</dd></div>
+          <div class="summen__zeile"><dt>Versand (Musterregel)</dt><dd><!-- versandvorschau:start --><span class="t-ziffern">ab <span data-preis-w="CHF">CHF 9,00</span><span data-preis-w="EUR">EUR 9,50</span></span><!-- versandvorschau:end --></dd></div>
         </dl>
+        <p class="korb__versand t-klein"><!-- versandhinweis:start -->Musterregel: Schweiz und Liechtenstein ab <span class="t-ziffern"><span data-preis-w="CHF">CHF 9,00</span><span data-preis-w="EUR">EUR 9,50</span></span>, übrige Länder ab <span class="t-ziffern"><span data-preis-w="CHF">CHF 24,00</span><span data-preis-w="EUR">EUR 25,00</span></span>. Die Versandart wählen Sie in der Kasse.<!-- versandhinweis:end --></p>
         <div class="korb__waehrung"><span class="t-klein" id="korb-waehrung">Währung</span><div class="waehrung" role="group" aria-labelledby="korb-waehrung" data-mod="currency-switch"><button type="button" data-currency-switch-value="CHF" aria-pressed="true">CHF</button><button type="button" data-currency-switch-value="EUR" aria-pressed="false">EUR</button></div></div>
         <a class="knopf korb__kasse" href="kasse.html" data-cart-panel-checkout>Zur Kasse gehen</a>
-        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Versand und Rabattcode folgen in der Kasse.</p>
+        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Rabattcode und Versandart folgen in der Kasse.</p>
       </div>
     </section>
   </div>
@@ -205,7 +209,7 @@
           <div class="stapel__kartentext">
             <p class="stapel__kartenzeile stapel__kartenzeile--name" aria-hidden="true"><span class="stapel__fenster"><span class="stapel__streifen" data-product-stack-strip><span class="stapel__eintrag">Pucker</span><span class="stapel__eintrag">Musterartikel 001</span><span class="stapel__eintrag">Musterartikel 002</span></span></span></p>
             <p class="stapel__kartenzeile t-label" aria-hidden="true"><span class="stapel__fenster"><span class="stapel__streifen" data-product-stack-strip><span class="stapel__eintrag">03 · Verdichten</span><span class="stapel__eintrag">02 · Mahlen</span><span class="stapel__eintrag">04 · Pumpen</span></span></span></p>
-            <p class="stapel__kartenzeile t-ziffern" aria-hidden="true"><span class="stapel__fenster"><span class="stapel__streifen" data-product-stack-strip><span class="stapel__eintrag">In Vorbereitung</span><span class="stapel__eintrag"><span data-preis-w="CHF">CHF 10.00</span><span data-preis-w="EUR">EUR 10.50</span></span><span class="stapel__eintrag"><span data-preis-w="CHF">CHF 20.00</span><span data-preis-w="EUR">EUR 21.00</span></span></span></span></p>
+            <p class="stapel__kartenzeile t-ziffern" aria-hidden="true"><span class="stapel__fenster"><span class="stapel__streifen" data-product-stack-strip><span class="stapel__eintrag">In Vorbereitung</span><span class="stapel__eintrag"><span data-preis-w="CHF">CHF 10,00</span><span data-preis-w="EUR">EUR 10,50</span></span><span class="stapel__eintrag"><span data-preis-w="CHF">CHF 20,00</span><span data-preis-w="EUR">EUR 21,00</span></span></span></span></p>
           </div>
           <ul class="stapel__knoepfe"><li><a class="knopf stapel__knopf" href="pucker.html" data-product-stack-button>Pucker ansehen</a></li><li><a class="knopf stapel__knopf" href="muster-001.html" data-product-stack-button>Musterartikel 001 ansehen</a></li><li><a class="knopf stapel__knopf" href="muster-002.html" data-product-stack-button>Musterartikel 002 ansehen</a></li></ul>
         </div>
@@ -261,7 +265,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="4" data-status="lieferbar" data-name="Musterartikel 004" data-preis-chf="9490" data-preis-eur="10050">
             <a class="produktkarte__verweis" href="muster-004.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 004</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 94.90</span><span data-preis-w="EUR">EUR 100.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 004</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 94,90</span><span data-preis-w="EUR">EUR 100,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -269,7 +273,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="5" data-status="lieferbar" data-name="Musterartikel 005" data-preis-chf="8690" data-preis-eur="8900">
             <a class="produktkarte__verweis" href="muster-005.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 005</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 86.90</span><span data-preis-w="EUR">EUR 89.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 005</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 86,90</span><span data-preis-w="EUR">EUR 89,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -277,7 +281,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="6" data-status="lieferbar" data-name="Musterartikel 006" data-preis-chf="5250" data-preis-eur="5500">
             <a class="produktkarte__verweis" href="muster-006.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 006</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 52.50</span><span data-preis-w="EUR">ab EUR 55.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 006</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 52,50</span><span data-preis-w="EUR">ab EUR 55,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -285,7 +289,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="7" data-status="lieferbar" data-name="Musterartikel 007" data-preis-chf="5850" data-preis-eur="6250">
             <a class="produktkarte__verweis" href="muster-007.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 007</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 58.50</span><span data-preis-w="EUR">ab EUR 62.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 007</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 58,50</span><span data-preis-w="EUR">ab EUR 62,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -293,7 +297,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="8" data-status="lieferbar" data-name="Musterartikel 008" data-preis-chf="3450" data-preis-eur="3700">
             <a class="produktkarte__verweis" href="muster-008.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 008</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 34.50</span><span data-preis-w="EUR">EUR 37.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 008</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 34,50</span><span data-preis-w="EUR">EUR 37,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -301,7 +305,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="9" data-status="ausverkauft" data-name="Musterartikel 009" data-preis-chf="4150" data-preis-eur="4400">
             <a class="produktkarte__verweis" href="muster-009.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 009</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 41.50</span><span data-preis-w="EUR">EUR 44.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 009</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 41,50</span><span data-preis-w="EUR">EUR 44,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -309,7 +313,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="10" data-status="lieferbar" data-name="Musterartikel 010" data-preis-chf="1990" data-preis-eur="2050">
             <a class="produktkarte__verweis" href="muster-010.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 010</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 19.90</span><span data-preis-w="EUR">EUR 20.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 010</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 19,90</span><span data-preis-w="EUR">EUR 20,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -317,7 +321,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="11" data-status="lieferbar" data-name="Musterartikel 011" data-preis-chf="10100" data-preis-eur="10850">
             <a class="produktkarte__verweis" href="muster-011.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 011</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 101.00</span><span data-preis-w="EUR">EUR 108.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 011</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 101,00</span><span data-preis-w="EUR">EUR 108,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -325,7 +329,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="12" data-status="lieferbar" data-name="Musterartikel 012" data-preis-chf="7600" data-preis-eur="7990">
             <a class="produktkarte__verweis" href="muster-012.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 012</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 76.00</span><span data-preis-w="EUR">EUR 79.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 012</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 76,00</span><span data-preis-w="EUR">EUR 79,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -333,7 +337,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="13" data-status="lieferbar" data-name="Musterartikel 013" data-preis-chf="10550" data-preis-eur="11250">
             <a class="produktkarte__verweis" href="muster-013.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 013</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 105.50</span><span data-preis-w="EUR">EUR 112.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 013</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 105,50</span><span data-preis-w="EUR">EUR 112,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -341,7 +345,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="14" data-status="lieferbar" data-name="Musterartikel 014" data-preis-chf="4600" data-preis-eur="4750">
             <a class="produktkarte__verweis" href="muster-014.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 014</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 46.00</span><span data-preis-w="EUR">ab EUR 47.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 014</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 46,00</span><span data-preis-w="EUR">ab EUR 47,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -349,7 +353,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="15" data-status="lieferbar" data-name="Musterartikel 015" data-preis-chf="4600" data-preis-eur="4790">
             <a class="produktkarte__verweis" href="muster-015.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 015</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 46.00</span><span data-preis-w="EUR">EUR 47.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 015</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 46,00</span><span data-preis-w="EUR">EUR 47,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -357,7 +361,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="16" data-status="lieferbar" data-name="Musterartikel 016" data-preis-chf="1990" data-preis-eur="2090">
             <a class="produktkarte__verweis" href="muster-016.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 016</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 19.90</span><span data-preis-w="EUR">EUR 20.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 016</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 19,90</span><span data-preis-w="EUR">EUR 20,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -365,7 +369,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="17" data-status="lieferbar" data-name="Musterartikel 017" data-preis-chf="12590" data-preis-eur="12950">
             <a class="produktkarte__verweis" href="muster-017.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 017</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 125.90</span><span data-preis-w="EUR">ab EUR 129.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 017</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 125,90</span><span data-preis-w="EUR">ab EUR 129,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -373,7 +377,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="18" data-status="lieferbar" data-name="Musterartikel 018" data-preis-chf="9390" data-preis-eur="9690">
             <a class="produktkarte__verweis" href="muster-018.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 018</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 93.90</span><span data-preis-w="EUR">ab EUR 96.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 018</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 93,90</span><span data-preis-w="EUR">ab EUR 96,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -381,7 +385,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="1" data-nr="19" data-status="lieferbar" data-name="Musterartikel 019" data-preis-chf="2890" data-preis-eur="2990">
             <a class="produktkarte__verweis" href="muster-019.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 019</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 28.90</span><span data-preis-w="EUR">ab EUR 29.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 019</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 28,90</span><span data-preis-w="EUR">ab EUR 29,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -397,7 +401,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="1" data-status="lieferbar" data-name="Musterartikel 001" data-preis-chf="1000" data-preis-eur="1050">
             <a class="produktkarte__verweis" href="muster-001.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 001</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 10.00</span><span data-preis-w="EUR">EUR 10.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 001</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 10,00</span><span data-preis-w="EUR">EUR 10,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -405,7 +409,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="20" data-status="lieferbar" data-name="Musterartikel 020" data-preis-chf="3350" data-preis-eur="3400">
             <a class="produktkarte__verweis" href="muster-020.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 020</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 33.50</span><span data-preis-w="EUR">EUR 34.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 020</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 33,50</span><span data-preis-w="EUR">EUR 34,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -413,7 +417,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="21" data-status="lieferbar" data-name="Musterartikel 021" data-preis-chf="1350" data-preis-eur="1450">
             <a class="produktkarte__verweis" href="muster-021.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 021</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 13.50</span><span data-preis-w="EUR">ab EUR 14.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 021</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 13,50</span><span data-preis-w="EUR">ab EUR 14,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -421,7 +425,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="22" data-status="lieferbar" data-name="Musterartikel 022" data-preis-chf="3500" data-preis-eur="3600">
             <a class="produktkarte__verweis" href="muster-022.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 022</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 35.00</span><span data-preis-w="EUR">ab EUR 36.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 022</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 35,00</span><span data-preis-w="EUR">ab EUR 36,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -429,7 +433,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="23" data-status="lieferbar" data-name="Musterartikel 023" data-preis-chf="9390" data-preis-eur="9890">
             <a class="produktkarte__verweis" href="muster-023.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 023</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 93.90</span><span data-preis-w="EUR">ab EUR 98.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 023</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 93,90</span><span data-preis-w="EUR">ab EUR 98,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -437,7 +441,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="24" data-status="lieferbar" data-name="Musterartikel 024" data-preis-chf="1790" data-preis-eur="1890">
             <a class="produktkarte__verweis" href="muster-024.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 024</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 17.90</span><span data-preis-w="EUR">EUR 18.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 024</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 17,90</span><span data-preis-w="EUR">EUR 18,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -445,7 +449,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="25" data-status="lieferbar" data-name="Musterartikel 025" data-preis-chf="13750" data-preis-eur="14750">
             <a class="produktkarte__verweis" href="muster-025.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 025</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 137.50</span><span data-preis-w="EUR">ab EUR 147.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 025</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 137,50</span><span data-preis-w="EUR">ab EUR 147,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -453,7 +457,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="26" data-status="ausverkauft" data-name="Musterartikel 026" data-preis-chf="2950" data-preis-eur="3050">
             <a class="produktkarte__verweis" href="muster-026.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 026</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 29.50</span><span data-preis-w="EUR">EUR 30.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 026</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 29,50</span><span data-preis-w="EUR">EUR 30,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -461,7 +465,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="27" data-status="lieferbar" data-name="Musterartikel 027" data-preis-chf="2400" data-preis-eur="2590">
             <a class="produktkarte__verweis" href="muster-027.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 027</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 24.00</span><span data-preis-w="EUR">EUR 25.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 027</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 24,00</span><span data-preis-w="EUR">EUR 25,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -469,7 +473,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="28" data-status="ausverkauft" data-name="Musterartikel 028" data-preis-chf="1150" data-preis-eur="1200">
             <a class="produktkarte__verweis" href="muster-028.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 028</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 11.50</span><span data-preis-w="EUR">EUR 12.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 028</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 11,50</span><span data-preis-w="EUR">EUR 12,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -477,7 +481,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="29" data-status="lieferbar" data-name="Musterartikel 029" data-preis-chf="2290" data-preis-eur="2450">
             <a class="produktkarte__verweis" href="muster-029.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 029</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 22.90</span><span data-preis-w="EUR">EUR 24.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 029</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 22,90</span><span data-preis-w="EUR">EUR 24,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -485,7 +489,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="30" data-status="lieferbar" data-name="Musterartikel 030" data-preis-chf="3790" data-preis-eur="4050">
             <a class="produktkarte__verweis" href="muster-030.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 030</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 37.90</span><span data-preis-w="EUR">EUR 40.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 030</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 37,90</span><span data-preis-w="EUR">EUR 40,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -493,7 +497,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="31" data-status="lieferbar" data-name="Musterartikel 031" data-preis-chf="4890" data-preis-eur="5100">
             <a class="produktkarte__verweis" href="muster-031.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 031</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 48.90</span><span data-preis-w="EUR">ab EUR 51.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 031</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 48,90</span><span data-preis-w="EUR">ab EUR 51,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -501,7 +505,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="32" data-status="lieferbar" data-name="Musterartikel 032" data-preis-chf="2650" data-preis-eur="2850">
             <a class="produktkarte__verweis" href="muster-032.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 032</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 26.50</span><span data-preis-w="EUR">EUR 28.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 032</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 26,50</span><span data-preis-w="EUR">EUR 28,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -509,7 +513,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="33" data-status="lieferbar" data-name="Musterartikel 033" data-preis-chf="2250" data-preis-eur="2350">
             <a class="produktkarte__verweis" href="muster-033.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 033</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 22.50</span><span data-preis-w="EUR">EUR 23.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 033</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 22,50</span><span data-preis-w="EUR">EUR 23,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -517,7 +521,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="2" data-nr="34" data-status="lieferbar" data-name="Musterartikel 034" data-preis-chf="7200" data-preis-eur="7490">
             <a class="produktkarte__verweis" href="muster-034.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 034</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 72.00</span><span data-preis-w="EUR">ab EUR 74.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 034</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 72,00</span><span data-preis-w="EUR">ab EUR 74,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -541,7 +545,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="35" data-status="lieferbar" data-name="Musterartikel 035" data-preis-chf="11550" data-preis-eur="11850">
             <a class="produktkarte__verweis" href="muster-035.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 035</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 115.50</span><span data-preis-w="EUR">ab EUR 118.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 035</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 115,50</span><span data-preis-w="EUR">ab EUR 118,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -549,7 +553,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="36" data-status="lieferbar" data-name="Musterartikel 036" data-preis-chf="1550" data-preis-eur="1650">
             <a class="produktkarte__verweis" href="muster-036.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 036</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 15.50</span><span data-preis-w="EUR">EUR 16.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 036</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 15,50</span><span data-preis-w="EUR">EUR 16,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -557,7 +561,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="37" data-status="lieferbar" data-name="Musterartikel 037" data-preis-chf="10500" data-preis-eur="11050">
             <a class="produktkarte__verweis" href="muster-037.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 037</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 105.00</span><span data-preis-w="EUR">EUR 110.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 037</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 105,00</span><span data-preis-w="EUR">EUR 110,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -565,7 +569,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="38" data-status="lieferbar" data-name="Musterartikel 038" data-preis-chf="3290" data-preis-eur="3450">
             <a class="produktkarte__verweis" href="muster-038.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 038</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 32.90</span><span data-preis-w="EUR">ab EUR 34.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 038</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 32,90</span><span data-preis-w="EUR">ab EUR 34,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -573,7 +577,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="39" data-status="lieferbar" data-name="Musterartikel 039" data-preis-chf="890" data-preis-eur="900">
             <a class="produktkarte__verweis" href="muster-039.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 039</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 8.90</span><span data-preis-w="EUR">EUR 9.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 039</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 8,90</span><span data-preis-w="EUR">EUR 9,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -581,7 +585,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="40" data-status="lieferbar" data-name="Musterartikel 040" data-preis-chf="9150" data-preis-eur="9350">
             <a class="produktkarte__verweis" href="muster-040.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 040</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 91.50</span><span data-preis-w="EUR">EUR 93.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 040</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 91,50</span><span data-preis-w="EUR">EUR 93,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -589,7 +593,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="41" data-status="ausverkauft" data-name="Musterartikel 041" data-preis-chf="990" data-preis-eur="1050">
             <a class="produktkarte__verweis" href="muster-041.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 041</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 9.90</span><span data-preis-w="EUR">EUR 10.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 041</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 9,90</span><span data-preis-w="EUR">EUR 10,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -597,7 +601,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="42" data-status="lieferbar" data-name="Musterartikel 042" data-preis-chf="1550" data-preis-eur="1600">
             <a class="produktkarte__verweis" href="muster-042.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 042</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 15.50</span><span data-preis-w="EUR">ab EUR 16.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 042</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 15,50</span><span data-preis-w="EUR">ab EUR 16,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -605,7 +609,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="43" data-status="lieferbar" data-name="Musterartikel 043" data-preis-chf="10390" data-preis-eur="11050">
             <a class="produktkarte__verweis" href="muster-043.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 043</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 103.90</span><span data-preis-w="EUR">EUR 110.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 043</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 103,90</span><span data-preis-w="EUR">EUR 110,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -613,7 +617,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="44" data-status="lieferbar" data-name="Musterartikel 044" data-preis-chf="6450" data-preis-eur="6690">
             <a class="produktkarte__verweis" href="muster-044.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 044</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 64.50</span><span data-preis-w="EUR">EUR 66.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 044</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 64,50</span><span data-preis-w="EUR">EUR 66,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -621,7 +625,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="45" data-status="lieferbar" data-name="Musterartikel 045" data-preis-chf="2090" data-preis-eur="2150">
             <a class="produktkarte__verweis" href="muster-045.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 045</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 20.90</span><span data-preis-w="EUR">ab EUR 21.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 045</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 20,90</span><span data-preis-w="EUR">ab EUR 21,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -629,7 +633,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="46" data-status="lieferbar" data-name="Musterartikel 046" data-preis-chf="1600" data-preis-eur="1700">
             <a class="produktkarte__verweis" href="muster-046.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 046</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 16.00</span><span data-preis-w="EUR">ab EUR 17.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 046</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 16,00</span><span data-preis-w="EUR">ab EUR 17,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -637,7 +641,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="47" data-status="lieferbar" data-name="Musterartikel 047" data-preis-chf="1100" data-preis-eur="1150">
             <a class="produktkarte__verweis" href="muster-047.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 047</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 11.00</span><span data-preis-w="EUR">ab EUR 11.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 047</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 11,00</span><span data-preis-w="EUR">ab EUR 11,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -645,7 +649,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="48" data-status="lieferbar" data-name="Musterartikel 048" data-preis-chf="800" data-preis-eur="850">
             <a class="produktkarte__verweis" href="muster-048.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 048</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 8.00</span><span data-preis-w="EUR">EUR 8.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 048</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 8,00</span><span data-preis-w="EUR">EUR 8,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -653,7 +657,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="3" data-nr="49" data-status="lieferbar" data-name="Musterartikel 049" data-preis-chf="3800" data-preis-eur="3990">
             <a class="produktkarte__verweis" href="muster-049.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 049</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 38.00</span><span data-preis-w="EUR">ab EUR 39.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 049</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 38,00</span><span data-preis-w="EUR">ab EUR 39,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -669,7 +673,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="2" data-status="lieferbar" data-name="Musterartikel 002" data-preis-chf="2000" data-preis-eur="2100">
             <a class="produktkarte__verweis" href="muster-002.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 002</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 20.00</span><span data-preis-w="EUR">EUR 21.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 002</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 20,00</span><span data-preis-w="EUR">EUR 21,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -677,7 +681,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="50" data-status="lieferbar" data-name="Musterartikel 050" data-preis-chf="6650" data-preis-eur="7190">
             <a class="produktkarte__verweis" href="muster-050.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 050</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 66.50</span><span data-preis-w="EUR">ab EUR 71.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 050</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 66,50</span><span data-preis-w="EUR">ab EUR 71,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -685,7 +689,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="51" data-status="lieferbar" data-name="Musterartikel 051" data-preis-chf="10850" data-preis-eur="11490">
             <a class="produktkarte__verweis" href="muster-051.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 051</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 108.50</span><span data-preis-w="EUR">EUR 114.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 051</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 108,50</span><span data-preis-w="EUR">EUR 114,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -693,7 +697,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="52" data-status="lieferbar" data-name="Musterartikel 052" data-preis-chf="4590" data-preis-eur="4890">
             <a class="produktkarte__verweis" href="muster-052.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 052</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 45.90</span><span data-preis-w="EUR">ab EUR 48.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 052</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 45,90</span><span data-preis-w="EUR">ab EUR 48,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -701,7 +705,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="53" data-status="lieferbar" data-name="Musterartikel 053" data-preis-chf="2250" data-preis-eur="2390">
             <a class="produktkarte__verweis" href="muster-053.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 053</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 22.50</span><span data-preis-w="EUR">ab EUR 23.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 053</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 22,50</span><span data-preis-w="EUR">ab EUR 23,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -709,7 +713,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="54" data-status="lieferbar" data-name="Musterartikel 054" data-preis-chf="4350" data-preis-eur="4450">
             <a class="produktkarte__verweis" href="muster-054.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 054</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 43.50</span><span data-preis-w="EUR">ab EUR 44.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 054</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 43,50</span><span data-preis-w="EUR">ab EUR 44,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -717,7 +721,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="55" data-status="lieferbar" data-name="Musterartikel 055" data-preis-chf="5150" data-preis-eur="5450">
             <a class="produktkarte__verweis" href="muster-055.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 055</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 51.50</span><span data-preis-w="EUR">EUR 54.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 055</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 51,50</span><span data-preis-w="EUR">EUR 54,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -725,7 +729,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="56" data-status="lieferbar" data-name="Musterartikel 056" data-preis-chf="7350" data-preis-eur="7690">
             <a class="produktkarte__verweis" href="muster-056.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 056</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 73.50</span><span data-preis-w="EUR">ab EUR 76.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 056</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 73,50</span><span data-preis-w="EUR">ab EUR 76,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -733,7 +737,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="57" data-status="lieferbar" data-name="Musterartikel 057" data-preis-chf="10850" data-preis-eur="11250">
             <a class="produktkarte__verweis" href="muster-057.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 057</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 108.50</span><span data-preis-w="EUR">ab EUR 112.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 057</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 108,50</span><span data-preis-w="EUR">ab EUR 112,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -741,7 +745,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="58" data-status="lieferbar" data-name="Musterartikel 058" data-preis-chf="7800" data-preis-eur="8050">
             <a class="produktkarte__verweis" href="muster-058.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 058</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 78.00</span><span data-preis-w="EUR">ab EUR 80.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 058</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 78,00</span><span data-preis-w="EUR">ab EUR 80,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -749,7 +753,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="59" data-status="lieferbar" data-name="Musterartikel 059" data-preis-chf="6990" data-preis-eur="7250">
             <a class="produktkarte__verweis" href="muster-059.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 059</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 69.90</span><span data-preis-w="EUR">ab EUR 72.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 059</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 69,90</span><span data-preis-w="EUR">ab EUR 72,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -757,7 +761,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="60" data-status="lieferbar" data-name="Musterartikel 060" data-preis-chf="5950" data-preis-eur="6400">
             <a class="produktkarte__verweis" href="muster-060.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 060</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 59.50</span><span data-preis-w="EUR">EUR 64.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 060</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 59,50</span><span data-preis-w="EUR">EUR 64,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -765,7 +769,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="61" data-status="lieferbar" data-name="Musterartikel 061" data-preis-chf="4950" data-preis-eur="5250">
             <a class="produktkarte__verweis" href="muster-061.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 061</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 49.50</span><span data-preis-w="EUR">EUR 52.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 061</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 49,50</span><span data-preis-w="EUR">EUR 52,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -773,7 +777,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="62" data-status="lieferbar" data-name="Musterartikel 062" data-preis-chf="4850" data-preis-eur="5100">
             <a class="produktkarte__verweis" href="muster-062.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 062</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 48.50</span><span data-preis-w="EUR">ab EUR 51.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 062</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 48,50</span><span data-preis-w="EUR">ab EUR 51,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -781,7 +785,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="4" data-nr="63" data-status="lieferbar" data-name="Musterartikel 063" data-preis-chf="7290" data-preis-eur="7850">
             <a class="produktkarte__verweis" href="muster-063.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 063</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 72.90</span><span data-preis-w="EUR">EUR 78.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 063</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 72,90</span><span data-preis-w="EUR">EUR 78,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -797,7 +801,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="64" data-status="lieferbar" data-name="Musterartikel 064" data-preis-chf="8600" data-preis-eur="9090">
             <a class="produktkarte__verweis" href="muster-064.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 064</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 86.00</span><span data-preis-w="EUR">EUR 90.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 064</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 86,00</span><span data-preis-w="EUR">EUR 90,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -805,7 +809,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="65" data-status="lieferbar" data-name="Musterartikel 065" data-preis-chf="5350" data-preis-eur="5750">
             <a class="produktkarte__verweis" href="muster-065.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 065</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 53.50</span><span data-preis-w="EUR">EUR 57.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 065</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 53,50</span><span data-preis-w="EUR">EUR 57,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -813,7 +817,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="66" data-status="ausverkauft" data-name="Musterartikel 066" data-preis-chf="2600" data-preis-eur="2700">
             <a class="produktkarte__verweis" href="muster-066.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 066</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 26.00</span><span data-preis-w="EUR">EUR 27.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 066</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 26,00</span><span data-preis-w="EUR">EUR 27,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -821,7 +825,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="67" data-status="lieferbar" data-name="Musterartikel 067" data-preis-chf="3250" data-preis-eur="3400">
             <a class="produktkarte__verweis" href="muster-067.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 067</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 32.50</span><span data-preis-w="EUR">EUR 34.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 067</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 32,50</span><span data-preis-w="EUR">EUR 34,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -829,7 +833,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="68" data-status="lieferbar" data-name="Musterartikel 068" data-preis-chf="2900" data-preis-eur="3050">
             <a class="produktkarte__verweis" href="muster-068.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 068</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 29.00</span><span data-preis-w="EUR">EUR 30.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 068</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 29,00</span><span data-preis-w="EUR">EUR 30,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -837,7 +841,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="69" data-status="lieferbar" data-name="Musterartikel 069" data-preis-chf="2290" data-preis-eur="2450">
             <a class="produktkarte__verweis" href="muster-069.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 069</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 22.90</span><span data-preis-w="EUR">EUR 24.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 069</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 22,90</span><span data-preis-w="EUR">EUR 24,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -845,7 +849,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="70" data-status="lieferbar" data-name="Musterartikel 070" data-preis-chf="4800" data-preis-eur="4900">
             <a class="produktkarte__verweis" href="muster-070.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 070</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 48.00</span><span data-preis-w="EUR">ab EUR 49.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 070</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 48,00</span><span data-preis-w="EUR">ab EUR 49,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -853,7 +857,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="71" data-status="lieferbar" data-name="Musterartikel 071" data-preis-chf="1950" data-preis-eur="2000">
             <a class="produktkarte__verweis" href="muster-071.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 071</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 19.50</span><span data-preis-w="EUR">ab EUR 20.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 071</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 19,50</span><span data-preis-w="EUR">ab EUR 20,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -861,7 +865,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="72" data-status="lieferbar" data-name="Musterartikel 072" data-preis-chf="10450" data-preis-eur="10950">
             <a class="produktkarte__verweis" href="muster-072.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 072</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 104.50</span><span data-preis-w="EUR">ab EUR 109.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 072</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 104,50</span><span data-preis-w="EUR">ab EUR 109,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -869,7 +873,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="73" data-status="lieferbar" data-name="Musterartikel 073" data-preis-chf="1690" data-preis-eur="1750">
             <a class="produktkarte__verweis" href="muster-073.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 073</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 16.90</span><span data-preis-w="EUR">ab EUR 17.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 073</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 16,90</span><span data-preis-w="EUR">ab EUR 17,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -877,7 +881,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="74" data-status="lieferbar" data-name="Musterartikel 074" data-preis-chf="1500" data-preis-eur="1600">
             <a class="produktkarte__verweis" href="muster-074.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 074</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 15.00</span><span data-preis-w="EUR">ab EUR 16.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 074</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 15,00</span><span data-preis-w="EUR">ab EUR 16,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -885,7 +889,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="75" data-status="lieferbar" data-name="Musterartikel 075" data-preis-chf="9390" data-preis-eur="9850">
             <a class="produktkarte__verweis" href="muster-075.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 075</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 93.90</span><span data-preis-w="EUR">EUR 98.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 075</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 93,90</span><span data-preis-w="EUR">EUR 98,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -893,7 +897,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="76" data-status="lieferbar" data-name="Musterartikel 076" data-preis-chf="1490" data-preis-eur="1590">
             <a class="produktkarte__verweis" href="muster-076.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 076</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 14.90</span><span data-preis-w="EUR">ab EUR 15.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 076</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 14,90</span><span data-preis-w="EUR">ab EUR 15,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -901,7 +905,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="77" data-status="lieferbar" data-name="Musterartikel 077" data-preis-chf="6590" data-preis-eur="6890">
             <a class="produktkarte__verweis" href="muster-077.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 077</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 65.90</span><span data-preis-w="EUR">EUR 68.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 077</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 65,90</span><span data-preis-w="EUR">EUR 68,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -909,7 +913,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="5" data-nr="78" data-status="lieferbar" data-name="Musterartikel 078" data-preis-chf="1090" data-preis-eur="1150">
             <a class="produktkarte__verweis" href="muster-078.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 078</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 10.90</span><span data-preis-w="EUR">ab EUR 11.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 078</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 10,90</span><span data-preis-w="EUR">ab EUR 11,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -925,7 +929,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="3" data-status="ausverkauft" data-name="Musterartikel 003" data-preis-chf="3000" data-preis-eur="3150">
             <a class="produktkarte__verweis" href="muster-003.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 003</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 30.00</span><span data-preis-w="EUR">EUR 31.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 003</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 30,00</span><span data-preis-w="EUR">EUR 31,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -933,7 +937,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="79" data-status="lieferbar" data-name="Musterartikel 079" data-preis-chf="4050" data-preis-eur="4150">
             <a class="produktkarte__verweis" href="muster-079.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 079</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 40.50</span><span data-preis-w="EUR">ab EUR 41.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 079</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 40,50</span><span data-preis-w="EUR">ab EUR 41,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -941,7 +945,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="80" data-status="lieferbar" data-name="Musterartikel 080" data-preis-chf="2890" data-preis-eur="3100">
             <a class="produktkarte__verweis" href="muster-080.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 080</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 28.90</span><span data-preis-w="EUR">ab EUR 31.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 080</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 28,90</span><span data-preis-w="EUR">ab EUR 31,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -949,7 +953,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="81" data-status="lieferbar" data-name="Musterartikel 081" data-preis-chf="4250" data-preis-eur="4400">
             <a class="produktkarte__verweis" href="muster-081.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 081</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 42.50</span><span data-preis-w="EUR">ab EUR 44.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 081</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 42,50</span><span data-preis-w="EUR">ab EUR 44,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -957,7 +961,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="82" data-status="lieferbar" data-name="Musterartikel 082" data-preis-chf="2090" data-preis-eur="2150">
             <a class="produktkarte__verweis" href="muster-082.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 082</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 20.90</span><span data-preis-w="EUR">ab EUR 21.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 082</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 20,90</span><span data-preis-w="EUR">ab EUR 21,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -965,7 +969,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="83" data-status="ausverkauft" data-name="Musterartikel 083" data-preis-chf="1650" data-preis-eur="1750">
             <a class="produktkarte__verweis" href="muster-083.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 083</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 16.50</span><span data-preis-w="EUR">EUR 17.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 083</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 16,50</span><span data-preis-w="EUR">EUR 17,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -973,7 +977,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="84" data-status="lieferbar" data-name="Musterartikel 084" data-preis-chf="5000" data-preis-eur="5250">
             <a class="produktkarte__verweis" href="muster-084.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 084</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 50.00</span><span data-preis-w="EUR">ab EUR 52.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 084</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 50,00</span><span data-preis-w="EUR">ab EUR 52,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -981,7 +985,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="85" data-status="ausverkauft" data-name="Musterartikel 085" data-preis-chf="2850" data-preis-eur="3000">
             <a class="produktkarte__verweis" href="muster-085.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 085</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 28.50</span><span data-preis-w="EUR">EUR 30.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 085</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 28,50</span><span data-preis-w="EUR">EUR 30,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -989,7 +993,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="86" data-status="lieferbar" data-name="Musterartikel 086" data-preis-chf="950" data-preis-eur="1000">
             <a class="produktkarte__verweis" href="muster-086.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 086</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 9.50</span><span data-preis-w="EUR">EUR 10.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 086</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 9,50</span><span data-preis-w="EUR">EUR 10,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -997,7 +1001,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="87" data-status="lieferbar" data-name="Musterartikel 087" data-preis-chf="1050" data-preis-eur="1150">
             <a class="produktkarte__verweis" href="muster-087.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 087</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 10.50</span><span data-preis-w="EUR">EUR 11.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 087</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 10,50</span><span data-preis-w="EUR">EUR 11,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1005,7 +1009,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="88" data-status="lieferbar" data-name="Musterartikel 088" data-preis-chf="7000" data-preis-eur="7350">
             <a class="produktkarte__verweis" href="muster-088.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 088</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 70.00</span><span data-preis-w="EUR">EUR 73.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 088</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 70,00</span><span data-preis-w="EUR">EUR 73,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1013,7 +1017,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="89" data-status="lieferbar" data-name="Musterartikel 089" data-preis-chf="9750" data-preis-eur="10450">
             <a class="produktkarte__verweis" href="muster-089.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 089</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 97.50</span><span data-preis-w="EUR">EUR 104.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 089</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 97,50</span><span data-preis-w="EUR">EUR 104,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1021,7 +1025,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="6" data-nr="90" data-status="lieferbar" data-name="Musterartikel 090" data-preis-chf="10050" data-preis-eur="10650">
             <a class="produktkarte__verweis" href="muster-090.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 090</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 100.50</span><span data-preis-w="EUR">ab EUR 106.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 090</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 100,50</span><span data-preis-w="EUR">ab EUR 106,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1037,7 +1041,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="7" data-nr="91" data-status="ausverkauft" data-name="Musterartikel 091" data-preis-chf="6300" data-preis-eur="6550">
             <a class="produktkarte__verweis" href="muster-091.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 091</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 63.00</span><span data-preis-w="EUR">EUR 65.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 091</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 63,00</span><span data-preis-w="EUR">EUR 65,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -1045,7 +1049,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="7" data-nr="92" data-status="lieferbar" data-name="Musterartikel 092" data-preis-chf="4050" data-preis-eur="4250">
             <a class="produktkarte__verweis" href="muster-092.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 092</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 40.50</span><span data-preis-w="EUR">EUR 42.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 092</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 40,50</span><span data-preis-w="EUR">EUR 42,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1053,7 +1057,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="7" data-nr="93" data-status="lieferbar" data-name="Musterartikel 093" data-preis-chf="3590" data-preis-eur="3750">
             <a class="produktkarte__verweis" href="muster-093.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 093</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 35.90</span><span data-preis-w="EUR">EUR 37.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 093</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 35,90</span><span data-preis-w="EUR">EUR 37,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1061,7 +1065,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="7" data-nr="94" data-status="lieferbar" data-name="Musterartikel 094" data-preis-chf="9550" data-preis-eur="10300">
             <a class="produktkarte__verweis" href="muster-094.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 094</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 95.50</span><span data-preis-w="EUR">ab EUR 103.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 094</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 95,50</span><span data-preis-w="EUR">ab EUR 103,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1069,7 +1073,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="7" data-nr="95" data-status="ausverkauft" data-name="Musterartikel 095" data-preis-chf="3990" data-preis-eur="4090">
             <a class="produktkarte__verweis" href="muster-095.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 095</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 39.90</span><span data-preis-w="EUR">ab EUR 40.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 095</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 39,90</span><span data-preis-w="EUR">ab EUR 40,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -1077,7 +1081,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="7" data-nr="96" data-status="lieferbar" data-name="Musterartikel 096" data-preis-chf="2150" data-preis-eur="2190">
             <a class="produktkarte__verweis" href="muster-096.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 096</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 21.50</span><span data-preis-w="EUR">ab EUR 21.90</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 096</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 21,50</span><span data-preis-w="EUR">ab EUR 21,90</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1085,7 +1089,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="7" data-nr="97" data-status="lieferbar" data-name="Musterartikel 097" data-preis-chf="13800" data-preis-eur="14400">
             <a class="produktkarte__verweis" href="muster-097.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 097</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 138.00</span><span data-preis-w="EUR">EUR 144.00</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 097</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 138,00</span><span data-preis-w="EUR">EUR 144,00</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1093,7 +1097,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="7" data-nr="98" data-status="lieferbar" data-name="Musterartikel 098" data-preis-chf="7950" data-preis-eur="8550">
             <a class="produktkarte__verweis" href="muster-098.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 098</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 79.50</span><span data-preis-w="EUR">EUR 85.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 098</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 79,50</span><span data-preis-w="EUR">EUR 85,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1101,7 +1105,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="7" data-nr="99" data-status="ausverkauft" data-name="Musterartikel 099" data-preis-chf="4350" data-preis-eur="4550">
             <a class="produktkarte__verweis" href="muster-099.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 099</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 43.50</span><span data-preis-w="EUR">EUR 45.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 099</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">CHF 43,50</span><span data-preis-w="EUR">EUR 45,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               <span class="produktkarte__status t-label">Ausverkauft</span>
             </a>
@@ -1109,7 +1113,7 @@
           <li class="produktkarte" data-catalogue-item data-kraft="7" data-nr="100" data-status="lieferbar" data-name="Musterartikel 100" data-preis-chf="7750" data-preis-eur="8350">
             <a class="produktkarte__verweis" href="muster-100.html">
               <span class="produktkarte__bild"><img src="assets/img/start/muster-rohbau.svg" alt="" width="960" height="1200" loading="lazy" decoding="async"><span class="marke-muster t-label">Muster</span></span>
-              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 100</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 77.50</span><span data-preis-w="EUR">ab EUR 83.50</span></span></span>
+              <span class="produktkarte__zeile"><span class="produktkarte__name">Musterartikel 100</span><span class="produktkarte__preis t-ziffern"><span data-preis-w="CHF">ab CHF 77,50</span><span data-preis-w="EUR">ab EUR 83,50</span></span></span>
               <span class="produktkarte__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
               
             </a>
@@ -1120,44 +1124,45 @@
       <ul class="katalog__raster katalog__flach" data-catalogue-flat hidden></ul>
       <p class="katalog__leer meldung" data-catalogue-empty hidden>Zu diesem Filter passt kein Artikel. Wählen Sie eine andere Kraft oder zeigen Sie auch nicht lieferbare Artikel.</p>
     </section>
-    <!-- fuss:start (copied from index.html) -->
-    <footer class="fuss" data-theme="hell">
-      <div class="fuss__spalten">
-        <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
-          <p id="fuss-seiten" class="fuss__titel">Seiten</p>
-          <ul class="fuss__liste">
-            <li><a href="werkzeuge.html">Werkzeuge</a></li>
-            <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
-            <li><a href="haendler.html">Händler</a></li>
-            <li><a href="fragen.html">Fragen</a></li>
-            <li><a href="kontakt.html">Kontakt</a></li>
-          </ul>
-        </nav>
-        <nav class="fuss__spalte" aria-labelledby="fuss-recht">
-          <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
-          <ul class="fuss__liste">
-            <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
-            <li><a href="agb.html">AGB</a></li>
-            <li><a href="datenschutz.html">Datenschutz</a></li>
-            <li><a href="impressum.html">Impressum</a></li>
-            <li><a href="widerruf.html">Widerruf</a></li>
-          </ul>
-        </nav>
-        <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
-          <p id="fuss-sprache" class="fuss__titel">Sprache</p>
-          <ul class="fuss__liste">
-            <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
-            <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
-        <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
-        <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
-      </div>
-      <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
-    </footer>
-    <!-- fuss:end -->
   </main>
+
+  <!-- fuss:start (copied from index.html) -->
+  <footer class="fuss" data-theme="hell" data-page-router-follow>
+    <div class="fuss__spalten">
+      <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
+        <p id="fuss-seiten" class="fuss__titel">Seiten</p>
+        <ul class="fuss__liste">
+          <li><a href="werkzeuge.html">Werkzeuge</a></li>
+          <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
+          <li><a href="haendler.html">Händler</a></li>
+          <li><a href="fragen.html">Fragen</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </nav>
+      <nav class="fuss__spalte" aria-labelledby="fuss-recht">
+        <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
+        <ul class="fuss__liste">
+          <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
+          <li><a href="agb.html">AGB</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="widerruf.html">Widerruf</a></li>
+        </ul>
+      </nav>
+      <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
+        <p id="fuss-sprache" class="fuss__titel">Sprache</p>
+        <ul class="fuss__liste">
+          <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
+          <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
+      <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
+      <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
+    </div>
+    <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
+  </footer>
+  <!-- fuss:end -->
 </body>
 </html>

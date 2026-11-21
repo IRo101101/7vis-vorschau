@@ -16,7 +16,7 @@
  *   </div>
  * Reduced motion: no turning; labels switch at once; a drag still switches (direct manipulation).
  */
-import { dragGesture, DRAG } from '../motion/drag.js';
+import { dragGesture, DRAG } from '../../../assets/js/motion/drag.js';
 
 export default {
   name: 'figure-stand-in',

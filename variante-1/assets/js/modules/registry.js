@@ -1,21 +1,16 @@
 /**
  * Module registry: name -> loader. Adding a module = one line here plus its file in this folder.
  * Dynamic imports keep each page to the modules it uses (PLAN 7: script split by page type, no build step).
+ * Only modules of delivered pages are listed. The probe pages (site/proben/, not delivered) add their own
+ * development modules with register() before the core boots (proben/js/boot.js, stage 7).
  */
 const LOADERS = {
   headline: () => import('./headline.js'),
-  textrise: () => import('./textrise.js'),
-  textsplit: () => import('./textsplit.js'),
   'fold-card': () => import('./fold-card.js'),
-  'theme-picker': () => import('./theme-picker.js'),
   webgl: () => import('./webgl.js'),
-  'form-regler': () => import('./form-regler.js'),
   'scroll-guide': () => import('./scroll-guide.js'),
-  'gl-pruefung': () => import('./gl-pruefung.js'),
   'force-slider': () => import('./force-slider.js'),
-  'figure-stand-in': () => import('./figure-stand-in.js'),
   'page-router': () => import('./page-router.js'),
-  'scene-stand-in': () => import('./scene-stand-in.js'),
   intro: () => import('./intro.js'),
   nav: () => import('./nav.js'),
   'card-overlay': () => import('./card-overlay.js'),
@@ -41,9 +36,17 @@ const LOADERS = {
   'order-view': () => import('./order-view.js'),
   'sign-in': () => import('./sign-in.js'),
   account: () => import('./account.js'),
+  // Corrections A (21.11.2026): scroll indicator of the shell, image parallax of the principles
+  'scroll-gauge': () => import('./scroll-gauge.js'),
+  'image-drift': () => import('./image-drift.js'),
 };
 
 export const MODULE_NAMES = Object.freeze(Object.keys(LOADERS));
+
+/** Adds a module outside this folder (probe pages only); a delivered module is never replaced. */
+export function register(name, loader) {
+  if (!LOADERS[name] && typeof loader === 'function') LOADERS[name] = loader;
+}
 
 export async function load(name) {
   const loader = LOADERS[name];

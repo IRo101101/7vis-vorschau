@@ -28,10 +28,8 @@ import * as THREE from '../../vendor/three-0.180.0/three.module.min.js';
 import { closingSurface, toGL } from './surface.js';
 import { features as levelFeatures, pixelRatio, FrameGuard } from './level.js';
 import { TIMING } from '../motion/curves.js';
-import figur from './scenes/figur.js';
-import raster from './scenes/raster.js';
+import { sceneDef } from './szenen.js';
 
-const SCENES = { figur, raster };
 const LAYERS = ['hinten', 'vorn'];
 let recordSeq = 0;
 
@@ -232,7 +230,7 @@ export class World {
 
   bind(el) {
     const name = el.getAttribute('data-scene');
-    const def = SCENES[name];
+    const def = sceneDef(name);
     if (!def) {
       console.warn(`[v1:gl] unknown scene "${name}"`);
       return null;

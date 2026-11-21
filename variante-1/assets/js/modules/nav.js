@@ -10,11 +10,15 @@
  *     <a href="…" data-nav-cart aria-label="Warenkorb, 0 Artikel">Warenkorb (<span data-nav-cart-count>0</span>)</a>
  *   </header>
  *
- * 1 Colour (IM 11.11, refmedia v1 F7): the header takes the theme of the section under a line 4 px below
- *   its bottom edge; the colour changes by CSS in 0.35 s. One IntersectionObserver with a 2 px band at that
- *   line instead of a hit test on every scroll event (PLAN 5 no. 11). Where sections are stacked (the
- *   slider covering the sticky hero), the one whose top edge is lowest above the line lies on top and wins.
- *   Below 768 px the bar is light and fixed (as in the reference).
+ * 1 Colour (IM 11.11, refmedia v1 F7): the bar takes the tone of what lies under the centre of the screen on
+ *   a line 4 px below its bottom edge, as in the reference; the colour changes by CSS in 0.35 s. Correction A
+ *   (finding 5): each link and the word mark also take the tone of what lies under their own centre, 4 px
+ *   below their own text (data-theme on the item), so a light card or image under a part of the bar no longer carries light
+ *   text; an item with an edge under it (another tone left and right) gets a backdrop in its own surface
+ *   colour (data-nav-grund="an"). The tone comes from a hit test (elementsFromPoint) of the painted surface:
+ *   background colour by luminance, images by their declared tone (data-bild-ton or --bild-ton), background
+ *   images by their theme. One pass in every frame in which the page moved, on layout changes and twice a
+ *   second at rest. Below 768 px the bar is light and fixed (as in the reference).
  * 2 Preview of the tools (IS 2 "Shop-Dropdown", refmedia v1 clip nav-shop): only on devices with hover;
  *   opens on pointer enter or keyboard focus, panel 0.5 s ("paneel"), items rise from 35 % with 0.06 s
  *   between them; closes on pointer leave, focus leaving, Escape and page change: items fade in 0.25 s
@@ -25,7 +29,6 @@
  * 3 Cart count from the shop adapter (PLAN 6, sample adapter in stage 3): number of units, also in the
  *   accessible name; store 'shop:warenkorb' { menge }.
  */
-import { core } from '../core/core.js';
 import { TIMING } from '../motion/curves.js';
 
 const T = TIMING.nav;
@@ -35,18 +38,23 @@ export default {
   options: {
     lineOffset: T.lineOffset,
     fixedAt: 'ml m',
+    lightAbove: 0.18,
+    idleCheckMs: 500,
   },
 
   setup(ctx) {
     const { el, opts, store, motion } = ctx;
     const html = document.documentElement;
 
-    /* ---------- 1 colour of the bar ---------- */
+    /* ---------- 1 colour of the bar and of each item ---------- */
 
-    let io = null;
-    const hits = new Set();
     let theme = el.getAttribute('data-theme') || 'hell';
     const original = theme;
+    // Links and the word mark of the bar (not the links inside the preview panel).
+    const marks = [...el.querySelectorAll('a')].filter((a) => !a.closest('[data-nav-shop-panel]'));
+    const itemTone = new Map();
+    let passes = 0;
+    let lastCost = 0;
 
     const fixed = () => String(opts.fixedAt).split(/\s+/).includes(store.get('viewport')?.bp);
 
@@ -56,53 +64,157 @@ export default {
       el.setAttribute('data-theme', next);
     }
 
-    let watched = [];
-    function pick() {
-      // DOM order: when two sections share their top edge (the sticky hero and the slider leaving together),
-      // the later one is painted on top and wins.
-      let best = null;
-      let bestTop = -Infinity;
-      for (const s of watched) {
-        if (!hits.has(s) || !s.isConnected) continue;
-        const top = s.getBoundingClientRect().top;
-        if (top >= bestTop - 0.5) {
-          bestTop = top;
-          best = s;
+    function setItem(a, tone, mixed) {
+      const prev = itemTone.get(a);
+      if (prev && prev.tone === tone && prev.mixed === mixed) return;
+      itemTone.set(a, { tone, mixed });
+      if (tone) a.setAttribute('data-theme', tone);
+      else a.removeAttribute('data-theme');
+      if (mixed) a.setAttribute('data-nav-grund', 'an');
+      else a.removeAttribute('data-nav-grund');
+    }
+
+    function clearItems() {
+      for (const a of marks) setItem(a, null, false);
+    }
+
+    const toneOfColour = (rgb) => {
+      const f = (c) => {
+        const v = c / 255;
+        return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+      };
+      // Above this luminance dark text has the better contrast (black and white meet near 0.18).
+      return 0.2126 * f(rgb[0]) + 0.7152 * f(rgb[1]) + 0.0722 * f(rgb[2]) > opts.lightAbove ? 'hell' : 'invers';
+    };
+    const themeOf = (node) => {
+      const t = node.closest('[data-theme]');
+      return t && t.getAttribute('data-theme') === 'invers' ? 'invers' : 'hell';
+    };
+
+    /**
+     * Tone of the surface painted at a point of the viewport: the topmost element under it (outside the bar)
+     * that paints something there. A background colour decides by its luminance, an image by its declared
+     * tone (data-bild-ton, or --bild-ton in CSS; otherwise the theme it stands in), a background image by
+     * its theme. Transparent elements and elements faded below half opacity are looked through.
+     */
+    function surfaceAt(x, y, cache) {
+      const key = `${Math.round(x)}`;
+      if (cache.has(key)) return cache.get(key);
+      let tone = null;
+      const opacityOf = (node) => {
+        let o = 1;
+        for (let n = node; n && n.nodeType === 1 && o >= 0.5; n = n.parentElement) {
+          let v = cache.get(n);
+          if (v === undefined) {
+            v = Number(getComputedStyle(n).opacity);
+            cache.set(n, v);
+          }
+          o *= v;
+        }
+        return o;
+      };
+      for (const node of document.elementsFromPoint(x, y)) {
+        if (el.contains(node)) continue;
+        if (node === document.documentElement || node === document.body) break;
+        if (opacityOf(node) < 0.5) continue;
+        const tag = node.tagName;
+        if (tag === 'IMG' || tag === 'VIDEO' || tag === 'PICTURE') {
+          const holder = node.closest('[data-bild-ton]');
+          const declared = (holder && holder.getAttribute('data-bild-ton')) || getComputedStyle(node).getPropertyValue('--bild-ton').trim();
+          tone = declared === 'hell' || declared === 'invers' ? declared : themeOf(node);
+          break;
+        }
+        const cs = getComputedStyle(node);
+        const m = /rgba?\(([^)]+)\)/.exec(cs.backgroundColor);
+        if (m) {
+          const c = m[1].split(/[\s,/]+/).filter(Boolean).map(Number);
+          if ((c.length < 4 ? 1 : c[3]) >= 0.5) {
+            tone = toneOfColour(c);
+            break;
+          }
+        }
+        if (cs.backgroundImage && cs.backgroundImage !== 'none') {
+          tone = themeOf(node);
+          break;
         }
       }
-      if (best) apply(best.getAttribute('data-theme') === 'invers' ? 'invers' : 'hell');
+      if (!tone) tone = 'hell';
+      cache.set(key, tone);
+      return tone;
     }
 
-    function sections() {
-      const root = core.view ? core.view.root : document.querySelector('main[data-view]');
-      if (!root) return [];
-      return [...root.querySelectorAll(':scope > [data-theme], :scope > * > [data-theme], :scope > footer, :scope > * > footer')].filter((s) => s.hasAttribute('data-theme'));
+    // Box of what the item shows: the text of a link, the word mark of the mark.
+    function textBox(a) {
+      const svg = a.querySelector('svg');
+      let r;
+      if (svg) r = svg.getBoundingClientRect();
+      else {
+        const range = document.createRange();
+        range.selectNodeContents(a);
+        r = range.getBoundingClientRect();
+      }
+      return r.width && r.height ? r : null;
     }
 
-    function scan() {
-      if (io) io.disconnect();
-      io = null;
-      hits.clear();
+    // One pass: the bar takes the tone under the centre of the screen at the line 4 px below it (IM 11.11),
+    // each link and the mark the tone under their own centre, 4 px below their text; a link with a different tone left and right of
+    // it (an edge of a card or an image under it) gets its own backdrop (data-nav-grund).
+    function pass() {
+      if (!el.isConnected) return;
       if (fixed()) {
         apply(original);
+        clearItems();
         return;
       }
-      const line = Math.round(el.getBoundingClientRect().bottom + opts.lineOffset);
-      const below = Math.max(0, innerHeight - line - 2);
-      io = new IntersectionObserver((entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) hits.add(e.target);
-          else hits.delete(e.target);
+      const t0 = performance.now();
+      const fit = (v) => Math.min(innerHeight - 1, Math.max(0, v));
+      const caches = new Map();
+      const at = (x, y) => {
+        const k = Math.round(y);
+        if (!caches.has(k)) caches.set(k, new Map());
+        return surfaceAt(x, k, caches.get(k));
+      };
+      apply(at(innerWidth / 2, fit(el.getBoundingClientRect().bottom + opts.lineOffset)));
+      for (const a of marks) {
+        const r = textBox(a);
+        if (!r) {
+          setItem(a, null, false);
+          continue;
         }
-        pick();
-      }, { rootMargin: `${-line}px 0px ${-below}px 0px`, threshold: 0 });
-      watched = sections();
-      for (const s of watched) io.observe(s);
+        // The same rule per item: 4 px below its own text, so small surfaces right under the bar (a button
+        // row of a card) count where the text stands, not where the bar ends.
+        const y = fit(r.bottom + opts.lineOffset);
+        const inset = Math.min(4, r.width / 4);
+        const mid = at(r.left + r.width / 2, y);
+        const mixed = at(r.left + inset, y) !== mid || at(r.right - inset, y) !== mid;
+        setItem(a, mid, mixed);
+      }
+      passes += 1;
+      lastCost = performance.now() - t0;
     }
-    ctx.own(() => io && io.disconnect());
-    ctx.on('viewport', () => ctx.nextFrame(scan, 'input'));
-    ctx.on('page:in', () => ctx.nextFrame(scan, 'input'));
-    ctx.on('transition:settled', () => ctx.nextFrame(scan, 'input'));
+
+    // After every scroll movement (in the frame that moved, after the engine wrote it), on layout changes,
+    // and twice a second while nothing scrolls, for content that moves by itself under the bar.
+    let lastY = null;
+    let lastPass = 0;
+    let dirty = true;
+    ctx.frame(() => {
+      const y = scrollY;
+      const now = performance.now();
+      if (y !== lastY || dirty || now - lastPass > opts.idleCheckMs) {
+        lastY = y;
+        dirty = false;
+        lastPass = now;
+        pass();
+      }
+    }, 'late');
+    const scan = () => {
+      dirty = true;
+    };
+    ctx.on('viewport', scan);
+    ctx.on('page:in', scan);
+    ctx.on('layout:change', scan);
+    ctx.on('transition:settled', scan);
     scan();
 
     /* ---------- 2 preview panel ---------- */
@@ -232,6 +344,7 @@ export default {
       alive = false;
       g.kill();
       el.setAttribute('data-theme', original);
+      clearItems();
       html.removeAttribute('data-nav-input');
       if (wrap) {
         wrap.removeAttribute('data-nav-shop-state');
@@ -245,6 +358,15 @@ export default {
     return {
       get theme() {
         return theme;
+      },
+      get items() {
+        return marks.map((a) => ({ name: a.textContent.trim() || a.getAttribute('aria-label'), ...(itemTone.get(a) || { tone: null, mixed: false }) }));
+      },
+      get passes() {
+        return passes;
+      },
+      get cost() {
+        return lastCost;
       },
       get state() {
         return state;

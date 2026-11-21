@@ -1,7 +1,8 @@
 /**
  * enquiry: dealer enquiry (/haendler, IS 3.5, PLAN 5 no. 47) and contact form (/kontakt, IS 3.6, IS 10).
  *
- * Markup: a real form (POST to its own page for the PHP shop) with fields as in shop/formular.js, an error
+ * Markup: a sample form (fields with data-feld, GET to formular-muster.html, CONTRACT 2 rule 9; the PHP shop
+ * writes name and posts to its own page) with fields as in shop/formular.js, a Muster band, an error
  * summary [data-formular-summe] with [data-formular-liste], a submit button with [data-enquiry-label=
  * "bereit|laedt"] and a result block [data-enquiry-done] (role=status, hidden). Option data-enquiry-art
  * names the kind for the adapter ('haendler' | 'kontakt').
@@ -10,7 +11,7 @@
  * The contact form takes its subject from ?betreff= (the Pucker page links with "Pucker").
  */
 import { adapter } from '../shop/muster.js';
-import { pruefen, feldPruefen, zusammenfassung, aufraeumen, werte } from '../shop/formular.js';
+import { pruefen, feldPruefen, zusammenfassung, aufraeumen, werte, feld } from '../shop/formular.js';
 
 export default {
   name: 'enquiry',
@@ -24,7 +25,7 @@ export default {
     const done = el.querySelector('[data-enquiry-done]');
     const labels = [...form.querySelectorAll('[data-enquiry-label]')];
     const submit = form.querySelector('[type="submit"]');
-    const subject = form.querySelector('[name="betreff"]');
+    const subject = feld(form, 'betreff');
     const subjectBefore = subject ? subject.value : null;
     let busy = false;
     let alive = true;

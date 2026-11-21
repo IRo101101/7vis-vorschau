@@ -8,8 +8,10 @@
  *                  bestätigen" stands for the signed webhook that alone confirms a payment, then the
  *                  browser comes back to /bestaetigung; "Abbrechen" goes back to /kasse.
  *   'bestaetigung' shows the order once the payment is confirmed; an unpaid or unknown order shows its own
- *                  state ([data-order-state="bezahlt|offen|keine"]). Guests get the offer to open an
- *                  account with the same e-mail address, account holders a link to the account.
+ *                  state ([data-order-state="bezahlt|offen|keine"]) and title ([data-order-title], same
+ *                  names). The document shows "keine" (no script, no or unknown number: no thanks without
+ *                  an order, no sentence with an empty slot). Guests get the offer to open an account with
+ *                  the same e-mail address, account holders a link to the account.
  * Order number from ?bestellung=. Everything comes from the sample adapter in this browser.
  */
 import { adapter } from '../shop/muster.js';
@@ -31,6 +33,7 @@ export default {
 
     const showState = (k) => {
       for (const n of el.querySelectorAll('[data-order-state]')) n.hidden = n.getAttribute('data-order-state') !== k;
+      for (const n of el.querySelectorAll('[data-order-title]')) n.hidden = n.getAttribute('data-order-title') !== k;
       el.setAttribute('data-order-view-state', k);
     };
 

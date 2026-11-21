@@ -113,7 +113,10 @@ export const TIMING = Object.freeze({
   // IM 10 row "Zitat", IM 11.10 (used for the principles, stage 4)
   // Stage 4 adds: old statement fades in 0.4 s power2.in, the new image rises in its frame with the row's
   // 0.9 s expo.out (IM 11.10, refmedia clip testimonials: words from 110 %, last word 0.23 s after the change).
-  quote: Object.freeze({ duration: 0.8, wordStagger: 0.02, ease: 'expo.out', fromXPercent: 110, autoplay: 5, transition: 0.9, inactiveOpacity: 0.65, fadeOut: 0.4, fadeOutEase: 'power2.in', imageFrom: 100 }),
+  // backdrop: IM 11.10 (new background picture over the old in 0.9 s power2.inOut; refmedia F13 0.82 to 0.84 s)
+  quote: Object.freeze({ duration: 0.8, wordStagger: 0.02, ease: 'expo.out', fromXPercent: 110, autoplay: 5, transition: 0.9, inactiveOpacity: 0.65, fadeOut: 0.4, fadeOutEase: 'power2.in', imageFrom: 100, backdropFade: 0.9, backdropEase: 'power2.inOut' }),
+  // IM 11.9 parallax: the background pictures travel from -20 % of their container to 0 over the stretch (smoothstep)
+  imageDrift: Object.freeze({ travel: 20 }),
   // IM 11.8 (stage 4): 3 cards from 768 px, 1 below; a carousel from 4 showable cards, a row from 2 (PLAN 11).
   // clickSlop is our own value: any pointer travel beyond it is no click (refmedia v1 F11, a short vertical
   // drag on a card opened the product in the reference).
@@ -126,7 +129,8 @@ export const TIMING = Object.freeze({
   // IM 11.13
   faq: Object.freeze({ duration: 0.6, ease: 'expo.out', dimOpacity: 0.55, dimDuration: 0.3 }),
   // IM 11.14
-  scrollGauge: Object.freeze({ fade: 0.5, idleMs: 500, minShare: 0.1, maxShare: 0.25 }),
+  // ease from refmedia v1 clips/checks (opacity 0.52, 0.88, 0.98 at 0.1, 0.2, 0.3 s; out 0.63, 0.16, 0.03)
+  scrollGauge: Object.freeze({ fade: 0.5, ease: 'power4.out', idleMs: 500, minShare: 0.1, maxShare: 0.25 }),
   // IM 11.15 is left out (PLAN 5 no. 27)
   imgHover: Object.freeze({ opacityDuration: 0.35, opacityEase: 'power2.out', scaleFrom: 1.03, scaleDuration: 1.0, scaleEase: 'expo.out' }),
   // IM 13.1, IM 18 (spike S1): WebGL frame. dtMax 1/30 s, pixel ratio cap 1.5, render window half a viewport

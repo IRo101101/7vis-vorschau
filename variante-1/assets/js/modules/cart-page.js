@@ -34,6 +34,7 @@ export default {
     const hiddenBefore = new Map([...el.querySelectorAll('*')].map((n) => [n, n.hidden]));
     const pending = new Set();
     let cart = null;
+    let ready = false;
     let alive = true;
     const W = () => (store.get('shop:waehrung') === 'EUR' ? 'EUR' : 'CHF');
     const fmt = (geld) => adapter.betrag(geld, 'de-CH', W());
@@ -52,7 +53,7 @@ export default {
     }
 
     function render() {
-      if (!alive || !cart) return;
+      if (!alive || !cart || !ready) return;
       zeilenRendern(list, tpl, cart, { fmt, pending, motion });
       const has = cart.zeilen.length > 0;
       for (const n of el.querySelectorAll('[data-cart-page-when]')) n.hidden = n.getAttribute('data-cart-page-when') !== (has ? 'voll' : 'leer');
@@ -117,6 +118,11 @@ export default {
       if (checkout.getAttribute('aria-disabled') === 'true') e.preventDefault();
     });
     ctx.on('shop:waehrung', render);
+    // Lines are clones with a qty-select module each; the core starts modules in added markup only once it is
+    // live (its MutationObserver), so on a fresh load the first lines wait for 'core:live' (stage 7: the
+    // quantity fields of /warenkorb stayed without their module).
+    ready = !!store.get('core:live');
+    const live = ready ? Promise.resolve() : store.when('core:live');
     ctx.own(adapter.bei_aenderung((w) => {
       cart = w;
       render();
@@ -132,8 +138,9 @@ export default {
         history.replaceState(history.state, '', u.href);
       })
       : Promise.resolve();
-    start.then(() => adapter.warenkorb()).then((w) => {
+    Promise.all([start, live]).then(() => adapter.warenkorb()).then((w) => {
       if (!alive) return;
+      ready = true;
       cart = w;
       render();
     });

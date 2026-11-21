@@ -7,8 +7,8 @@
  * curve "karte-text". Trigger: once when visible.
  * Reduced motion: nothing is split.
  */
-import { splitText } from '../text/split.js';
-import { TIMING } from '../motion/curves.js';
+import { splitText } from '../../../assets/js/text/split.js';
+import { TIMING } from '../../../assets/js/motion/curves.js';
 
 const T = TIMING.textrise;
 

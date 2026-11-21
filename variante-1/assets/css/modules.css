@@ -126,106 +126,12 @@
   [data-ci="rohbau"] [data-still-ci="rohbau"] {
     display: block;
   }
-
-  /* form-regler */
-  .formregler__zeile {
-    display: flex;
-    align-items: center;
-    gap: calc(3 * var(--raum));
-    min-block-size: var(--knopf-hoehe);
-  }
-  .formregler__zeile input[type="range"] {
-    flex: 1 1 auto;
-    min-inline-size: 0;
-    min-block-size: var(--knopf-hoehe);
-    margin: 0;
-    accent-color: var(--ak-marke);
-  }
-
-  /* theme-picker (review tool of the probe page) */
-  .pruefwerkzeug {
-    position: fixed;
-    inset-inline-start: var(--raum);
-    inset-block-end: var(--raum);
-    z-index: 9000;
-    max-inline-size: calc(100vw - 2 * var(--raum));
-    border: var(--linie-staerke) solid var(--li-rahmen);
-    border-radius: var(--radius-feld);
-    background-color: var(--fl-erhoben);
-    color: var(--tx-stark);
-    box-shadow: var(--schatten-schwebend);
-    font-family: var(--schrift-label);
-    font-size: var(--groesse-label);
-    line-height: var(--zeilenhoehe-label);
-  }
-  .pruefwerkzeug > summary {
-    display: flex;
-    align-items: center;
-    min-block-size: var(--knopf-hoehe);
-    padding: 0 calc(3 * var(--raum));
-    cursor: pointer;
-    letter-spacing: var(--laufweite-label);
-    text-transform: var(--versal-label);
-    font-weight: var(--gewicht-label);
-  }
-  .pruefwerkzeug form {
-    display: grid;
-    gap: calc(3 * var(--raum));
-    padding: 0 calc(3 * var(--raum)) calc(3 * var(--raum));
-  }
-  .pruefwerkzeug fieldset {
-    display: grid;
-    gap: var(--raum);
-    margin: 0;
-    padding: 0;
-    border: 0;
-  }
-  .pruefwerkzeug legend {
-    padding: 0 0 var(--raum);
-    color: var(--tx-leise);
-    letter-spacing: var(--laufweite-label);
-    text-transform: var(--versal-label);
-  }
-  .pruefwerkzeug label {
-    display: flex;
-    align-items: center;
-    gap: calc(2 * var(--raum));
-    min-block-size: 32px;
-    cursor: pointer;
-  }
-  .pruefwerkzeug input {
-    accent-color: var(--ak-marke);
-    inline-size: 18px;
-    block-size: 18px;
-    margin: 0;
-  }
-  .pruefwerkzeug button {
-    min-block-size: var(--knopf-hoehe);
-    padding: 0 calc(3 * var(--raum));
-    border: var(--linie-staerke) solid var(--li-rahmen);
-    border-radius: var(--radius-knopf);
-    background-color: var(--fl-grund);
-    color: var(--tx-stark);
-    font: inherit;
-    cursor: pointer;
-  }
-  .pruefwerkzeug button:hover {
-    border-color: var(--ak-marke);
-  }
-  .pruefwerkzeug form {
-    max-block-size: calc(100vh - 4 * var(--knopf-hoehe));
-    overflow-y: auto;
-  }
-  .pruefwerkzeug output {
-    display: block;
-    max-inline-size: 28ch;
-    color: var(--tx-leise);
-  }
 }
 
 /*
- * Spike S2 and S3 (stage 2): force-slider, figure-stand-in, scene-stand-in. The page transition itself
- * (page-router) needs no rules: frozen copy and revealed view are placed through the CSSOM.
+ * Spike S2 and S3 (stage 2): force-slider. The page transition itself (page-router) needs no rules: frozen
+ * copy and revealed view are placed through the CSSOM. The stand-ins of the probe pages and the review tool
+ * live in proben/css/proben.css (stage 7), outside the delivered files.
  */
 @layer modules {
   /* force-slider, list layout: no script, list mode below 768 px (PLAN 9 no. 11). */
@@ -383,6 +289,8 @@
     gap: var(--raum);
   }
   [data-force-slider-mode="slider"] .kraefte-slider__marker a {
+    /* Correction A (finding 9): the inactive tabs are scaled to 0.93 (IM 11.7); they stay 44 px high. */
+    min-block-size: calc(var(--knopf-hoehe) / var(--slider-inaktiv-skala, 0.93));
     border-color: transparent;
     opacity: var(--slider-inaktiv-deckkraft, 0.5);
     scale: var(--slider-inaktiv-skala, 0.93);
@@ -493,104 +401,6 @@
       inset-inline: 56% 4%;
     }
   }
-
-  /* figure-stand-in: placeholder of the S1 figure. */
-  .figur {
-    display: grid;
-    justify-items: center;
-    gap: calc(2 * var(--raum));
-    inline-size: min(100%, 15rem);
-  }
-  .figur__koerper {
-    display: grid;
-    place-items: center;
-    inline-size: 64%;
-    aspect-ratio: 3 / 5;
-    border: var(--linie-staerke) solid var(--li-rahmen);
-    border-radius: 50% / 14%;
-    background-color: var(--fl-erhoben);
-    color: var(--tx-stark);
-    transform: perspective(48rem) rotateY(calc((var(--figur-dreh, 0) + var(--figur-zieh, 0)) * 1deg));
-    touch-action: pan-y;
-    user-select: none;
-    -webkit-user-select: none;
-    pointer-events: auto;
-  }
-  [data-figure-stand-in-armed="true"] .figur__koerper {
-    cursor: grab;
-    outline: var(--linie-staerke) dashed var(--li-rahmen);
-    outline-offset: 6px;
-  }
-  [data-figure-stand-in-drag="true"] .figur__koerper {
-    cursor: grabbing;
-  }
-  .figur__etiketten {
-    list-style: none;
-    display: grid;
-    margin: 0;
-    padding: 0;
-  }
-  .figur__etikett {
-    grid-area: 1 / 1;
-    display: grid;
-    justify-items: center;
-    gap: var(--raum);
-    padding: calc(3 * var(--raum));
-    background-color: var(--fl-erhoben);
-    visibility: hidden;
-  }
-  .figur__etikett .kraft-marker__q {
-    inline-size: 2rem;
-    block-size: 2rem;
-  }
-  .figur__etikett[data-state="on"],
-  .figur__etikett[data-state="in"] {
-    visibility: visible;
-  }
-  .figur__etikett[data-state="in"] {
-    z-index: 1;
-    clip-path: circle(calc(var(--figur-blende, 0) * 160%) at 50% 66%);
-  }
-  .figur__hinweis {
-    color: var(--tx-leise);
-    text-align: center;
-  }
-
-  /* scene-stand-in: placeholder of the front WebGL canvas (S1) on the S3 probe pages. */
-  .szene {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    display: grid;
-    align-items: end;
-    justify-items: end;
-    padding: calc(6 * var(--raum)) calc(6 * var(--raum)) calc(20 * var(--raum));
-    pointer-events: none;
-  }
-  .szene__form {
-    display: grid;
-    place-items: center;
-    inline-size: 8rem;
-    aspect-ratio: 1;
-    border: 2px solid var(--ak-marke);
-    border-radius: var(--radius-karte);
-    background-color: color-mix(in srgb, var(--ak-marke) 22%, transparent);
-    color: var(--tx-stark);
-    rotate: calc(var(--szene-dreh, 0) * 1deg);
-  }
-  .szene__name {
-    grid-area: 1 / 1;
-    visibility: hidden;
-  }
-  .szene__name[data-state="on"] {
-    visibility: visible;
-  }
-  [data-scene-stand-in-state="leer"] .szene__form {
-    visibility: hidden;
-  }
-  [data-scene-stand-in-state="eingefroren"] .szene__form {
-    border-style: dashed;
-  }
 }
 
 /*
@@ -639,7 +449,9 @@
       color: var(--tx-stark);
     }
     html:not([data-core="failed"]):not([data-motion="reduced"]) .auftakt:not([hidden]):not([data-intro-state]) {
-      animation: v1-auftakt-limit 0s linear 8s 1 normal forwards;
+      /* 3.5 s after the first paint, the only clock CSS has: on the slow profile of stage 7 (1.6 Mbit/s, 300 ms
+         RTT, first paint 1.3 s) the claim is uncovered 4.8 s after the navigation even without script. */
+      animation: v1-auftakt-limit 0s linear 3.5s 1 normal forwards;
     }
   }
   .auftakt__zaehlung {
@@ -768,6 +580,38 @@
   .kopf__link[aria-current="page"] {
     text-decoration: underline;
   }
+  /* Correction A (finding 5): each link and the mark take the tone of the surface under them (nav sets
+     data-theme on the item; the item paints no surface of its own). An item with an edge of a card or an
+     image under it gets a backdrop in the surface colour of its tone (data-nav-grund="an"). */
+  .kopf__link,
+  .kopf__marke {
+    position: relative;
+    isolation: isolate;
+  }
+  .kopf a[data-theme] {
+    background-color: transparent;
+    color: var(--tx-stark);
+  }
+  .kopf__link::before,
+  .kopf__marke::before {
+    content: "";
+    position: absolute;
+    inset: calc(2 * var(--raum)) calc(-2 * var(--raum));
+    z-index: -1;
+    border-radius: var(--radius-knopf);
+    background-color: var(--fl-grund);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dauer-nav-farbe) var(--ui-kurve), background-color var(--dauer-nav-farbe) var(--ui-kurve);
+  }
+  .kopf a[data-nav-grund="an"]::before {
+    opacity: 0.92;
+  }
+  /* Tone of the rohbau placeholder images (light greys) for the colour of the bar; a real photo declares its
+     own with data-bild-ton="hell|invers" on the image or its figure. */
+  img[src$="-rohbau.svg"] {
+    --bild-ton: hell;
+  }
   /* Below 768 px: a fixed light bar in two rows, no burger (IM 7, PLAN 3). */
   @media (max-width: 767px) {
     .kopf {
@@ -840,6 +684,7 @@
     color: var(--tx-leise);
   }
   .vorschau .karte__platzhalter {
+    color: var(--tx-normal);
     font-family: var(--schrift-label);
     font-size: var(--groesse-label);
     letter-spacing: var(--laufweite-label);
@@ -855,11 +700,18 @@
     background-color: var(--fl-erhoben);
     color: var(--tx-stark);
   }
+  /* Correction A (finding 6): a tile never grows past its column; name and price or status wrap onto two
+     lines when both do not fit ("Ausverkauft" was clipped from 992 px on). */
+  .vorschau__kachel,
+  .vorschau__verweis {
+    min-inline-size: 0;
+  }
   .vorschau__zeile {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
-    gap: calc(2 * var(--raum));
+    gap: 0 calc(2 * var(--raum));
   }
   .vorschau__name {
     font-weight: var(--gewicht-stark);
@@ -1130,6 +982,12 @@
   .korb {
     --korb-rand: calc(4 * var(--raum));
   }
+  /* The panel exists only once its module runs (stage 7): data-needs-core alone showed an empty panel over
+     the page when cart-panel.js failed to load. The module sets data-cart-panel-state at setup; until then,
+     and after its destroy, the header link leads to /warenkorb. */
+  .korb:not([data-cart-panel-state]) {
+    display: none;
+  }
   .korb__schutz {
     position: fixed;
     inset: 0;
@@ -1282,8 +1140,10 @@
   .zeile__preis {
     font-weight: var(--gewicht-stark);
   }
+  /* Correction A (finding 9): every control at least 44 px high (CONTRACT 10). */
   .zeile__entfernen {
-    min-block-size: calc(8 * var(--raum));
+    min-block-size: var(--knopf-hoehe);
+    min-inline-size: var(--knopf-hoehe);
     padding: 0;
     border: 0;
     background: none;
@@ -1334,7 +1194,7 @@
     display: none;
   }
   .menge select {
-    min-block-size: calc(var(--knopf-hoehe) - 2px);
+    min-block-size: var(--knopf-hoehe);
     border: 0;
     background: transparent;
     color: inherit;
@@ -1347,8 +1207,8 @@
   }
   .menge[data-qty-select="live"] select {
     position: absolute;
-    inset: 0;
-    inline-size: 100%;
+    inset: calc(-1 * var(--linie-staerke));
+    inline-size: calc(100% + 2 * var(--linie-staerke));
     opacity: 0;
   }
   .menge:focus-within {
@@ -1356,7 +1216,7 @@
     outline-offset: 2px;
   }
   .menge--klein {
-    min-block-size: calc(9 * var(--raum));
+    min-block-size: var(--knopf-hoehe);
   }
 
   /* ---------- currency-switch ---------- */
@@ -1367,8 +1227,8 @@
     overflow: hidden;
   }
   .waehrung button {
-    min-inline-size: calc(12 * var(--raum));
-    min-block-size: calc(9 * var(--raum));
+    min-inline-size: max(var(--knopf-hoehe), calc(12 * var(--raum)));
+    min-block-size: var(--knopf-hoehe);
     padding: 0 calc(2 * var(--raum));
     border: 0;
     background-color: transparent;
@@ -1571,11 +1431,23 @@
       padding: calc(var(--kopf-hoehe) + 2 * var(--raum)) calc(4 * var(--raum)) calc(4 * var(--raum));
       pointer-events: none;
     }
+    /* The wheel over the box scrolls the page in native steps, as in the reference (refmedia F12, clip
+       stack-product-desktop-mouse1300: data-scroll-own keeps Lenis out). The column is no scroll container;
+       only the info box scrolls by itself when the column is too short for both boxes (Pucker at 900 px),
+       and hands the wheel on to the page at its ends (no overscroll containment). */
     .stapel[data-product-stack-state="buehne"] .spalte__innen {
+      display: flex;
+      flex-direction: column;
       max-block-size: 100%;
-      overflow-y: auto;
-      overscroll-behavior: contain;
       pointer-events: auto;
+    }
+    .stapel[data-product-stack-state="buehne"] .spalte__innen > * {
+      flex: none;
+    }
+    .stapel[data-product-stack-state="buehne"] .spalte__innen > [data-info-slide-info] {
+      flex: 0 1 auto;
+      min-block-size: min(12rem, 100%);
+      overflow-y: auto;
       scrollbar-width: thin;
     }
   }
@@ -1606,7 +1478,7 @@
     align-items: center;
     gap: calc(3 * var(--raum));
     inline-size: 100%;
-    min-block-size: calc(12 * var(--raum));
+    min-block-size: max(var(--knopf-hoehe), calc(12 * var(--raum)));
     padding: 0;
     border: 0;
     background: none;
@@ -1674,5 +1546,53 @@
   }
   [data-gallery-state="aus"] {
     opacity: 0.5;
+  }
+}
+
+/*
+ * Corrections A (21.11.2026), see KORREKTUREN-A.md. Scroll gauge of the shell (IM 11.14, refmedia v1 F9):
+ * a rail of 80vh on the right edge, 0.4 em wide, the bar inverts what lies under it (difference). The
+ * native scrollbar is hidden only while script and motion are welcome; a CSS time limit brings it back
+ * when the module never takes over (as the guard), the module holds it hidden with data-scroll-gauge="an".
+ * Without script, with a failed core, under reduced motion and below 480 px the native bar stays.
+ */
+@layer modules {
+  .pegel {
+    display: none;
+  }
+  html[data-scroll-gauge="an"] .pegel {
+    display: block;
+    position: fixed;
+    inset-block-start: 10vh;
+    inset-inline-end: 0;
+    z-index: 7950;
+    inline-size: 0.4rem;
+    block-size: 80vh;
+    pointer-events: none;
+    mix-blend-mode: difference;
+  }
+  .pegel__balken {
+    display: block;
+    inline-size: 100%;
+    block-size: 10%;
+    border-radius: 0.2rem;
+    background-color: var(--fl-erhoben);
+  }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (min-width: 480px) {
+    html:not([data-core="failed"]):not([data-motion="reduced"]):not([data-scroll-gauge="aus"]) {
+      scrollbar-width: none;
+      animation: v1-pegel-limit 0s linear var(--guard-limit, 2.5s) 1 normal forwards;
+    }
+    html[data-scroll-gauge="an"]:not([data-core="failed"]):not([data-motion="reduced"]) {
+      animation: none;
+    }
+    html[data-scroll-gauge="an"]:not([data-core="failed"]):not([data-motion="reduced"])::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+@keyframes v1-pegel-limit {
+  to {
+    scrollbar-width: auto;
   }
 }

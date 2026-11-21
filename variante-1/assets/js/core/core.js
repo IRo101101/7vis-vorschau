@@ -26,7 +26,9 @@ import { setCI, currentCI, CIS } from './theme.js';
 import { motion } from '../motion/engine.js';
 import { scroll } from '../motion/scroll.js';
 
-const INTRO_LIMIT_MS = 6000;
+// Backstop for an intro owner that never sets 'intro:done', counted from navigation start (stage 7): the
+// intro's own limit (TIMING.intro.limit) has the curtain open by then.
+const INTRO_LIMIT_MS = 5000;
 const FONT_LIMIT_MS = 3000;
 
 let state = 'idle';
@@ -43,8 +45,10 @@ function pageFor(el) {
 
 async function intro() {
   if (store.get('intro:done')) return;
-  if (document.querySelector('[data-intro-owner]')) {
-    await Promise.race([store.when('intro:done'), wait(INTRO_LIMIT_MS)]);
+  const owner = document.querySelector('[data-intro-owner]');
+  // Only a running owner is waited for: an intro module that failed to load or set up cannot end itself.
+  if (owner && modules.api(owner, (owner.getAttribute('data-mod') || '').split(/\s+/)[0])) {
+    await Promise.race([store.when('intro:done'), wait(Math.max(0, INTRO_LIMIT_MS - performance.now()))]);
   } else {
     await frame.next();
     await fontsSettled(FONT_LIMIT_MS);

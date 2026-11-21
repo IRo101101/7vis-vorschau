@@ -101,6 +101,12 @@
     padding: 0;
     border: 0;
   }
+  /* The billing address follows its box with or without script (stage 7: the no-script form submits); the
+     checkout module animates the same change and requires the fields while they are shown. */
+  [data-view].seite--shop .kasse__formular:has([data-feld="rechnung_gleich"]:checked) .kasse__rechnung,
+  [data-view].seite--shop .kasse__formular:has([name="rechnung_gleich"]:checked) .kasse__rechnung {
+    display: none;
+  }
   [data-view].seite--shop .kasse__wahlen {
     display: grid;
     gap: calc(2 * var(--raum));
@@ -369,5 +375,71 @@
     [data-view].seite--shop .shopseite__kopf .t-xl {
       font-size: var(--groesse-titel-md);
     }
+  }
+}
+
+/* Sample page of the no-script path (formular-muster.html, stage 7): one card per sample form; a fragment
+   (#kasse, #kontakt, ...) shows only its case, a direct visit shows all of them. */
+@layer page {
+  [data-view].seite--shop .formularmuster__faelle {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: calc(4 * var(--raum));
+    max-inline-size: 72rem;
+  }
+  [data-view].seite--shop .formularmuster__fall {
+    display: grid;
+    align-content: start;
+    gap: calc(3 * var(--raum));
+    padding: calc(5 * var(--raum));
+    scroll-margin-block-start: calc(var(--kopf-hoehe) + 4 * var(--raum));
+  }
+  [data-view].seite--shop .formularmuster__faelle:has(> :target) > :not(:target) {
+    display: none;
+  }
+}
+
+/*
+ * Corrections A (21.11.2026, finding 10): no layout shift while the shop modules fill the page (CLS was 0.15
+ * to 0.30 on /kasse, /warenkorb and /bestaetigung). The modules render after the first paint from the
+ * browser's sample cart, so the page reserves what it can and keeps the rest invisible until it is filled:
+ *   1 a shop page is at least one viewport high, so the footer never starts in the first view and never
+ *     moves into it when an empty state replaces a long form;
+ *   2 parts that follow a list of lines stay invisible while the list is still empty (the lines arrive a
+ *     frame later and would push them down); a CSS time limit shows them anyway (as the guard);
+ *   3 phones: the order summary of /kasse is folded from the first paint, with room for its toggle (the
+ *     module folds it at setup; before, the open summary pushed the form down and then let it jump up).
+ */
+@layer page {
+  [data-view].seite--shop .shopseite {
+    min-block-size: 100svh;
+  }
+  @media (scripting: enabled) {
+    html:not([data-core="failed"]) [data-view].seite--shop :is(.shopseite__liste, .kasse__zeilen):empty ~ :is(aside, form, dl, div) {
+      visibility: hidden;
+      animation: v1-shop-limit 0s linear var(--guard-limit, 2.5s) 1 normal forwards;
+    }
+  }
+  @media (scripting: enabled) and (max-width: 991px) {
+    html:not([data-core="failed"]) [data-view].seite--shop .kasse__uebersicht:not([data-checkout-open="true"]) .kasse__uebersicht-inhalt {
+      display: none;
+      animation: v1-shop-show 0s linear var(--guard-limit, 2.5s) 1 normal forwards;
+    }
+    html:not([data-core="live"]):not([data-core="failed"]) [data-view].seite--shop .kasse__uebersicht {
+      padding-block-start: calc(5 * var(--raum) + var(--knopf-hoehe));
+    }
+    html[data-core="live"] [data-view].seite--shop .kasse__uebersicht[data-checkout-open] .kasse__uebersicht-inhalt {
+      animation: none;
+    }
+  }
+}
+@keyframes v1-shop-limit {
+  to {
+    visibility: visible;
+  }
+}
+@keyframes v1-shop-show {
+  to {
+    display: block;
   }
 }

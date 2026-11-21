@@ -19,6 +19,7 @@
   <link rel="modulepreload" href="assets/vendor/lenis-1.3.26/lenis.js">
   <link rel="modulepreload" href="assets/js/modules/nav.js">
   <link rel="modulepreload" href="assets/js/modules/cart-panel.js">
+  <link rel="modulepreload" href="assets/js/modules/scroll-gauge.js">
   <link rel="modulepreload" href="assets/js/shop/muster.js">
   <link rel="modulepreload" href="assets/js/shop/muster-daten.js">
   <link rel="modulepreload" href="assets/js/modules/cart-page.js">
@@ -60,7 +61,7 @@
               <li class="vorschau__kachel" data-nav-shop-item>
                 <a class="vorschau__verweis" href="muster-001.html">
                   <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
-                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10.00</span><span data-preis-w="EUR">EUR 10.50</span></span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 001</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 10,00</span><span data-preis-w="EUR">EUR 10,50</span></span></span>
                   <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
                   <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-2" aria-hidden="true"></span>02 · Mahlen</span>
                 </a>
@@ -68,7 +69,7 @@
               <li class="vorschau__kachel" data-nav-shop-item>
                 <a class="vorschau__verweis" href="muster-002.html">
                   <span class="vorschau__bild"><span class="vorschau__muster t-label">Muster</span><span class="karte__platzhalter">Bild folgt</span></span>
-                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20.00</span><span data-preis-w="EUR">EUR 21.00</span></span></span>
+                  <span class="vorschau__zeile"><span class="vorschau__name">Musterartikel 002</span><span class="vorschau__preis t-ziffern"><span data-preis-w="CHF">CHF 20,00</span><span data-preis-w="EUR">EUR 21,00</span></span></span>
                   <span class="vorschau__kurz t-klein">Musterdatensatz der Studie, nicht im Verkauf.</span>
                   <span class="kraft-marker vorschau__kraft t-label"><span class="kraft-marker__q kr-4" aria-hidden="true"></span>04 · Pumpen</span>
                 </a>
@@ -104,6 +105,8 @@
   </div>
   <!-- Drag handle of the figure: follows the figure on screen, takes the pointer only while the slider allows it. -->
   <div class="figur-griff" data-mod="figure-grip" aria-hidden="true" data-needs-core></div>
+  <!-- Scroll gauge (IM 11.14, PLAN 5 no. 6): own scroll indicator on the right; the native bar is hidden while it runs. -->
+  <div class="pegel" data-mod="scroll-gauge" aria-hidden="true" data-needs-core><span class="pegel__balken" data-scroll-gauge-bar></span></div>
   <!-- Cart panel (stage 5; IS 5, IM 11.12, Drehbuch 2.2): opens with the cart button of the header and after
        adding to the cart. Without the runtime the cart button leads to /warenkorb. Lines are clones of the
        template; the shop adapter (PLAN 6) is the only source of the cart. -->
@@ -144,12 +147,13 @@
       <div class="korb__summe" data-cart-panel-summary data-cart-panel-child>
         <p class="korb__summentitel t-label">Übersicht</p>
         <dl class="summen">
-          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0.00</dd></div>
-          <div class="summen__zeile"><dt>Versand</dt><dd>wird in der Kasse berechnet</dd></div>
+          <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-panel-count>0</span> Artikel)</dt><dd class="t-ziffern" data-cart-panel-subtotal>CHF 0,00</dd></div>
+          <div class="summen__zeile"><dt>Versand (Musterregel)</dt><dd><!-- versandvorschau:start --><span class="t-ziffern">ab <span data-preis-w="CHF">CHF 9,00</span><span data-preis-w="EUR">EUR 9,50</span></span><!-- versandvorschau:end --></dd></div>
         </dl>
+        <p class="korb__versand t-klein"><!-- versandhinweis:start -->Musterregel: Schweiz und Liechtenstein ab <span class="t-ziffern"><span data-preis-w="CHF">CHF 9,00</span><span data-preis-w="EUR">EUR 9,50</span></span>, übrige Länder ab <span class="t-ziffern"><span data-preis-w="CHF">CHF 24,00</span><span data-preis-w="EUR">EUR 25,00</span></span>. Die Versandart wählen Sie in der Kasse.<!-- versandhinweis:end --></p>
         <div class="korb__waehrung"><span class="t-klein" id="korb-waehrung">Währung</span><div class="waehrung" role="group" aria-labelledby="korb-waehrung" data-mod="currency-switch"><button type="button" data-currency-switch-value="CHF" aria-pressed="true">CHF</button><button type="button" data-currency-switch-value="EUR" aria-pressed="false">EUR</button></div></div>
         <a class="knopf korb__kasse" href="kasse.html" data-cart-panel-checkout>Zur Kasse gehen</a>
-        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Versand und Rabattcode folgen in der Kasse.</p>
+        <p class="korb__hinweis t-klein">Preise inklusive Mehrwertsteuer. Rabattcode und Versandart folgen in der Kasse.</p>
       </div>
     </section>
   </div>
@@ -189,7 +193,7 @@
         <aside class="shopseite__summe karte" aria-labelledby="warenkorb-summe">
           <h2 id="warenkorb-summe" class="t-sm">Übersicht</h2>
           <dl class="summen">
-            <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-page-count>0</span> Artikel)</dt><dd data-cart-page-subtotal>CHF 0.00</dd></div>
+            <div class="summen__zeile"><dt>Zwischensumme (<span class="t-ziffern" data-cart-page-count>0</span> Artikel)</dt><dd data-cart-page-subtotal>CHF 0,00</dd></div>
           </dl>
           <div class="feld"><label for="w-land" class="feld__etikett">Versandvorschau nach</label><select id="w-land" data-cart-page-land><option value="CH" selected>Schweiz</option><option value="LI">Liechtenstein</option><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="FR">Frankreich</option><option value="IT">Italien</option></select></div>
           <p class="t-klein" data-cart-page-ship>Der Versand wird in der Kasse berechnet.</p>
@@ -204,44 +208,45 @@
         <a class="knopf" href="werkzeuge.html">Werkzeuge ansehen</a>
       </div>
     </section>
-    <!-- fuss:start (copied from index.html) -->
-    <footer class="fuss" data-theme="hell">
-      <div class="fuss__spalten">
-        <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
-          <p id="fuss-seiten" class="fuss__titel">Seiten</p>
-          <ul class="fuss__liste">
-            <li><a href="werkzeuge.html">Werkzeuge</a></li>
-            <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
-            <li><a href="haendler.html">Händler</a></li>
-            <li><a href="fragen.html">Fragen</a></li>
-            <li><a href="kontakt.html">Kontakt</a></li>
-          </ul>
-        </nav>
-        <nav class="fuss__spalte" aria-labelledby="fuss-recht">
-          <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
-          <ul class="fuss__liste">
-            <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
-            <li><a href="agb.html">AGB</a></li>
-            <li><a href="datenschutz.html">Datenschutz</a></li>
-            <li><a href="impressum.html">Impressum</a></li>
-            <li><a href="widerruf.html">Widerruf</a></li>
-          </ul>
-        </nav>
-        <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
-          <p id="fuss-sprache" class="fuss__titel">Sprache</p>
-          <ul class="fuss__liste">
-            <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
-            <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
-        <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
-        <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
-      </div>
-      <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
-    </footer>
-    <!-- fuss:end -->
   </main>
+
+  <!-- fuss:start (copied from index.html) -->
+  <footer class="fuss" data-theme="hell" data-page-router-follow>
+    <div class="fuss__spalten">
+      <nav class="fuss__spalte" aria-labelledby="fuss-seiten">
+        <p id="fuss-seiten" class="fuss__titel">Seiten</p>
+        <ul class="fuss__liste">
+          <li><a href="werkzeuge.html">Werkzeuge</a></li>
+          <li><a href="die-sieben-kraefte.html">Die sieben Kräfte</a></li>
+          <li><a href="haendler.html">Händler</a></li>
+          <li><a href="fragen.html">Fragen</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </nav>
+      <nav class="fuss__spalte" aria-labelledby="fuss-recht">
+        <p id="fuss-recht" class="fuss__titel">Rechtliches</p>
+        <ul class="fuss__liste">
+          <li><a href="lieferung-und-rueckgabe.html">Lieferung und Rückgabe</a></li>
+          <li><a href="agb.html">AGB</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="widerruf.html">Widerruf</a></li>
+        </ul>
+      </nav>
+      <div class="fuss__spalte" role="group" aria-labelledby="fuss-sprache">
+        <p id="fuss-sprache" class="fuss__titel">Sprache</p>
+        <ul class="fuss__liste">
+          <li><span class="fuss__sprache" lang="de" aria-current="true">Deutsch</span></li>
+          <li><span class="fuss__sprache fuss__sprache--inaktiv" lang="en" aria-disabled="true">English</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fuss__marke" role="img" aria-label="7Vis. Für uns ist Kaffee angewandte Physik.">
+      <svg class="wortmarke fuss__wortmarke" viewBox="0 0 300 100" aria-hidden="true" focusable="false"><use href="#v1-wortmarke"/></svg>
+      <span class="fuss__claim" aria-hidden="true">Für uns ist Kaffee angewandte Physik.</span>
+    </div>
+    <p class="fuss__zeile t-klein">© <span class="platzhalter">[Jahr vom Server]</span> <span class="platzhalter">[Betreiberin]</span></p>
+  </footer>
+  <!-- fuss:end -->
 </body>
 </html>
