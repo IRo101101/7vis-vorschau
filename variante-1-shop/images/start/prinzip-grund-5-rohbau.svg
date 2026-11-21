@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <!-- Placeholder of the background picture of principle 5 (correction A, finding 4): rohbau greys, own drawing.
+       Replaced by the real photo of the principle; the mechanics (parallax, cross-fade) stay. -->
+  <rect width="1600" height="1000" fill="#E7E7E5"/>
+  <g transform="rotate(15 800 500)" fill="#DFDFDC">
+    <rect x="-400" y="380" width="2400" height="180"/>
+    <rect x="-400" y="720" width="2400" height="60"/>
+  </g>
+  <circle cx="980" cy="470" r="230" fill="none" stroke="#D3D3D0" stroke-width="3"/>
+  <text x="980" y="560" text-anchor="middle" font-family="system-ui, -apple-system, Arial, sans-serif" font-size="260" font-weight="600" fill="none" stroke="#D3D3D0" stroke-width="3">5</text>
+  <text x="800" y="250" text-anchor="middle" font-family="system-ui, -apple-system, Arial, sans-serif" font-size="14" letter-spacing="3" fill="#8E8E8B">PLATZHALTER · HINTERGRUNDBILD PRINZIP 5 VON 7</text>
+</svg>

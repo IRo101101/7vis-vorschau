@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1200" width="960" height="1200">
+  <!-- Sample image of the study (BILDLISTE B-06): grey surface with the inscription "Muster", rohbau greys. Own drawing. -->
+  <rect width="960" height="1200" fill="#E7E7E5"/>
+  <g stroke="#D0D0CD" stroke-width="2">
+    <path d="M0 300H960M0 600H960M0 900H960M240 0V1200M480 0V1200M720 0V1200"/>
+  </g>
+  <rect x="300" y="360" width="360" height="480" fill="none" stroke="#B4B4B1" stroke-width="4"/>
+  <path d="M300 360L660 840M660 360L300 840" stroke="#B4B4B1" stroke-width="2"/>
+  <text x="480" y="1040" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="64" font-weight="600" letter-spacing="6" fill="#656562">MUSTER</text>
+</svg>

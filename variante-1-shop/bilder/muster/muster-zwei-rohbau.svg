@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1200" width="960" height="1200">
+  <!-- Second sample image (hover image of a sample card, BILDLISTE B-06): darker grey, same inscription. Own drawing. -->
+  <rect width="960" height="1200" fill="#B4B4B1"/>
+  <g stroke="#8E8E8B" stroke-width="2">
+    <path d="M0 300H960M0 600H960M0 900H960M240 0V1200M480 0V1200M720 0V1200"/>
+  </g>
+  <circle cx="480" cy="600" r="220" fill="none" stroke="#4E4E4C" stroke-width="4"/>
+  <circle cx="480" cy="600" r="12" fill="#4E4E4C"/>
+  <text x="480" y="1040" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" font-size="64" font-weight="600" letter-spacing="6" fill="#262625">MUSTER</text>
+</svg>
