@@ -45,6 +45,18 @@
       translate: -50% 0;
       inset-block-end: calc(22 * var(--raum));
     }
+    /* The picture joins the flow only when the stage surely stays off (state "fluss", no script, reduced
+       motion, failed core). Before the stage module has decided, it already stands where the stage puts it,
+       so the text does not jump up when the stage starts (correction A: CLS 0.20 at 390 px). */
+    [data-view].seite--werkzeuge .stapel[data-product-stack-state="fluss"] .buehne-abschnitt__bild,
+    html[data-core="failed"] [data-view].seite--werkzeuge .stapel:not([data-product-stack-state]) .buehne-abschnitt__bild {
+      position: relative;
+      inset: auto;
+      translate: none;
+      margin: calc(6 * var(--raum)) auto 0;
+    }
+  }
+  @media (max-width: 767px) and (scripting: none), (max-width: 767px) and (prefers-reduced-motion: reduce) {
     [data-view].seite--werkzeuge .stapel:not([data-product-stack-state="buehne"]) .buehne-abschnitt__bild {
       position: relative;
       inset: auto;

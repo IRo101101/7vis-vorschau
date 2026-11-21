@@ -1529,17 +1529,22 @@
     aspect-ratio: 4 / 5;
     margin: 0;
   }
+  /* The conveyor moves the pictures by transform in units of the stage box (container), not by their
+     offsets: the same path, but no layout shift on every frame of the hold (correction A, CLS 0.13 on
+     /pucker at 1440 px). Only the size still changes with the slot. */
   [data-gallery-mode="band"] .galerie__flaeche {
     position: relative;
     display: block;
+    container-type: size;
   }
   [data-gallery-mode="band"] .galerie__bild {
     position: absolute;
-    inset-inline-start: calc(var(--gx, 0) * 1%);
-    inset-block-start: calc(var(--gy, 0) * 1%);
+    inset-inline-start: 0;
+    inset-block-start: 0;
     inline-size: calc(var(--gw, 30) * 1%);
     block-size: calc(var(--gh, 30) * 1%);
     aspect-ratio: auto;
+    transform: translate(calc(var(--gx, 0) * 1cqw), calc(var(--gy, 0) * 1cqh));
   }
   [data-gallery-state] {
     transition: opacity var(--ui-dauer-zustand) var(--ui-kurve);
@@ -1594,5 +1599,32 @@
 @keyframes v1-pegel-limit {
   to {
     scrollbar-width: auto;
+  }
+}
+
+/*
+ * Corrections A, layout shift (21.11.2026): lists that start closed (data-accordion-open="0") are closed from
+ * the first paint while script runs; before, the module closed them a frame later and the page below jumped
+ * up (CLS 0.089 on /fragen at 390 px). Without script every answer stands open; if the module never starts,
+ * the CSS time limit opens them again (as the guard).
+ */
+@layer modules {
+  @media (scripting: enabled) {
+    /* Collapsed, not display none: an element without a box runs no animation, so the time limit could
+       never bring it back. */
+    html:not([data-core="failed"]) [data-mod~="accordion"][data-accordion-open="0"] [data-accordion-item]:not([data-accordion-state]) [data-accordion-panel] {
+      visibility: hidden;
+      max-block-size: 0;
+      overflow: hidden;
+      padding-block: 0;
+      animation: v1-akkordeon-limit 0s linear var(--guard-limit, 2.5s) 1 normal forwards;
+    }
+  }
+}
+@keyframes v1-akkordeon-limit {
+  to {
+    visibility: visible;
+    max-block-size: none;
+    overflow: visible;
   }
 }

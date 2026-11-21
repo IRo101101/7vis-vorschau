@@ -18,6 +18,12 @@
   [data-view].seite--text .textseite__titel.t-riesig {
     --titel-zeichen: 10;
   }
+  /* /fragen: the widest word of "Das wissen / wir heute." has about 6.5 letter widths; with 10 the estimate
+     without script stood at 47 px where the script fits 72 px at 390 px, and the page below jumped by
+     150 px when the title was fitted (correction A, CLS 0.089). */
+  [data-view="fragen"].seite--text .textseite__titel.t-riesig {
+    --titel-zeichen: 6.5;
+  }
   [data-view].seite--text .textseite--held {
     min-block-size: 100vh;
     min-block-size: 100svh;

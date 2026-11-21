@@ -422,14 +422,13 @@
   }
   @media (scripting: enabled) and (max-width: 991px) {
     html:not([data-core="failed"]) [data-view].seite--shop .kasse__uebersicht:not([data-checkout-open="true"]) .kasse__uebersicht-inhalt {
-      display: none;
+      visibility: hidden;
+      max-block-size: 0;
+      overflow: hidden;
       animation: v1-shop-show 0s linear var(--guard-limit, 2.5s) 1 normal forwards;
     }
     html:not([data-core="live"]):not([data-core="failed"]) [data-view].seite--shop .kasse__uebersicht {
       padding-block-start: calc(5 * var(--raum) + var(--knopf-hoehe));
-    }
-    html[data-core="live"] [data-view].seite--shop .kasse__uebersicht[data-checkout-open] .kasse__uebersicht-inhalt {
-      animation: none;
     }
   }
 }
@@ -440,6 +439,8 @@
 }
 @keyframes v1-shop-show {
   to {
-    display: block;
+    visibility: visible;
+    max-block-size: none;
+    overflow: visible;
   }
 }
